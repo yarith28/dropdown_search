@@ -38,7 +38,7 @@
 * Four dropdown mode: Menu/ BottomSheet/ ModalBottomSheet / Dialog
 * Single & multi selection
 * Material dropdown
-* Adaptive UI : Material, IOS ```[coming soon]```
+* Adaptive UI : Material, Adaptive, Cupertino ```[coming soon]```
 * Easy customizable UI - No Boilerplate
 * Handle Light and Dark theme
 * Easy implementation into statelessWidget
