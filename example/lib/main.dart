@@ -1,130 +1,66 @@
-import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:example/bottom_sheets.dart';
-import 'package:example/dialogs.dart';
-import 'package:example/menus.dart';
-import 'package:example/modals.dart';
-import 'package:example/user_model.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-Future<List<UserModel>> getData(filter) async {
-  var response = await Dio().get(
-    "https://63c1210999c0a15d28e1ec1d.mockapi.io/users",
-    queryParameters: {"filter": filter},
-  );
-
-  final data = response.data;
-  if (data != null) {
-    return UserModel.fromJsonList(data);
-  }
-
-  return [];
+void main() {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'dropdownSearch Demo',
-      //enable this line if you want test Dark Mode
-      //theme: ThemeData.dark(),
-      home: MyHomePage(),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final dropDownKey = GlobalKey<DropdownSearchState>();
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
 
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('examples mode')),
-      body: ListView(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: Row(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: DropdownSearch<String>(
-                  key: dropDownKey,
-                  selectedItem: "Menu",
-                  items: (filter, infiniteScrollProps) =>
-                      ["Menu", "Dialog", "Modal", "BottomSheet"],
-                  decoratorProps: DropDownDecoratorProps(
-                    decoration: InputDecoration(
-                      labelText: 'Examples for: ',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  popupProps: PopupProps.menu(
-                      fit: FlexFit.loose, constraints: BoxConstraints()),
-                ),
+          Expanded(
+            child: DropdownSearch(
+              items: (filter, loadProps) => ["133", "2", "3", "4", "5"],
+              uiMode: UiMode.material,
+              popupProps: PopupProps<String>.dialog(
+                showSearchBox: true,
               ),
-              Padding(padding: EdgeInsets.only(right: 16)),
-              FilledButton(
-                onPressed: () {
-                  switch (dropDownKey.currentState?.getSelectedItem) {
-                    case 'Menu':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MenuExamplesPage()));
-                      break;
-                    case 'Modal':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ModalsExamplesPage()));
-                      break;
-                    case 'BottomSheet':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BottomSheetExamplesPage()));
-                      break;
-                    case 'Dialog':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DialogExamplesPage()));
-                      break;
-                  }
-                },
-                child: Text("Go"),
-              )
-            ],
-          ),
-          Padding(padding: EdgeInsets.all(8)),
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(fontSize: 14.0, color: Colors.black),
-              children: [
-                TextSpan(text: 'we used '),
-                TextSpan(
-                    text: 'fit: FlexFit.loose',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: ' and '),
-                TextSpan(
-                    text: 'constraints: BoxConstraints() ',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(
-                    text:
-                        'to fit the height of menu automatically to the length of items'),
-              ],
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: 20)),
-          Text(
-            'DropdownSearch Anatomy',
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-            textAlign: TextAlign.center,
+          Expanded(
+            child: DropdownSearch(
+              items: (filter, loadProps) => ["1\n30\n33", "2", "3", "4", "5"],
+            ),
           ),
-          Image.asset('assets/images/anatomy.png',
-              alignment: Alignment.topCenter, height: 1024)
+          SizedBox(
+            width: 200,
+            height: 50,
+            child: DropdownSearch.multiSelection(
+              items: (filter, loadProps) => ["1\n30\n33", "2", "3", "4", "5"],
+            ),
+          )
         ],
       ),
     );

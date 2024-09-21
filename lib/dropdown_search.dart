@@ -3,8 +3,11 @@ library dropdown_search;
 import 'dart:async';
 import 'package:dropdown_search/src/adaptive/bottom_sheets.dart';
 import 'package:dropdown_search/src/adaptive/modal_bottom_sheet.dart';
+import 'package:dropdown_search/src/properties/bottom_sheet_props.dart';
+import 'package:dropdown_search/src/properties/dialog_props.dart';
 import 'package:dropdown_search/src/properties/dropdown_props.dart';
 import 'package:dropdown_search/src/properties/infinite_scroll_props.dart';
+import 'package:dropdown_search/src/properties/modal_bottom_sheet_props.dart';
 import 'package:dropdown_search/src/properties/scroll_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_icon_button.dart';
@@ -144,7 +147,7 @@ class DropdownSearch<T> extends StatefulWidget {
   final ClickProps clickProps;
 
   ///custom props to single mode popup
-  final PopupPropsMultiSelection<T> popupProps;
+  final AbstractPopup<T> popupProps;
 
   ///dropdown decoration props
   final DropDownDecoratorProps decoratorProps;
@@ -540,24 +543,24 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
   Future _openSelectDialog() {
     switch (widget.uiMode) {
       case UiMode.cupertino:
-        return openCupertinoDialog(context, _popupWidgetInstance(), widget.popupProps.dialogProps);
+        return openCupertinoDialog(context, _popupWidgetInstance(), widget.popupProps.dialogProps as CupertinoDialogProps);
       case UiMode.adaptive:
-        return openAdaptiveDialog(context, _popupWidgetInstance(), widget.popupProps.dialogProps);
+        return openAdaptiveDialog(context, _popupWidgetInstance(), widget.popupProps.dialogProps as AdaptiveDialogProps);
       case UiMode.material:
       default:
-        return openCupertinoDialog(context, _popupWidgetInstance(), widget.popupProps.dialogProps);
+        return openMaterialDialog(context, _popupWidgetInstance(), widget.popupProps.dialogProps as DialogProps);
     }
   }
 
   Future _openBottomSheet() {
     switch (widget.uiMode) {
       case UiMode.cupertino:
-        return openCupertinoBottomSheet(context, _popupWidgetInstance(), widget.popupProps.bottomSheetProps);
+        return openCupertinoBottomSheet(context, _popupWidgetInstance(), widget.popupProps.bottomSheetProps as BottomSheetProps);
       case UiMode.adaptive:
-        return openAdaptiveBottomSheet(context, _popupWidgetInstance(), widget.popupProps.bottomSheetProps);
+        return openAdaptiveBottomSheet(context, _popupWidgetInstance(), widget.popupProps.bottomSheetProps as BottomSheetProps);
       case UiMode.material:
       default:
-        return openMaterialBottomSheet(context, _popupWidgetInstance(), widget.popupProps.bottomSheetProps);
+        return openMaterialBottomSheet(context, _popupWidgetInstance(), widget.popupProps.bottomSheetProps as BottomSheetProps);
     }
   }
 
@@ -565,12 +568,12 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
   Future _openModalBottomSheet() {
     switch (widget.uiMode) {
       case UiMode.cupertino:
-        return openCupertinoModalBottomSheet(context, _popupWidgetInstance(), widget.popupProps.modalBottomSheetProps);
+        return openCupertinoModalBottomSheet(context, _popupWidgetInstance(), widget.popupProps.modalBottomSheetProps as ModalBottomSheetProps);
       case UiMode.adaptive:
-        return openAdaptiveModalBottomSheet(context, _popupWidgetInstance(), widget.popupProps.modalBottomSheetProps);
+        return openAdaptiveModalBottomSheet(context, _popupWidgetInstance(), widget.popupProps.modalBottomSheetProps as ModalBottomSheetProps);
       case UiMode.material:
       default:
-        return openMaterialModalBottomSheet(context, _popupWidgetInstance(), widget.popupProps.modalBottomSheetProps);
+        return openMaterialModalBottomSheet(context, _popupWidgetInstance(), widget.popupProps.modalBottomSheetProps as ModalBottomSheetProps);
     }
   }
 

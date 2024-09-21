@@ -16,7 +16,7 @@ class DropdownSearchPopup<T> extends StatefulWidget {
   final DropdownSearchFilterFn<T>? filterFn;
   final DropdownSearchCompareFn<T>? compareFn;
   final List<T> defaultSelectedItems;
-  final PopupPropsMultiSelection<T> popupProps;
+  final AbstractPopup<T> popupProps;
   final bool isMultiSelectionMode;
 
   const DropdownSearchPopup({

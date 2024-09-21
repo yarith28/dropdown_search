@@ -37,7 +37,6 @@
 * Support multi level items
 * Four dropdown mode: Menu/ BottomSheet/ ModalBottomSheet / Dialog
 * Single & multi selection
-* Material dropdown
 * Adaptive UI : Material, Adaptive, Cupertino ```[coming soon]```
 * Easy customizable UI - No Boilerplate
 * Handle Light and Dark theme

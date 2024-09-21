@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DialogProps {
+abstract class AbstractDialogProps {
+  const AbstractDialogProps();
+}
+
+class DialogProps extends AbstractDialogProps {
   final List<Widget>? actions;
   final MainAxisAlignment? actionsAlignment;
   final OverflowBarAlignment? actionsOverflowAlignment;
@@ -26,8 +30,23 @@ class DialogProps {
   final AlignmentGeometry? alignment;
   final Color? shadowColor;
   final Color? surfaceTintColor;
+  final Widget? title;
+  final Widget? icon;
+  final Color? iconColor;
+  final EdgeInsetsGeometry? iconPadding;
+  final bool scrollable;
+  final EdgeInsetsGeometry? titlePadding;
+  final TextStyle? titleTextStyle;
 
   const DialogProps({
+    this.key,
+    this.iconPadding,
+    this.titlePadding,
+    this.titleTextStyle,
+    this.title,
+    this.icon,
+    this.scrollable = false,
+    this.iconColor,
     this.alignment,
     this.elevation,
     this.semanticLabel,
@@ -46,8 +65,7 @@ class DialogProps {
     this.clipBehavior = Clip.none,
     this.useRootNavigator = false,
     this.actionsPadding = EdgeInsets.zero,
-    this.insetPadding =
-        const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+    this.insetPadding = const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
     this.buttonPadding,
     this.contentPadding = EdgeInsets.zero,
     this.anchorPoint,
@@ -55,4 +73,42 @@ class DialogProps {
     this.shadowColor,
     this.surfaceTintColor,
   });
+}
+
+class CupertinoDialogProps extends AbstractDialogProps {
+  final String? barrierLabel;
+  final bool useRootNavigator;
+  final bool barrierDismissible;
+  final RouteSettings? routeSettings;
+  final Offset? anchorPoint;
+
+  final List<Widget> actions;
+  final Widget? content;
+  final ScrollController? scrollController;
+  final ScrollController? actionScrollController;
+  final Duration insetAnimationDuration;
+  final Curve insetAnimationCurve;
+  final Widget? title;
+
+  const CupertinoDialogProps({
+    this.barrierDismissible = false,
+    this.useRootNavigator = true,
+    this.barrierLabel,
+    this.routeSettings,
+    this.anchorPoint,
+    this.title,
+    this.actions = const <Widget>[],
+    this.content,
+    this.scrollController,
+    this.actionScrollController,
+    this.insetAnimationDuration = const Duration(milliseconds: 100),
+    this.insetAnimationCurve = Curves.decelerate,
+  });
+}
+
+class AdaptiveDialogProps extends AbstractDialogProps {
+  final DialogProps materialProps;
+  final CupertinoDialogProps cupertinoProps;
+
+  AdaptiveDialogProps({this.materialProps = const DialogProps(), this.cupertinoProps = const CupertinoDialogProps()});
 }

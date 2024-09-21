@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../dropdown_search.dart';
 
-class PopupProps<T> {
+abstract class AbstractPopup<T> {
+  final UiMode uiMode;
+
   /// popup title
   final Widget? title;
 
@@ -60,16 +62,16 @@ class PopupProps<T> {
   final SuggestedItemProps<T> suggestedItemProps;
 
   ///dialog mode props
-  final DialogProps dialogProps;
+  final AbstractDialogProps dialogProps;
 
   ///BottomSheet mode props
-  final BottomSheetProps bottomSheetProps;
+  final AbstractBottomSheetProps bottomSheetProps;
 
   ///ModalBottomSheet mode props
-  final ModalBottomSheetProps modalBottomSheetProps;
+  final AbstractModalBottomSheetProps modalBottomSheetProps;
 
   ///Menu mode props
-  final MenuProps menuProps;
+  final AbstractMenuProps menuProps;
 
   ///fit height depending on nb of result or keep height fix.
   final FlexFit fit;
@@ -91,18 +93,34 @@ class PopupProps<T> {
   /// called when loading new items
   final ValueChanged<List<T>>? onItemsLoaded;
 
+  ///called when a new item added on Multi selection mode
+  final OnItemAdded<T>? onItemAdded;
+
+  ///called when a new item added on Multi selection mode
+  final OnItemRemoved<T>? onItemRemoved;
+
+  ///widget used to show checked items in multiSelection mode
+  final DropdownSearchPopupItemBuilder<T>? checkBoxBuilder;
+
+  ///widget used to validate items in multiSelection mode
+  final ValidationMultiSelectionBuilder<T>? validationBuilder;
+
+  final TextDirection textDirection;
+
   ///properties of click
   final ClickProps itemClickProps;
 
-  const PopupProps._({
+  const AbstractPopup({
+    this.onItemAdded,
+    this.onItemRemoved,
+    this.checkBoxBuilder,
+    this.validationBuilder,
+    this.textDirection = TextDirection.ltr,
     this.mode = PopupMode.menu,
+    this.uiMode = UiMode.material,
     this.fit = FlexFit.tight,
     this.title,
     this.showSearchBox = false,
-    this.bottomSheetProps = const BottomSheetProps(),
-    this.dialogProps = const DialogProps(),
-    this.modalBottomSheetProps = const ModalBottomSheetProps(),
-    this.menuProps = const MenuProps(),
     this.searchFieldProps = const TextFieldProps(),
     this.scrollbarProps = const ScrollbarProps(),
     this.listViewProps = const ListViewProps(),
@@ -123,194 +141,96 @@ class PopupProps<T> {
     this.infiniteScrollProps,
     this.onItemsLoaded,
     this.itemClickProps = const ClickProps(),
-  }) : assert(infiniteScrollProps == null || disableFilter);
 
-  const PopupProps.menu({
-    this.title,
-    this.fit = FlexFit.tight,
-    this.showSearchBox = false,
-    this.menuProps = const MenuProps(),
-    this.searchFieldProps = const TextFieldProps(),
-    this.scrollbarProps = const ScrollbarProps(),
-    this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
-    this.searchDelay = const Duration(seconds: 1),
-    this.onDismissed,
-    this.emptyBuilder,
-    this.itemBuilder,
-    this.errorBuilder,
-    this.loadingBuilder,
-    this.showSelectedItems = false,
-    this.disabledItemFn,
-    this.disableFilter = false,
-    this.cacheItems = false,
-    this.containerBuilder,
-    this.constraints = const BoxConstraints(maxHeight: 350),
-    this.interceptCallBacks = false,
-    this.infiniteScrollProps,
-    this.onItemsLoaded,
-    this.itemClickProps = const ClickProps(),
-  })  : mode = PopupMode.menu,
-        bottomSheetProps = const BottomSheetProps(),
-        dialogProps = const DialogProps(),
-        modalBottomSheetProps = const ModalBottomSheetProps();
-
-  const PopupProps.dialog({
-    this.fit = FlexFit.tight,
-    this.title,
-    this.showSearchBox = false,
-    this.dialogProps = const DialogProps(),
-    this.searchFieldProps = const TextFieldProps(),
-    this.scrollbarProps = const ScrollbarProps(),
-    this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
-    this.searchDelay = const Duration(seconds: 1),
-    this.onDismissed,
-    this.emptyBuilder,
-    this.itemBuilder,
-    this.errorBuilder,
-    this.loadingBuilder,
-    this.showSelectedItems = false,
-    this.disabledItemFn,
-    this.disableFilter = false,
-    this.cacheItems = false,
-    this.containerBuilder,
-    this.constraints = const BoxConstraints(
-      minWidth: 500,
-      maxWidth: 500,
-      maxHeight: 600,
-    ),
-    this.interceptCallBacks = false,
-    this.infiniteScrollProps,
-    this.onItemsLoaded,
-    this.itemClickProps = const ClickProps(),
-  })  : mode = PopupMode.dialog,
-        menuProps = const MenuProps(),
-        bottomSheetProps = const BottomSheetProps(),
-        modalBottomSheetProps = const ModalBottomSheetProps();
-
-  const PopupProps.bottomSheet({
-    this.fit = FlexFit.tight,
-    this.title,
-    this.showSearchBox = false,
     this.bottomSheetProps = const BottomSheetProps(),
-    this.searchFieldProps = const TextFieldProps(),
-    this.scrollbarProps = const ScrollbarProps(),
-    this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
-    this.searchDelay = const Duration(seconds: 1),
-    this.onDismissed,
-    this.emptyBuilder,
-    this.itemBuilder,
-    this.errorBuilder,
-    this.loadingBuilder,
-    this.showSelectedItems = false,
-    this.disabledItemFn,
-    this.disableFilter = false,
-    this.cacheItems = false,
-    this.containerBuilder,
-    this.constraints = const BoxConstraints(maxHeight: 500),
-    this.interceptCallBacks = false,
-    this.infiniteScrollProps,
-    this.onItemsLoaded,
-    this.itemClickProps = const ClickProps(),
-  })  : mode = PopupMode.bottomSheet,
-        menuProps = const MenuProps(),
-        dialogProps = const DialogProps(),
-        modalBottomSheetProps = const ModalBottomSheetProps();
-
-  const PopupProps.modalBottomSheet({
-    this.title,
-    this.fit = FlexFit.tight,
-    this.showSearchBox = false,
+    this.dialogProps = const DialogProps(),
     this.modalBottomSheetProps = const ModalBottomSheetProps(),
-    this.searchFieldProps = const TextFieldProps(),
-    this.scrollbarProps = const ScrollbarProps(),
-    this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
-    this.searchDelay = const Duration(seconds: 1),
-    this.onDismissed,
-    this.emptyBuilder,
-    this.itemBuilder,
-    this.errorBuilder,
-    this.loadingBuilder,
-    this.showSelectedItems = false,
-    this.disabledItemFn,
-    this.disableFilter = false,
-    this.cacheItems = false,
-    this.containerBuilder,
-    this.constraints = const BoxConstraints(maxHeight: 500),
-    this.interceptCallBacks = false,
-    this.infiniteScrollProps,
-    this.onItemsLoaded,
-    this.itemClickProps = const ClickProps(),
-  })  : mode = PopupMode.modalBottomSheet,
-        menuProps = const MenuProps(),
-        dialogProps = const DialogProps(),
-        bottomSheetProps = const BottomSheetProps();
+    this.menuProps = const MenuProps(),
+  });
 }
 
-class PopupPropsMultiSelection<T> extends PopupProps<T> {
-  ///called when a new item added on Multi selection mode
-  final OnItemAdded<T>? onItemAdded;
+class MenuPopupProps<T> extends AbstractPopup<T> {
+  final AbstractMenuProps menuProps;
 
-  ///called when a new item added on Multi selection mode
-  final OnItemRemoved<T>? onItemRemoved;
-
-  ///widget used to show checked items in multiSelection mode
-  final DropdownSearchPopupItemBuilder<T>? checkBoxBuilder;
-
-  ///widget used to validate items in multiSelection mode
-  final ValidationMultiSelectionBuilder<T>? validationBuilder;
-
-  final TextDirection textDirection;
-
-  const PopupPropsMultiSelection._({
+  const MenuPopupProps({
+    this.menuProps = const AbstractMenuProps(),
+    super.onItemAdded,
+    super.onItemRemoved,
+    super.checkBoxBuilder,
+    super.validationBuilder,
+    super.textDirection = TextDirection.ltr,
     super.mode = PopupMode.menu,
+    super.uiMode = true ? UiMode.material: UiMode.adaptive,
     super.fit = FlexFit.tight,
     super.title,
-    super.disableFilter,
-    super.cacheItems,
-    super.itemBuilder,
-    super.disabledItemFn,
-    super.showSearchBox,
-    super.searchFieldProps = const TextFieldProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
-    super.modalBottomSheetProps = const ModalBottomSheetProps(),
-    super.scrollbarProps = const ScrollbarProps(),
-    super.listViewProps = const ListViewProps(),
+    super.showSearchBox = false,
+    super.searchFieldProps,
+    super.scrollbarProps,
+    super.listViewProps,
+    super.suggestedItemProps ,
     super.searchDelay,
     super.onDismissed,
     super.emptyBuilder,
+    super.itemBuilder,
     super.errorBuilder,
     super.loadingBuilder,
     super.showSelectedItems,
-    super.bottomSheetProps = const BottomSheetProps(),
-    super.dialogProps = const DialogProps(),
-    super.menuProps = const MenuProps(),
+    super.disabledItemFn,
+    super.disableFilter,
+    super.cacheItems,
     super.containerBuilder,
     super.constraints = const BoxConstraints(maxHeight: 350),
-    super.interceptCallBacks = false,
+    super.interceptCallBacks,
     super.infiniteScrollProps,
     super.onItemsLoaded,
     super.itemClickProps,
-    this.onItemAdded,
-    this.onItemRemoved,
-    this.checkBoxBuilder,
-    this.validationBuilder,
-    this.textDirection = TextDirection.ltr,
-  }) : super._();
+  });
+}
 
-  const PopupPropsMultiSelection.menu({
+class PopupProps<T> extends AbstractPopup<T> {
+  const PopupProps._({
+    super.mode = PopupMode.menu,
+    super.uiMode = UiMode.material,
+    super.fit = FlexFit.tight,
+    super.title,
+    super.showSearchBox = false,
+    super.bottomSheetProps = const BottomSheetProps(),
+    super.dialogProps = const DialogProps(),
+    super.modalBottomSheetProps = const ModalBottomSheetProps(),
+    super.menuProps = const MenuProps(),
+    super.searchFieldProps = const TextFieldProps(),
+    super.scrollbarProps = const ScrollbarProps(),
+    super.listViewProps = const ListViewProps(),
+    super.suggestedItemProps = const SuggestedItemProps(),
+    super.searchDelay = const Duration(seconds: 1),
+    super.onDismissed,
+    super.emptyBuilder,
+    super.itemBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems = false,
+    super.disabledItemFn,
+    super.disableFilter = false,
+    super.cacheItems = false,
+    super.containerBuilder,
+    super.constraints = const BoxConstraints(),
+    super.interceptCallBacks = false,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
+    super.itemClickProps = const ClickProps(),
+  }) : assert(infiniteScrollProps == null || disableFilter);
+
+  const PopupProps.menu({
+    super.uiMode = UiMode.material,
     super.title,
     super.fit = FlexFit.tight,
     super.showSearchBox = false,
-    super.searchFieldProps = const TextFieldProps(),
     super.menuProps = const MenuProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.searchFieldProps = const TextFieldProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
-    super.searchDelay,
+    super.suggestedItemProps = const SuggestedItemProps(),
+    super.searchDelay = const Duration(seconds: 1),
     super.onDismissed,
     super.emptyBuilder,
     super.itemBuilder,
@@ -325,24 +245,25 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.interceptCallBacks = false,
     super.infiniteScrollProps,
     super.onItemsLoaded,
-    super.itemClickProps,
-    this.onItemAdded,
-    this.onItemRemoved,
-    this.checkBoxBuilder,
-    this.validationBuilder,
-    this.textDirection = TextDirection.ltr,
-  }) : super.menu();
+    super.itemClickProps = const ClickProps(),
+  }) : super(
+          mode: PopupMode.menu,
+          bottomSheetProps: const BottomSheetProps(),
+          dialogProps: const DialogProps(),
+          modalBottomSheetProps: const ModalBottomSheetProps(),
+        );
 
-  const PopupPropsMultiSelection.dialog({
-    super.title,
+  const PopupProps.dialog({
+    super.uiMode = UiMode.material,
     super.fit = FlexFit.tight,
+    super.title,
     super.showSearchBox = false,
+    super.dialogProps = const DialogProps(),
     super.searchFieldProps = const TextFieldProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
     super.suggestedItemProps = const SuggestedItemProps(),
-    super.dialogProps = const DialogProps(),
-    super.searchDelay,
+    super.searchDelay = const Duration(seconds: 1),
     super.onDismissed,
     super.emptyBuilder,
     super.itemBuilder,
@@ -361,24 +282,25 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.interceptCallBacks = false,
     super.infiniteScrollProps,
     super.onItemsLoaded,
-    super.itemClickProps,
-    this.onItemAdded,
-    this.onItemRemoved,
-    this.checkBoxBuilder,
-    this.validationBuilder,
-    this.textDirection = TextDirection.ltr,
-  }) : super.dialog();
+    super.itemClickProps = const ClickProps(),
+  }) : super(
+          mode: PopupMode.dialog,
+          menuProps: const MenuProps(),
+          bottomSheetProps: const BottomSheetProps(),
+          modalBottomSheetProps: const ModalBottomSheetProps(),
+        );
 
-  const PopupPropsMultiSelection.bottomSheet({
-    super.title,
+  const PopupProps.bottomSheet({
+    super.uiMode = UiMode.material,
     super.fit = FlexFit.tight,
+    super.title,
     super.showSearchBox = false,
+    super.bottomSheetProps = const BottomSheetProps(),
     super.searchFieldProps = const TextFieldProps(),
+    super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
     super.suggestedItemProps = const SuggestedItemProps(),
-    super.bottomSheetProps = const BottomSheetProps(),
-    super.scrollbarProps = const ScrollbarProps(),
-    super.searchDelay,
+    super.searchDelay = const Duration(seconds: 1),
     super.onDismissed,
     super.emptyBuilder,
     super.itemBuilder,
@@ -393,6 +315,191 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.interceptCallBacks = false,
     super.infiniteScrollProps,
     super.onItemsLoaded,
+    super.itemClickProps = const ClickProps(),
+  }) : super(
+          mode: PopupMode.bottomSheet,
+          menuProps: const MenuProps(),
+          dialogProps: const DialogProps(),
+          modalBottomSheetProps: const ModalBottomSheetProps(),
+        );
+
+  const PopupProps.modalBottomSheet({
+    super.uiMode = UiMode.material,
+    super.title,
+    super.fit = FlexFit.tight,
+    super.showSearchBox = false,
+    super.modalBottomSheetProps = const ModalBottomSheetProps(),
+    super.searchFieldProps = const TextFieldProps(),
+    super.scrollbarProps = const ScrollbarProps(),
+    super.listViewProps = const ListViewProps(),
+    super.suggestedItemProps = const SuggestedItemProps(),
+    super.searchDelay = const Duration(seconds: 1),
+    super.onDismissed,
+    super.emptyBuilder,
+    super.itemBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems = false,
+    super.disabledItemFn,
+    super.disableFilter = false,
+    super.cacheItems = false,
+    super.containerBuilder,
+    super.constraints = const BoxConstraints(maxHeight: 500),
+    super.interceptCallBacks = false,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
+    super.itemClickProps = const ClickProps(),
+  }) : super(
+          mode: PopupMode.modalBottomSheet,
+          menuProps: const MenuProps(),
+          dialogProps: const DialogProps(),
+          bottomSheetProps: const BottomSheetProps(),
+        );
+}
+
+class PopupPropsMultiSelection<T> extends PopupProps<T> {
+  ///called when a new item added on Multi selection mode
+  final OnItemAdded<T>? onItemAdded;
+
+  ///called when a new item added on Multi selection mode
+  final OnItemRemoved<T>? onItemRemoved;
+
+  ///widget used to show checked items in multiSelection mode
+  final DropdownSearchPopupItemBuilder<T>? checkBoxBuilder;
+
+  ///widget used to validate items in multiSelection mode
+  final ValidationMultiSelectionBuilder<T>? validationBuilder;
+
+  final TextDirection textDirection;
+
+  const PopupPropsMultiSelection._({
+    super.uiMode,
+    super.mode,
+    super.fit,
+    super.title,
+    super.disableFilter,
+    super.cacheItems,
+    super.itemBuilder,
+    super.disabledItemFn,
+    super.showSearchBox,
+    super.searchFieldProps,
+    super.suggestedItemProps,
+    super.modalBottomSheetProps,
+    super.scrollbarProps,
+    super.listViewProps,
+    super.searchDelay,
+    super.onDismissed,
+    super.emptyBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems,
+    super.bottomSheetProps,
+    super.dialogProps,
+    super.menuProps,
+    super.containerBuilder,
+    super.constraints,
+    super.interceptCallBacks,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
+    super.itemClickProps,
+    this.onItemAdded,
+    this.onItemRemoved,
+    this.checkBoxBuilder,
+    this.validationBuilder,
+    this.textDirection = TextDirection.ltr,
+  }) : super._();
+
+  const PopupPropsMultiSelection.menu({
+    super.uiMode,
+    super.title,
+    super.fit,
+    super.showSearchBox,
+    super.searchFieldProps,
+    super.menuProps,
+    super.suggestedItemProps,
+    super.scrollbarProps,
+    super.listViewProps,
+    super.searchDelay,
+    super.onDismissed,
+    super.emptyBuilder,
+    super.itemBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems,
+    super.disabledItemFn,
+    super.disableFilter,
+    super.cacheItems,
+    super.containerBuilder,
+    super.constraints,
+    super.interceptCallBacks,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
+    super.itemClickProps,
+    this.onItemAdded,
+    this.onItemRemoved,
+    this.checkBoxBuilder,
+    this.validationBuilder,
+    this.textDirection = TextDirection.ltr,
+  }) : super.menu();
+
+  const PopupPropsMultiSelection.dialog({
+    super.uiMode,
+    super.title,
+    super.fit,
+    super.showSearchBox,
+    super.searchFieldProps,
+    super.scrollbarProps,
+    super.listViewProps,
+    super.suggestedItemProps,
+    super.dialogProps,
+    super.searchDelay,
+    super.onDismissed,
+    super.emptyBuilder,
+    super.itemBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems,
+    super.disabledItemFn,
+    super.disableFilter,
+    super.cacheItems,
+    super.containerBuilder,
+    super.constraints,
+    super.interceptCallBacks,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
+    super.itemClickProps,
+    this.onItemAdded,
+    this.onItemRemoved,
+    this.checkBoxBuilder,
+    this.validationBuilder,
+    this.textDirection = TextDirection.ltr,
+  }) : super.dialog();
+
+  const PopupPropsMultiSelection.bottomSheet({
+    super.uiMode,
+    super.title,
+    super.fit,
+    super.showSearchBox,
+    super.searchFieldProps,
+    super.listViewProps,
+    super.suggestedItemProps,
+    super.bottomSheetProps,
+    super.scrollbarProps,
+    super.searchDelay,
+    super.onDismissed,
+    super.emptyBuilder,
+    super.itemBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems,
+    super.disabledItemFn,
+    super.disableFilter,
+    super.cacheItems,
+    super.containerBuilder,
+    super.constraints,
+    super.interceptCallBacks,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
     super.itemClickProps,
     this.onItemAdded,
     this.onItemRemoved,
@@ -402,6 +509,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
   }) : super.bottomSheet();
 
   const PopupPropsMultiSelection.modalBottomSheet({
+    super.uiMode,
     super.title,
     super.disableFilter,
     super.cacheItems,
@@ -409,11 +517,11 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.itemBuilder,
     super.disabledItemFn,
     super.showSearchBox,
-    super.searchFieldProps = const TextFieldProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
-    super.modalBottomSheetProps = const ModalBottomSheetProps(),
-    super.scrollbarProps = const ScrollbarProps(),
-    super.listViewProps = const ListViewProps(),
+    super.searchFieldProps,
+    super.suggestedItemProps,
+    super.modalBottomSheetProps,
+    super.scrollbarProps,
+    super.listViewProps,
     super.searchDelay,
     super.onDismissed,
     super.emptyBuilder,
@@ -421,8 +529,8 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.loadingBuilder,
     super.showSelectedItems,
     super.containerBuilder,
-    super.constraints = const BoxConstraints(maxHeight: 500),
-    super.interceptCallBacks = false,
+    super.constraints,
+    super.interceptCallBacks,
     super.infiniteScrollProps,
     super.onItemsLoaded,
     super.itemClickProps,
@@ -435,6 +543,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
 
   PopupPropsMultiSelection.from(PopupProps<T> popupProps)
       : this._(
+          uiMode: popupProps.uiMode,
           title: popupProps.title,
           fit: popupProps.fit,
           suggestedItemProps: popupProps.suggestedItemProps,

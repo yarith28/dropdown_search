@@ -11,7 +11,13 @@ enum MenuAlign {
   topEnd,
 }
 
-class MenuProps {
+abstract class AbstractMenuProps {
+
+  const AbstractMenuProps();
+
+}
+
+class MenuProps extends AbstractMenuProps{
   final MenuAlign? align;
   final ShapeBorder? shape;
   final double? elevation;

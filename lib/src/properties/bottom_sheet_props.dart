@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-class BottomSheetProps {
+abstract class AbstractBottomSheetProps {
+  const AbstractBottomSheetProps();
+}
+
+class BottomSheetProps extends AbstractBottomSheetProps {
   final ShapeBorder? shape;
   final BoxConstraints? constraints;
   final Color? backgroundColor;
