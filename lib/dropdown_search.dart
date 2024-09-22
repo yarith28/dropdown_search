@@ -26,7 +26,6 @@ export 'src/properties/bottom_sheet_props.dart';
 export 'src/properties/clear_button_props.dart';
 export 'src/properties/dialog_props.dart';
 export 'src/properties/dropdown_props.dart';
-export 'src/properties/suggested_item_props.dart';
 export 'src/properties/icon_button_props.dart';
 export 'src/properties/list_view_props.dart';
 export 'src/properties/menu_props.dart';
@@ -38,6 +37,7 @@ export 'src/properties/infinite_scroll_props.dart';
 export 'src/properties/scroll_props.dart';
 export 'src/widgets/dropdown_search_popup.dart';
 export 'src/properties/dropdown_suffix_props.dart';
+export 'src/properties/suggestions_props.dart';
 
 typedef DropdownSearchOnFind<T> = FutureOr<List<T>> Function(String filter, LoadProps? loadProps);
 typedef DropdownSearchItemAsString<T> = String Function(T item);
@@ -54,15 +54,13 @@ typedef BeforeChange<T> = Future<bool?> Function(T? prevItem, T? nextItem);
 typedef BeforePopupOpening<T> = Future<bool?> Function(T? selectedItem);
 typedef BeforePopupOpeningMultiSelection<T> = Future<bool?> Function(List<T> selectedItem);
 typedef BeforeChangeMultiSelection<T> = Future<bool?> Function(List<T> prevItems, List<T> nextItems);
-typedef FavoriteItemsBuilder<T> = Widget Function(BuildContext context, T item, bool isSelected);
+
 typedef ValidationMultiSelectionBuilder<T> = Widget Function(BuildContext context, List<T> items);
 typedef PositionCallback = RelativeRect Function(RenderBox dropdownBox, RenderBox overlay);
 typedef OnItemAdded<T> = void Function(List<T> selectedItems, T addedItem);
 typedef OnItemRemoved<T> = void Function(List<T> selectedItems, T removedItem);
 typedef PopupBuilder<T> = Widget Function(BuildContext context, Widget popupWidget);
 
-///[items] are the original item from [items] or/and [items]
-typedef SuggestedItems<T> = List<T> Function(List<T> items);
 
 enum PopupMode { dialog, modalBottomSheet, menu, bottomSheet }
 
@@ -195,8 +193,7 @@ class DropdownSearch<T> extends StatefulWidget {
           'Please implement your `dropdownBuilder`',
         ),
         assert(
-          mode != Mode.custom ||
-              (decoratorProps == null && onSaved == null && validator == null),
+          mode != Mode.custom || (decoratorProps == null && onSaved == null && validator == null),
           'Custom mode has no form properties',
         ),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
@@ -243,8 +240,7 @@ class DropdownSearch<T> extends StatefulWidget {
           'Please implement your `dropdownBuilder`',
         ),
         assert(
-          mode != Mode.custom ||
-              (decoratorProps == null && onSaved == null && validator == null),
+          mode != Mode.custom || (decoratorProps == null && onSaved == null && validator == null),
           "Custom mode has no form properties",
         ),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
@@ -490,7 +486,7 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
     if (!widget.suffixProps.dropdownButtonProps.isVisible && !widget.suffixProps.clearButtonProps.isVisible) return null;
 
     return Row(
-      textDirection: TextDirection.ltr,
+      textDirection: widget.suffixProps.direction,
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -595,7 +591,7 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
   Widget _popupWidgetInstance() {
     return DropdownSearchPopup<T>(
       key: _popupStateKey,
-      popupProps: widget.popupProps,
+      props: widget.popupProps,
       itemAsString: widget.itemAsString,
       filterFn: widget.filterFn,
       items: widget.items,

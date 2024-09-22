@@ -1,3 +1,4 @@
+import 'package:dropdown_search/src/properties/suggestions_props.dart';
 import 'package:flutter/material.dart';
 
 import '../../dropdown_search.dart';
@@ -59,7 +60,7 @@ abstract class AbstractPopup<T> {
   final bool cacheItems;
 
   ///suggested items props
-  final SuggestedItemProps<T> suggestedItemProps;
+  final SuggestionsProps<T> suggestionsProps;
 
   ///dialog mode props
   final AbstractDialogProps dialogProps;
@@ -124,7 +125,7 @@ abstract class AbstractPopup<T> {
     this.searchFieldProps = const TextFieldProps(),
     this.scrollbarProps = const ScrollbarProps(),
     this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
+    this.suggestionsProps = const SuggestionsProps(),
     this.searchDelay = const Duration(seconds: 1),
     this.onDismissed,
     this.emptyBuilder,
@@ -229,7 +230,7 @@ class PopupProps<T> extends AbstractPopup<T> {
     super.searchFieldProps = const TextFieldProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.searchDelay = const Duration(seconds: 1),
     super.onDismissed,
     super.emptyBuilder,
@@ -262,7 +263,7 @@ class PopupProps<T> extends AbstractPopup<T> {
     super.searchFieldProps = const TextFieldProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.searchDelay = const Duration(seconds: 1),
     super.onDismissed,
     super.emptyBuilder,
@@ -299,7 +300,7 @@ class PopupProps<T> extends AbstractPopup<T> {
     super.searchFieldProps = const TextFieldProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.searchDelay = const Duration(seconds: 1),
     super.onDismissed,
     super.emptyBuilder,
@@ -332,7 +333,7 @@ class PopupProps<T> extends AbstractPopup<T> {
     super.searchFieldProps = const TextFieldProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.searchDelay = const Duration(seconds: 1),
     super.onDismissed,
     super.emptyBuilder,
@@ -546,7 +547,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
           uiMode: popupProps.uiMode,
           title: popupProps.title,
           fit: popupProps.fit,
-          suggestedItemProps: popupProps.suggestedItemProps,
+          suggestionsProps: popupProps.suggestionsProps,
           disabledItemFn: popupProps.disabledItemFn,
           emptyBuilder: popupProps.emptyBuilder,
           errorBuilder: popupProps.errorBuilder,

@@ -111,7 +111,7 @@ DropdownSearch<(String, Color)>(
     ("Yellow", Colors.yellow),
     ('Blue', Colors.blue),
   ],
-  compareFn: (item1, item2) => item1.$1 == item2.$2,
+  compareFn: (item1, item2) => item1.$1 == item2.$1,
   popupProps: PopupProps.menu(
   menuProps: MenuProps(align: MenuAlign.bottomCenter),
     fit: FlexFit.loose,

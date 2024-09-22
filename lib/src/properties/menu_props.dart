@@ -30,11 +30,13 @@ class MenuProps extends AbstractMenuProps{
   final bool borderOnForeground;
   final String? barrierLabel;
   final PositionCallback? positionCallback;
-  final AnimationStyle? popUpAnimationStyle;
+  final Duration? reverseTransitionDuration;
+  final Duration? transitionDuration;
   final Color? color;
   final String? semanticLabel;
   final Color? surfaceTintColor;
   final EdgeInsets? margin;
+  final RouteTransitionsBuilder? transitionBuilder;
 
   const MenuProps({
     this.align,
@@ -50,9 +52,11 @@ class MenuProps extends AbstractMenuProps{
     this.borderRadius,
     this.shadowColor,
     this.color,
-    this.popUpAnimationStyle,
+    this.transitionDuration,
+    this.reverseTransitionDuration,
     this.semanticLabel,
     this.surfaceTintColor,
     this.margin,
+    this.transitionBuilder,
   });
 }

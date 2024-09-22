@@ -119,9 +119,9 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                         showSelectedItems: true,
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
-                        suggestedItemProps: SuggestedItemProps(
-                          showSuggestedItems: true,
-                          suggestedItems: (us) {
+                        suggestionsProps: SuggestionsProps(
+                          showSuggestions: true,
+                          items: (us) {
                             return us
                                 .where((e) => e.name.contains("Mrs"))
                                 .toList();
@@ -138,23 +138,22 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                       popupProps: PopupPropsMultiSelection.bottomSheet(
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
-                        suggestedItemProps: SuggestedItemProps(
-                          showSuggestedItems: true,
-                          suggestedItems: (us) {
+                        suggestionsProps: SuggestionsProps(
+                          showSuggestions: true,
+                          items: (us) {
                             return us
                                 .where((e) => e.name.contains("Mrs"))
                                 .toList();
                           },
-                          suggestedItemBuilder: (context, item, isSelected) {
+                          itemProps: SuggestedItemProps(itemBuilder: (context, item, isSelected, isDisabled) {
                             return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 6),
-                              margin: EdgeInsets.only(left: 8),
+                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.grey[100]),
                               child: Row(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
                                     item.name,
@@ -162,13 +161,11 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                                     style: TextStyle(color: Colors.indigo),
                                   ),
                                   Padding(padding: EdgeInsets.only(left: 8)),
-                                  isSelected
-                                      ? Icon(Icons.check_box_outlined)
-                                      : SizedBox.shrink(),
+                                  isSelected ? Icon(Icons.check_box_outlined) : SizedBox.shrink(),
                                 ],
                               ),
                             );
-                          },
+                          }),
                         ),
                       ),
                     ),
@@ -265,6 +262,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                           item.id == selectedItem.id,
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'Users *',
                           filled: true,
                           fillColor:
