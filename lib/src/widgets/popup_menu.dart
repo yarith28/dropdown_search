@@ -103,9 +103,10 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
   });
 
   @override
-  Duration get transitionDuration =>
-      menuModeProps.popUpAnimationStyle?.duration ??
-      Duration(milliseconds: 300);
+  Duration get transitionDuration => menuModeProps.transitionDuration ?? Duration(milliseconds: 200);
+
+  @override
+  Duration get reverseTransitionDuration => menuModeProps.reverseTransitionDuration ?? Duration(milliseconds: 200);
 
   @override
   bool get barrierDismissible => menuModeProps.barrierDismissible;
@@ -117,8 +118,16 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
   String? get barrierLabel => menuModeProps.barrierLabel;
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildTransitions(
+      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+    if (menuModeProps.transitionBuilder != null) {
+      return menuModeProps.transitionBuilder!(context, animation, secondaryAnimation, child);
+    }
+    return super.buildTransitions(context, animation, secondaryAnimation, child);
+  }
+
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
     final menu = Material(
       surfaceTintColor: menuModeProps.surfaceTintColor,
@@ -128,8 +137,6 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
       elevation: menuModeProps.elevation ?? popupMenuTheme.elevation ?? 8.0,
       clipBehavior: menuModeProps.clipBehavior,
       borderRadius: menuModeProps.borderRadius,
-      animationDuration: menuModeProps.popUpAnimationStyle?.duration ??
-          Duration(milliseconds: 300),
       shadowColor: menuModeProps.shadowColor,
       borderOnForeground: menuModeProps.borderOnForeground,
       child: child,

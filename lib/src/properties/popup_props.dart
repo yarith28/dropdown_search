@@ -1,3 +1,4 @@
+import 'package:dropdown_search/src/properties/suggestions_props.dart';
 import 'package:flutter/material.dart';
 
 import '../../dropdown_search.dart';
@@ -57,7 +58,7 @@ class PopupProps<T> {
   final bool cacheItems;
 
   ///suggested items props
-  final SuggestedItemProps<T> suggestedItemProps;
+  final SuggestionsProps<T> suggestionsProps;
 
   ///dialog mode props
   final DialogProps dialogProps;
@@ -106,7 +107,7 @@ class PopupProps<T> {
     this.searchFieldProps = const TextFieldProps(),
     this.scrollbarProps = const ScrollbarProps(),
     this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
+    this.suggestionsProps = const SuggestionsProps(),
     this.searchDelay = const Duration(seconds: 1),
     this.onDismissed,
     this.emptyBuilder,
@@ -133,7 +134,7 @@ class PopupProps<T> {
     this.searchFieldProps = const TextFieldProps(),
     this.scrollbarProps = const ScrollbarProps(),
     this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
+    this.suggestionsProps = const SuggestionsProps(),
     this.searchDelay = const Duration(seconds: 1),
     this.onDismissed,
     this.emptyBuilder,
@@ -163,7 +164,7 @@ class PopupProps<T> {
     this.searchFieldProps = const TextFieldProps(),
     this.scrollbarProps = const ScrollbarProps(),
     this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
+    this.suggestionsProps = const SuggestionsProps(),
     this.searchDelay = const Duration(seconds: 1),
     this.onDismissed,
     this.emptyBuilder,
@@ -197,7 +198,7 @@ class PopupProps<T> {
     this.searchFieldProps = const TextFieldProps(),
     this.scrollbarProps = const ScrollbarProps(),
     this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
+    this.suggestionsProps = const SuggestionsProps(),
     this.searchDelay = const Duration(seconds: 1),
     this.onDismissed,
     this.emptyBuilder,
@@ -227,7 +228,7 @@ class PopupProps<T> {
     this.searchFieldProps = const TextFieldProps(),
     this.scrollbarProps = const ScrollbarProps(),
     this.listViewProps = const ListViewProps(),
-    this.suggestedItemProps = const SuggestedItemProps(),
+    this.suggestionsProps = const SuggestionsProps(),
     this.searchDelay = const Duration(seconds: 1),
     this.onDismissed,
     this.emptyBuilder,
@@ -275,7 +276,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.disabledItemFn,
     super.showSearchBox,
     super.searchFieldProps = const TextFieldProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.modalBottomSheetProps = const ModalBottomSheetProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
@@ -307,7 +308,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.showSearchBox = false,
     super.searchFieldProps = const TextFieldProps(),
     super.menuProps = const MenuProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
     super.searchDelay,
@@ -340,7 +341,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.searchFieldProps = const TextFieldProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.dialogProps = const DialogProps(),
     super.searchDelay,
     super.onDismissed,
@@ -375,7 +376,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.showSearchBox = false,
     super.searchFieldProps = const TextFieldProps(),
     super.listViewProps = const ListViewProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.bottomSheetProps = const BottomSheetProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.searchDelay,
@@ -410,7 +411,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
     super.disabledItemFn,
     super.showSearchBox,
     super.searchFieldProps = const TextFieldProps(),
-    super.suggestedItemProps = const SuggestedItemProps(),
+    super.suggestionsProps = const SuggestionsProps(),
     super.modalBottomSheetProps = const ModalBottomSheetProps(),
     super.scrollbarProps = const ScrollbarProps(),
     super.listViewProps = const ListViewProps(),
@@ -437,7 +438,7 @@ class PopupPropsMultiSelection<T> extends PopupProps<T> {
       : this._(
           title: popupProps.title,
           fit: popupProps.fit,
-          suggestedItemProps: popupProps.suggestedItemProps,
+          suggestionsProps: popupProps.suggestionsProps,
           disabledItemFn: popupProps.disabledItemFn,
           emptyBuilder: popupProps.emptyBuilder,
           errorBuilder: popupProps.errorBuilder,

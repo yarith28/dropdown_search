@@ -1,3 +1,25 @@
+## [6.0.2] - 2024.09.21
+* #### New Feature:
+  * add `transitionBuilder`, `transitionDuration`, `reverseTransitionDuration` to `menuProps`
+
+    ```dart
+      transitionDuration: Duration(milliseconds: 500),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      },
+    ```
+  * add `SuggestionsProps` to `popupProps`
+  * add `builder` property for `SuggestionsProps` to override the hole suggestion widget
+
+* #### Breaking changes
+  * `suggestedItemsProps` is placed inside `SuggestionsProps`
+
 ## [6.0.1] - 2024.09.21
 * #### New Feature:
   * add `Semantics` to searchBox to support voiceOver/TalkBack ...
