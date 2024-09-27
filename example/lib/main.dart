@@ -1,5 +1,22 @@
+import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+
+import 'user_model.dart';
+
+Future<List<UserModel>> getData(filter) async {
+  var response = await Dio().get(
+    "https://63c1210999c0a15d28e1ec1d.mockapi.io/users",
+    queryParameters: {"filter": filter},
+  );
+
+  final data = response.data;
+  if (data != null) {
+    return UserModel.fromJsonList(data);
+  }
+
+  return [];
+}
 
 void main() {
   runApp(const MyApp());
@@ -41,26 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Row(
         children: [
           Expanded(
-            child: DropdownSearch(
+            child: CupertinoDropdownSearch<String>.multiSelection(
               items: (filter, loadProps) => ["133", "2", "3", "4", "5"],
-              uiMode: UiMode.material,
-              popupProps: PopupProps<String>.dialog(
+              popupProps: CupertinoPopupProps.menu(
                 showSearchBox: true,
               ),
             ),
           ),
-          Expanded(
-            child: DropdownSearch(
-              items: (filter, loadProps) => ["1\n30\n33", "2", "3", "4", "5"],
-            ),
-          ),
-          SizedBox(
-            width: 200,
-            height: 50,
-            child: DropdownSearch.multiSelection(
-              items: (filter, loadProps) => ["1\n30\n33", "2", "3", "4", "5"],
-            ),
-          )
         ],
       ),
     );

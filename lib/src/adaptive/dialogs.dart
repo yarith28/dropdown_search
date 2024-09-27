@@ -14,7 +14,6 @@ Future openMaterialDialog(BuildContext context, Widget content, DialogProps prop
     transitionBuilder: props.transitionBuilder,
     pageBuilder: (context, animation, secondaryAnimation) {
       return AlertDialog(
-        key: props.key,
         buttonPadding: props.buttonPadding,
         actionsOverflowButtonSpacing: props.actionsOverflowButtonSpacing,
         insetPadding: props.insetPadding,

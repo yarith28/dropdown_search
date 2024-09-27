@@ -54,7 +54,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(labelText: "Dialog with title", hintText: "Select an Int"),
                       ),
-                      popupProps: PopupProps.dialog(
+                      popupProps: BasePopupProps.dialog(
                         title: Container(
                           decoration: BoxDecoration(color: Colors.deepPurple),
                           alignment: Alignment.center,
@@ -103,7 +103,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                     child: DropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: PopupProps.dialog(
+                      popupProps: BasePopupProps.dialog(
                         disabledItemFn: (item) => item.name.contains('Am'),
                         showSelectedItems: true,
                         showSearchBox: true,
@@ -293,7 +293,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                 key: _dropdownMultiLevelKey,
                 items: (f, cs) => myMultiLevelItems,
                 compareFn: (i1, i2) => i1.level1 == i2.level1,
-                popupProps: PopupProps.dialog(
+                popupProps: BasePopupProps.dialog(
                   showSelectedItems: true,
                   interceptCallBacks: true, //important line
                   itemBuilder: (ctx, item, isDisabled, isSelected) {

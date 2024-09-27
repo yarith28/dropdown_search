@@ -56,7 +56,7 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(labelText: "Dialog with title", hintText: "Select an Int"),
                       ),
-                      popupProps: PopupProps.modalBottomSheet(
+                      popupProps: BasePopupProps.modalBottomSheet(
                         title: Container(
                           decoration: BoxDecoration(
                             color: Colors.deepPurple,
@@ -283,7 +283,7 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                 key: _dropdownMultiLevelKey,
                 items: (f, cs) => myMultiLevelItems,
                 compareFn: (i1, i2) => i1.level1 == i2.level1,
-                popupProps: PopupProps.modalBottomSheet(
+                popupProps: BasePopupProps.modalBottomSheet(
                   showSelectedItems: true,
                   interceptCallBacks: true, //important line
                   itemBuilder: (ctx, item, isDisabled, isSelected) {

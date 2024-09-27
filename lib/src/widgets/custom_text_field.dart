@@ -10,7 +10,6 @@ class CustomTextFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      key: props.key,
       controller: controller,
       onChanged: props.onChanged,
       onEditingComplete: props.onEditingComplete,

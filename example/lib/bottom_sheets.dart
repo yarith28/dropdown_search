@@ -59,7 +59,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                             labelText: "Dialog with title",
                             hintText: "Select an Int"),
                       ),
-                      popupProps: PopupProps.bottomSheet(
+                      popupProps: BasePopupProps.bottomSheet(
                         title: Container(
                           decoration: BoxDecoration(
                             color: Colors.deepPurple,
@@ -303,7 +303,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                 key: _dropdownMultiLevelKey,
                 items: (f, cs) => myMultiLevelItems,
                 compareFn: (i1, i2) => i1.level1 == i2.level1,
-                popupProps: PopupProps.bottomSheet(
+                popupProps: BasePopupProps.bottomSheet(
                   showSelectedItems: true,
                   interceptCallBacks: true, //important line
                   itemBuilder: (ctx, item, isDisabled, isSelected) {

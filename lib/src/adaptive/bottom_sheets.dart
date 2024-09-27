@@ -18,22 +18,22 @@ Future openMaterialBottomSheet(BuildContext context, Widget content, BottomSheet
   ).closed;
 }
 
-Future openAdaptiveBottomSheet(BuildContext context, Widget content, BottomSheetProps props) {
+Future openAdaptiveBottomSheet(BuildContext context, Widget content, AdaptiveBottomSheetProps props) {
   final ThemeData theme = Theme.of(context);
   switch (theme.platform) {
     case TargetPlatform.iOS:
     case TargetPlatform.macOS:
-      return openCupertinoBottomSheet(context, content, props);
+      return openCupertinoBottomSheet(context, content, props.cupertinoProps);
     case TargetPlatform.android:
     case TargetPlatform.fuchsia:
     case TargetPlatform.linux:
     case TargetPlatform.windows:
     default:
-      return openMaterialBottomSheet(context, content, props);
+      return openMaterialBottomSheet(context, content, props.materialProps);
   }
 }
 
-Future openCupertinoBottomSheet(BuildContext context, Widget content, BottomSheetProps props) {
+Future openCupertinoBottomSheet(BuildContext context, Widget content, CupertinoBottomSheetProps props) {
   return showCupertinoModalPopup(
     context: context,
     builder: (ctx) => content,

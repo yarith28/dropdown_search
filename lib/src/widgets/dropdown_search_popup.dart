@@ -1,12 +1,14 @@
 import 'dart:async';
 
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/base_dropdown_search.dart';
+import 'package:dropdown_search/src/properties/base_popup_props.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
 import 'package:dropdown_search/src/widgets/custom_text_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'checkbox_widget.dart';
+import 'suggestions_widget.dart';
 
 class DropdownSearchPopup<T> extends StatefulWidget {
   final ValueChanged<List<T>>? onChanged;
@@ -15,7 +17,7 @@ class DropdownSearchPopup<T> extends StatefulWidget {
   final DropdownSearchFilterFn<T>? filterFn;
   final DropdownSearchCompareFn<T>? compareFn;
   final List<T> defaultSelectedItems;
-  final AbstractPopup<T> props;
+  final BasePopupProps<T> props;
   final bool isMultiSelectionMode;
 
   const DropdownSearchPopup({
@@ -102,7 +104,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     }
 
     //dismiss either by selecting items OR clicking outside the popup
-    widget.popupProps.onDismissed?.call();
+    widget.props.onDismissed?.call();
 
     super.dispose();
   }
@@ -146,7 +148,6 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
                           final itemCount = snapshot.data!.length;
                           return RawScrollbar(
-
                             controller: widget.props.listViewProps.controller ?? scrollController,
                             thumbVisibility: widget.props.scrollbarProps.thumbVisibility,
                             trackVisibility: widget.props.scrollbarProps.trackVisibility,
@@ -171,7 +172,6 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
                             child: ScrollConfiguration(
                               behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
                               child: ListView.builder(
-
                                 hitTestBehavior: widget.props.listViewProps.hitTestBehavior,
                                 controller: widget.props.listViewProps.controller ?? scrollController,
                                 shrinkWrap: widget.props.listViewProps.shrinkWrap,
@@ -475,8 +475,11 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         widget.props.title ?? const SizedBox.shrink(),
         if (widget.props.showSearchBox)
           Padding(
-            padding: widget.popupProps.searchFieldProps.padding,
-            child: CustomTextFields(props: widget.popupProps.searchFieldProps, controller: searchBoxController),
+            padding: widget.props.searchFieldProps.padding,
+            child: Semantics(
+              textField: true,
+              child: CustomTextFields(props: widget.props.searchFieldProps, controller: searchBoxController),
+            ),
           )
       ],
     );

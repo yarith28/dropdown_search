@@ -48,7 +48,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                       ('Blue', Colors.blue),
                     ],
                     compareFn: (item1, item2) => item1.$1 == item2.$1,
-                    popupProps: PopupProps.menu(
+                    popupProps: BasePopupProps.menu(
                       menuProps: MenuProps(align: MenuAlign.bottomCenter),
                       fit: FlexFit.loose,
                       itemBuilder: (context, item, isDisabled, isSelected) => Padding(
@@ -83,7 +83,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                       );
                     },
                     clickProps: ClickProps(borderRadius: BorderRadius.all(Radius.circular(50))),
-                    popupProps: PopupProps.menu(
+                    popupProps: BasePopupProps.menu(
                       fit: FlexFit.loose,
                       menuProps: MenuProps(
                         shape: RoundedRectangleBorder(
@@ -143,7 +143,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                           title: Text(selectedItem.name),
                         );
                       },
-                      popupProps: PopupProps.menu(
+                      popupProps: BasePopupProps.menu(
                         disableFilter: true, //data will be filtered by the backend
                         showSearchBox: true,
                         showSelectedItems: true,
@@ -213,7 +213,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                           ),
                         );
                       },
-                      popupProps: PopupProps.menu(
+                      popupProps: BasePopupProps.menu(
                         itemBuilder: (context, item, isDisabled, isSelected) {
                           return ListTile(
                             contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -289,7 +289,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                           hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey),
                         ),
                       ),
-                      popupProps: PopupProps.menu(
+                      popupProps: BasePopupProps.menu(
                         itemBuilder: (context, item, isDisabled, isSelected) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -313,7 +313,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(labelText: 'Bottom Left Menu', border: OutlineInputBorder()),
                       ),
-                      popupProps: PopupProps.menu(
+                      popupProps: BasePopupProps.menu(
                         constraints: BoxConstraints.tight(Size(250, 250)),
                         menuProps: MenuProps(align: MenuAlign.bottomStart),
                       ),
@@ -324,7 +324,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                         decoration: InputDecoration(labelText: 'Bottom Center Menu', border: OutlineInputBorder()),
                       ),
                       items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
-                      popupProps: PopupProps.menu(
+                      popupProps: BasePopupProps.menu(
                         constraints: BoxConstraints.tight(Size(250, 250)),
                         menuProps: MenuProps(align: MenuAlign.bottomCenter),
                       ),
@@ -335,7 +335,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                         decoration: InputDecoration(labelText: 'Top Right Menu', border: OutlineInputBorder()),
                       ),
                       items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
-                      popupProps: PopupProps.menu(
+                      popupProps: BasePopupProps.menu(
                         constraints: BoxConstraints.tight(Size(250, 250)),
                         menuProps: MenuProps(align: MenuAlign.topEnd),
                       ),

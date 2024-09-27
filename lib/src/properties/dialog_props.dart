@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class AbstractDialogProps {
-  const AbstractDialogProps();
-}
-
-class DialogProps extends AbstractDialogProps {
+class DialogProps {
   final List<Widget>? actions;
   final MainAxisAlignment? actionsAlignment;
   final OverflowBarAlignment? actionsOverflowAlignment;
@@ -39,7 +35,6 @@ class DialogProps extends AbstractDialogProps {
   final TextStyle? titleTextStyle;
 
   const DialogProps({
-    this.key,
     this.iconPadding,
     this.titlePadding,
     this.titleTextStyle,
@@ -75,7 +70,7 @@ class DialogProps extends AbstractDialogProps {
   });
 }
 
-class CupertinoDialogProps extends AbstractDialogProps {
+class CupertinoDialogProps {
   final String? barrierLabel;
   final bool useRootNavigator;
   final bool barrierDismissible;
@@ -106,9 +101,12 @@ class CupertinoDialogProps extends AbstractDialogProps {
   });
 }
 
-class AdaptiveDialogProps extends AbstractDialogProps {
+class AdaptiveDialogProps {
   final DialogProps materialProps;
   final CupertinoDialogProps cupertinoProps;
 
-  AdaptiveDialogProps({this.materialProps = const DialogProps(), this.cupertinoProps = const CupertinoDialogProps()});
+  const AdaptiveDialogProps({
+    this.materialProps = const DialogProps(),
+    this.cupertinoProps = const CupertinoDialogProps(),
+  });
 }
