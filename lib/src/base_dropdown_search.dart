@@ -2,11 +2,13 @@ import 'dart:async';
 import 'package:dropdown_search/src/adaptive/bottom_sheets.dart';
 import 'package:dropdown_search/src/adaptive/modal_bottom_sheet.dart';
 import 'package:dropdown_search/src/properties/adaptive_popup_props.dart';
+import 'package:dropdown_search/src/properties/chip_props.dart';
 import 'package:dropdown_search/src/properties/cupertino_popup_props.dart';
 import 'package:dropdown_search/src/properties/dropdown_props.dart';
 import 'package:dropdown_search/src/properties/infinite_scroll_props.dart';
 import 'package:dropdown_search/src/properties/material_popup_props.dart';
 import 'package:dropdown_search/src/properties/scroll_props.dart';
+import 'package:dropdown_search/src/widgets/custom_chip.dart';
 import 'package:dropdown_search/src/widgets/custom_icon_button.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
 import 'package:flutter/foundation.dart';
@@ -78,6 +80,8 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
   ///    ),
   ///```
   final ScrollProps? selectedItemsScrollProps;
+
+  final ChipProps? chipProps;
 
   ///customize the fields the be shown
   final DropdownSearchItemAsString<T>? itemAsString;
@@ -162,6 +166,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
     //form properties
     this.onSaved,
     this.validator,
+    this.chipProps,
     DropDownDecoratorProps? decoratorProps,
   })  : assert(
           T == String || T == int || T == double || compareFn != null,
@@ -210,6 +215,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
     FormFieldSetter<List<T>>? onSaved,
     FormFieldValidator<List<T>>? validator,
     DropDownDecoratorProps? decoratorProps,
+    this.chipProps,
   })  : assert(
           T == String || T == int || T == double || compareFn != null,
           '`compareFn` is required',
@@ -301,35 +307,9 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   Widget _defaultSelectedItemWidget() {
     Widget defaultItemMultiSelectionMode(T item) {
-      return Container(
-        padding: EdgeInsets.only(left: 8, right: 1),
-        margin: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).primaryColorLight,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              _itemAsString(item),
-              style: Theme.of(context).textTheme.titleSmall,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Padding(padding: EdgeInsets.only(left: 8)),
-            SizedBox(
-              width: 32,
-              height: 32,
-              child: IconButton(
-                iconSize: 20,
-                padding: EdgeInsets.zero,
-                icon: Icon(Icons.close_outlined, size: 20),
-                onPressed: () => removeItem(item),
-              ),
-            )
-          ],
-        ),
+      return CustomChip(
+        label: Text(_itemAsString(item)),
+        props: widget.chipProps ?? ChipProps(onDeleted: () => removeItem(item)),
       );
     }
 
@@ -342,6 +322,8 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
         return CustomSingleScrollView(
           scrollProps: widget.selectedItemsScrollProps ?? ScrollProps(),
           child: Wrap(
+            spacing: 6,
+            runSpacing: 6,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: getSelectedItems.map((e) => defaultItemMultiSelectionMode(e)).toList(),
           ),
@@ -545,9 +527,12 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   ///openMenu
   Future _openMenu() {
     dynamic menuProps = widget.popupProps;
-    if (widget.uiMode == UiMode.cupertino) menuProps = widget.popupProps as CupertinoPopupProps<T>;
-    else if (widget.uiMode == UiMode.adaptive) menuProps = widget.popupProps as AdaptivePopupProps<T>;
-    else menuProps = widget.popupProps as PopupProps<T>;
+    if (widget.uiMode == UiMode.cupertino)
+      menuProps = widget.popupProps as CupertinoPopupProps<T>;
+    else if (widget.uiMode == UiMode.adaptive)
+      menuProps = widget.popupProps as AdaptivePopupProps<T>;
+    else
+      menuProps = widget.popupProps as PopupProps<T>;
 
     return openMenu<T>(
       menuProps: menuProps.menuProps,

@@ -1,3 +1,4 @@
+import 'package:dropdown_search/src/properties/chip_props.dart';
 import 'package:dropdown_search/src/properties/dropdown_props.dart';
 import 'package:dropdown_search/src/properties/scroll_props.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +39,11 @@ class SuggestedItemProps<T> {
 
   final ScrollProps scrollProps;
 
+  final ChipProps chipProps;
+
   const SuggestedItemProps({
     this.itemBuilder,
+    this.chipProps = const ChipProps(),
     this.suggestedItemsAlignment = WrapAlignment.start,
     this.itemClickProps = const ClickProps(),
     this.scrollProps = const ScrollProps(scrollDirection: Axis.horizontal),

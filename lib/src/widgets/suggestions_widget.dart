@@ -1,4 +1,6 @@
+import 'package:dropdown_search/src/properties/chip_props.dart';
 import 'package:dropdown_search/src/properties/suggestions_props.dart';
+import 'package:dropdown_search/src/widgets/custom_chip.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_inkwell.dart';
@@ -39,28 +41,6 @@ class SuggestionsWidget<T> extends StatelessWidget {
     }
 
     final lItemProps = props.itemProps ?? SuggestedItemProps();
-    Widget suggestedItemDefaultWidget(T item) {
-      final lIsDisabled = isDisabledItemFn(item);
-      return Card.filled(
-        shape: OutlineInputBorder(borderSide: BorderSide.none),
-        color: Theme.of(context).primaryColorLight.withOpacity(lIsDisabled ? 0.3 : 1.0),
-        child: CustomInkWell(
-          clickProps: lItemProps.itemClickProps,
-          onTap: lIsDisabled || onClick == null ? null : () => onClick!(item),
-          child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(itemAsString(item), textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleSmall),
-                Padding(padding: EdgeInsets.only(left: 8)),
-                Visibility(child: Icon(Icons.check_box_outlined), visible: isSelectedItemFn(item))
-              ],
-            ),
-          ),
-        ),
-      );
-    }
 
     return Container(
       constraints: BoxConstraints(maxHeight: 100),
@@ -82,7 +62,10 @@ class SuggestionsWidget<T> extends StatelessWidget {
                           child: lItemProps.itemBuilder!(context, s, isSelectedItemFn(s), isDisabledItemFn(s)),
                         ),
                       )
-                    : suggestedItemDefaultWidget(s),
+                    : CustomChip(
+                        label: Text(itemAsString(s)),
+                        props: lItemProps.chipProps,
+                      ),
               )
               .toList(),
         ),
