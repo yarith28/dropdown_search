@@ -16,6 +16,8 @@
     ```
   * add `SuggestionsProps` to `popupProps`
   * add `builder` property for `SuggestionsProps` to override the hole suggestion widget
+  * add properties to `scrollView` and `wrap` widget for selected items in multiSelection mode
+  * `Chips` are fully customizable in multiSelection and suggestions
 
 * #### Breaking changes
   * `suggestedItemsProps` is placed inside `SuggestionsProps`

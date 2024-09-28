@@ -8,9 +8,11 @@ import 'package:dropdown_search/src/properties/dropdown_props.dart';
 import 'package:dropdown_search/src/properties/infinite_scroll_props.dart';
 import 'package:dropdown_search/src/properties/material_popup_props.dart';
 import 'package:dropdown_search/src/properties/scroll_props.dart';
+import 'package:dropdown_search/src/properties/wrap_props.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
 import 'package:dropdown_search/src/widgets/custom_icon_button.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
+import 'package:dropdown_search/src/widgets/custom_wrap.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +44,6 @@ typedef PositionCallback = RelativeRect Function(RenderBox dropdownBox, RenderBo
 typedef OnItemAdded<T> = void Function(List<T> selectedItems, T addedItem);
 typedef OnItemRemoved<T> = void Function(List<T> selectedItems, T removedItem);
 typedef ContainerBuilder<T> = Widget Function(BuildContext context, Widget child);
-
 
 enum PopupMode { dialog, modalBottomSheet, menu, bottomSheet }
 
@@ -81,6 +82,8 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
   ///    ),
   ///```
   final ScrollProps? selectedItemsScrollProps;
+
+  final WrapProps? selectedItemsWrapProps;
 
   final ChipProps? chipProps;
 
@@ -191,7 +194,8 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
         onSavedMultiSelection = null,
         onChangedMultiSelection = null,
         onBeforePopupOpeningMultiSelection = null,
-        selectedItemsScrollProps = null;
+        selectedItemsScrollProps = null,
+        selectedItemsWrapProps = null;
 
   const BaseDropdownSearch.multiSelection({
     super.key,
@@ -208,6 +212,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
     this.selectedItemsScrollProps,
     required this.popupProps,
     required this.uiMode,
+    this.selectedItemsWrapProps,
     ValueChanged<List<T>>? onChanged,
     BeforeChangeMultiSelection<T>? onBeforeChange,
     BeforePopupOpeningMultiSelection<T>? onBeforePopupOpening,
@@ -322,10 +327,13 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
       } else if (isMultiSelectionMode) {
         return CustomSingleScrollView(
           scrollProps: widget.selectedItemsScrollProps ?? ScrollProps(),
-          child: Wrap(
-            spacing: 6,
-            runSpacing: 6,
-            crossAxisAlignment: WrapCrossAlignment.center,
+          child: CustomWrap(
+            props: widget.selectedItemsWrapProps ??
+                WrapProps(
+                  spacing: 6,
+                  runSpacing: 6,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                ),
             children: getSelectedItems.map((e) => defaultItemMultiSelectionMode(e)).toList(),
           ),
         );
