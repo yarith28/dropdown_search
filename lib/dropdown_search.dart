@@ -5,6 +5,7 @@ export 'src/dropdown_search.dart';
 export 'src/cupertino_dropdown_search.dart';
 export 'src/properties/clear_button_props.dart';
 export 'src/properties/dialog_props.dart';
+export 'src/properties/chip_props.dart';
 export 'src/properties/dropdown_props.dart';
 export 'src/properties/icon_button_props.dart';
 export 'src/properties/list_view_props.dart';

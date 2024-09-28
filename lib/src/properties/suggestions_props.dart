@@ -1,10 +1,8 @@
-import 'package:dropdown_search/src/properties/chip_props.dart';
-import 'package:dropdown_search/src/properties/dropdown_props.dart';
-import 'package:dropdown_search/src/properties/scroll_props.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/properties/wrap_props.dart';
 import 'package:flutter/material.dart';
 
 typedef SuggestionsBuilder<T> = Widget Function(List<T> suggestedItems);
-typedef SuggestItemBuilder<T> = Widget Function(BuildContext context, T item, bool isSelected, bool isDisabled);
 
 ///[items] are the original item on which we want extract suggestions
 typedef SuggestedItems<T> = List<T> Function(List<T> items);
@@ -30,22 +28,15 @@ class SuggestionsProps<T> {
 }
 
 class SuggestedItemProps<T> {
-  final SuggestItemBuilder<T>? itemBuilder;
-
-  ///favorite items alignment
-  final WrapAlignment suggestedItemsAlignment;
-
-  final ClickProps itemClickProps;
-
+  final ContainerBuilder? containerBuilder;
   final ScrollProps scrollProps;
-
   final ChipProps chipProps;
+  final WrapProps wrapProps;
 
   const SuggestedItemProps({
-    this.itemBuilder,
+    this.containerBuilder,
+    this.wrapProps = const WrapProps(runSpacing: 4, spacing: 4),
     this.chipProps = const ChipProps(),
-    this.suggestedItemsAlignment = WrapAlignment.start,
-    this.itemClickProps = const ClickProps(),
     this.scrollProps = const ScrollProps(scrollDirection: Axis.horizontal),
   });
 }

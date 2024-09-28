@@ -1,9 +1,8 @@
-import 'package:dropdown_search/src/properties/chip_props.dart';
 import 'package:dropdown_search/src/properties/suggestions_props.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
+import 'package:dropdown_search/src/widgets/custom_wrap.dart';
 import 'package:flutter/material.dart';
 
-import 'custom_inkwell.dart';
 import 'custom_scroll_view.dart';
 
 class SuggestionsWidget<T> extends StatelessWidget {
@@ -41,34 +40,35 @@ class SuggestionsWidget<T> extends StatelessWidget {
     }
 
     final lItemProps = props.itemProps ?? SuggestedItemProps();
+    if (lItemProps.containerBuilder != null) {
+      return lItemProps.containerBuilder!(context, suggestionsWidget(lItemProps, suggestedItems));
+    }
 
     return Container(
       constraints: BoxConstraints(maxHeight: 100),
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      child: CustomSingleScrollView(
-        scrollProps: lItemProps.scrollProps,
-        child: Wrap(
-          runSpacing: 4,
-          spacing: 4,
-          direction: lItemProps.scrollProps.scrollDirection,
-          runAlignment: lItemProps.suggestedItemsAlignment,
-          children: suggestedItems
-              .map(
-                (s) => lItemProps.itemBuilder != null
-                    ? CustomInkWell(
-                        onTap: isDisabledItemFn(s) || onClick == null ? null : () => onClick!(s),
-                        clickProps: lItemProps.itemClickProps,
-                        child: IgnorePointer(
-                          child: lItemProps.itemBuilder!(context, s, isSelectedItemFn(s), isDisabledItemFn(s)),
-                        ),
-                      )
-                    : CustomChip(
-                        label: Text(itemAsString(s)),
-                        props: lItemProps.chipProps,
-                      ),
-              )
-              .toList(),
-        ),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      child: suggestionsWidget(lItemProps, suggestedItems),
+    );
+  }
+
+  Widget suggestionsWidget(SuggestedItemProps lItemProps, List<T> suggestedItems) {
+    return CustomSingleScrollView(
+      scrollProps: lItemProps.scrollProps,
+      child: CustomWrap(
+        props: lItemProps.wrapProps,
+        children: suggestedItems.map((s) {
+          final isEnabled = !isDisabledItemFn(s);
+          final isSelected = isSelectedItemFn(s);
+          return CustomChip(
+            label: Text(itemAsString(s)),
+            props: lItemProps.chipProps.copyWith(
+              onPressed: onClick != null && isEnabled ? () => onClick!(s) : null,
+              isEnabled: isEnabled,
+              selected: isSelected,
+              showCheckmark: isSelected,
+            ),
+          );
+        }).toList(),
       ),
     );
   }

@@ -70,7 +70,7 @@ abstract class BasePopupProps<T> {
   ///used as container to the popup widget
   ///this could be very useful if you want to add extra actions/widget to the popup
   ///the popup widget is considered as a child
-  final PopupBuilder? containerBuilder;
+  final ContainerBuilder? containerBuilder;
 
   ///popup constraints
   final BoxConstraints constraints;

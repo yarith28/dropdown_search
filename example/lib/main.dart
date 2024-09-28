@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: CupertinoDropdownSearch<String>.multiSelection(
               items: (filter, loadProps) => ["13kklnklnknknknl3", "2lkmlkmlkmllkmk", "hkjnkjnjknkjnkjn", "4", "5", "2", "3", "4", "5"],
               popupProps: CupertinoPopupProps.menu(
-                suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>['10', '20']),
+                suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["13kklnklnknknknl3", "2lkmlkmlkmllkmk", "hkjnkjnjknkjnkjn", "4", "5", "2", "3", "4", "5"]),
                 showSearchBox: true,
               ),
             ),

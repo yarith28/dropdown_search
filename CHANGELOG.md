@@ -1,4 +1,4 @@
-## [6.0.2] - 2024.09.21
+## [7.0.0-pre] - 2024.09.21
 * #### New Feature:
   * add `transitionBuilder`, `transitionDuration`, `reverseTransitionDuration` to `menuProps`
 
