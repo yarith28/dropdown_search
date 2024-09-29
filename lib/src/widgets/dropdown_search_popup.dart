@@ -249,10 +249,10 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     Widget defaultMaterialValidation = Container(
       alignment: Alignment.centerRight,
       padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(border: Border(top: BorderSide(width: 1, color: Colors.grey))),
+      decoration: BoxDecoration(border: Border(top: BorderSide(width: 1, color: Colors.grey.shade300))),
       child: TextButton(
         onPressed: onValidate,
-        child: Text("OK"),
+        child: Text("DONE"),
       ),
     );
 

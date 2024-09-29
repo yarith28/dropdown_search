@@ -1,88 +1,68 @@
-import 'package:flutter/cupertino.dart';
+import 'package:dio/dio.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
+import 'user_model.dart';
+
+Future<List<UserModel>> getData(filter) async {
+  var response = await Dio().get(
+    "https://63c1210999c0a15d28e1ec1d.mockapi.io/users",
+    queryParameters: {"filter": filter},
+  );
+
+  final data = response.data;
+  if (data != null) {
+    return UserModel.fromJsonList(data);
+  }
+
+  return [];
+}
+
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
-      home: CupertinoActionSheetExample(),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class CupertinoActionSheetExample extends StatelessWidget {
-  void _showActionSheet(BuildContext context) {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext cnt) {
-        var remember = true;
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
 
-        return Material(
-          color: Colors.transparent,
-          child: CupertinoActionSheet(
-            message: StatefulBuilder(
-              builder: (BuildContext context, void Function(void Function()) setState) {
-                return Wrap(
-                  children: <Widget>[
-                    Text('Do you want to count \'Completed\' events as part of Return Visits?'),
-                    Container(
-                      height: 50,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('Remember this selection'),
-                          Switch(
-                            value: remember,
-                            onChanged: (value) {
-                              setState(() {
-                                remember = value;
-                              });
-                            },
-                            activeTrackColor: Colors.lightBlue[200],
-                            activeColor: Colors.blue,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            actions: <Widget>[
-              CupertinoActionSheetAction(
-                child: Text('No'),
-                onPressed: () {
-                  Navigator.pop(context, 0);
-                },
-              ),
-            ],
-            cancelButton: CupertinoActionSheetAction(
-              isDefaultAction: true,
-              child: Text('Yes'),
-              onPressed: () {
-                Navigator.pop(context, 1);
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
+  final String title;
 
   @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('CupertinoActionSheet Example'),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
       ),
-      child: Center(
-        child: CupertinoButton(
-          child: Text('Show Action Sheet'),
-          onPressed: () => _showActionSheet(context),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CupertinoDropdownSearch<String>.multiSelection(
+          items: (filter, loadProps) => ["13kklnklnknknknl3", "2lkmlkmlkmllkmk", "hkjnkjnjknkjnkjn", "4", "5", "2", "3", "4", "5"],
+          popupProps: CupertinoPopupProps.menu(
+            suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["13kklnklnknknknl3", "2lkmlkmlkmllkmk", "hkjnkjnjknkjnkjn", "4", "5", "2", "3", "4", "5"]),
+            showSearchBox: true,
+          ),
         ),
       ),
     );
