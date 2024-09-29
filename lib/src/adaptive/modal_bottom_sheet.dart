@@ -32,12 +32,18 @@ Future openMaterialModalBottomSheet(BuildContext context, Widget content, ModalB
   );
 }
 
-Future openAdaptiveModalBottomSheet(BuildContext context, Widget content, AdaptiveModalBottomSheetProps props) {
+Future openAdaptiveModalBottomSheet(
+  BuildContext context,
+  Widget content,
+  AdaptiveModalBottomSheetProps props,
+  bool isMultiSelection,
+  VoidCallback? onValidate,
+) {
   final ThemeData theme = Theme.of(context);
   switch (theme.platform) {
     case TargetPlatform.iOS:
     case TargetPlatform.macOS:
-      return openCupertinoModalBottomSheet(context, content, props.cupertinoProps);
+      return openCupertinoModalBottomSheet(context, content, props.cupertinoProps, isMultiSelection, onValidate);
     case TargetPlatform.android:
     case TargetPlatform.fuchsia:
     case TargetPlatform.linux:
@@ -47,15 +53,42 @@ Future openAdaptiveModalBottomSheet(BuildContext context, Widget content, Adapti
   }
 }
 
-Future openCupertinoModalBottomSheet(BuildContext context, Widget content, CupertinoModalBottomSheetProps props) {
+Future openCupertinoModalBottomSheet(
+  BuildContext context,
+  Widget content,
+  CupertinoModalBottomSheetProps props,
+  bool isMultiSelection,
+  VoidCallback? onValidate,
+) {
   return showCupertinoModalPopup(
     context: context,
     anchorPoint: props.anchorPoint,
     useRootNavigator: props.useRootNavigator,
+    barrierColor: props.barrierLabel,
+    barrierDismissible: props.barrierDismissible,
+    filter: props.filter,
+    semanticsDismissible: props.semanticsDismissible,
+    routeSettings: props.routeSettings,
     builder: (ctx) {
-      return Container(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
-        child: content,
+      return CupertinoActionSheet(
+        title: props.title,
+        actionScrollController: props.actionScrollController,
+        actions: props.actions ??
+            (isMultiSelection && onValidate != null
+                ? [CupertinoActionSheetAction(onPressed: onValidate, child: Text('OK'))]
+                : null),
+        cancelButton: props.cancelButton ??
+            CupertinoActionSheetAction(
+              isDestructiveAction: true,
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+        messageScrollController: props.messageScrollController,
+        message: Container(
+          constraints: BoxConstraints.expand(height: 400),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
+          child: content,
+        ),
       );
     },
   );

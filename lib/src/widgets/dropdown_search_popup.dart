@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dropdown_search/src/base_dropdown_search.dart';
 import 'package:dropdown_search/src/properties/base_popup_props.dart';
+import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
 import 'package:dropdown_search/src/widgets/custom_text_field.dart';
 import 'package:flutter/foundation.dart';
@@ -19,9 +20,11 @@ class DropdownSearchPopup<T> extends StatefulWidget {
   final List<T> defaultSelectedItems;
   final BasePopupProps<T> props;
   final bool isMultiSelectionMode;
+  final UiMode uiMode;
 
   const DropdownSearchPopup({
     super.key,
+    required this.uiMode,
     required this.props,
     this.defaultSelectedItems = const [],
     this.isMultiSelectionMode = false,
@@ -241,22 +244,25 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
   Widget _multiSelectionValidation() {
     if (!widget.isMultiSelectionMode) return SizedBox.shrink();
 
-    Widget defaultValidation = Padding(
+    if (widget.props.validationBuilder != null) return widget.props.validationBuilder!(context, _selectedItems);
+
+    Widget defaultMaterialValidation = Container(
+      alignment: Alignment.centerRight,
       padding: EdgeInsets.all(8),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: ElevatedButton(
-          onPressed: onValidate,
-          child: Text("OK"),
-        ),
+      decoration: BoxDecoration(border: Border(top: BorderSide(width: 1, color: Colors.grey))),
+      child: TextButton(
+        onPressed: onValidate,
+        child: Text("OK"),
       ),
     );
 
-    if (widget.props.validationBuilder != null) {
-      return widget.props.validationBuilder!(context, _selectedItems);
+    Widget defaultCupertinoModalValidation = SizedBox.shrink();
+
+    if (getUiToApply(context, widget.uiMode) == UiToApply.cupertino && widget.props.mode == PopupMode.modalBottomSheet) {
+      return defaultCupertinoModalValidation;
     }
 
-    return defaultValidation;
+    return defaultMaterialValidation;
   }
 
   Widget _noDataWidget() {

@@ -1,5 +1,6 @@
 ## [7.0.0-pre] - 2024.09.21
 * #### New Feature:
+  * Add adaptive Ui feature: `Material`, `Cupertino` and `Adaptive`
   * add `transitionBuilder`, `transitionDuration`, `reverseTransitionDuration` to `menuProps`
 
     ```dart

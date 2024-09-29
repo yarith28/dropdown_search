@@ -1,8 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
-RelativeRect getPosition(RenderBox dropdown, RenderBox overlay, Size menuSize,
-    MenuAlign? menuAlign) {
+RelativeRect getPosition(RenderBox dropdown, RenderBox overlay, Size menuSize, MenuAlign? menuAlign) {
   final dropDownX = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dx;
   final dropDownY = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dy;
 
@@ -30,19 +29,39 @@ RelativeRect getPosition(RenderBox dropdown, RenderBox overlay, Size menuSize,
 
     return RelativeRect.fromSize(Offset(dX, dY) & menuSize, overlay.size);
   } else if (menuAlign == MenuAlign.topEnd) {
-    final dX = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dx +
-        dropdown.size.width -
-        menuSize.width;
+    final dX = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dx + dropdown.size.width - menuSize.width;
     final dY = dropDownY - menuSize.height;
 
     return RelativeRect.fromSize(Offset(dX, dY) & menuSize, overlay.size);
   }
 
   //by default BottomRight
-  final dX = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dx +
-      dropdown.size.width -
-      menuSize.width;
-  final dY = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dy +
-      dropdown.size.height;
+  final dX = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dx + dropdown.size.width - menuSize.width;
+  final dY = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dy + dropdown.size.height;
   return RelativeRect.fromSize(Offset(dX, dY) & menuSize, overlay.size);
+}
+
+enum UiToApply { cupertino, material }
+
+UiToApply getUiToApply(BuildContext context, UiMode mode) {
+  switch (mode) {
+    case UiMode.cupertino:
+      return UiToApply.cupertino;
+    case UiMode.adaptive:
+      final ThemeData theme = Theme.of(context);
+      switch (theme.platform) {
+        case TargetPlatform.iOS:
+        case TargetPlatform.macOS:
+          return UiToApply.cupertino;
+        case TargetPlatform.android:
+        case TargetPlatform.fuchsia:
+        case TargetPlatform.linux:
+        case TargetPlatform.windows:
+        default:
+          return UiToApply.material;
+      }
+    case UiMode.material:
+    default:
+      return UiToApply.material;
+  }
 }

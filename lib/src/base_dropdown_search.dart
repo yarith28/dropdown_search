@@ -521,11 +521,22 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     switch (widget.uiMode) {
       case UiMode.cupertino:
         final props = widget.popupProps as CupertinoPopupProps<T>;
-        return openCupertinoModalBottomSheet(context, _popupWidgetInstance(), props.modalBottomSheetProps);
+        return openCupertinoModalBottomSheet(
+          context,
+          _popupWidgetInstance(),
+          props.modalBottomSheetProps,
+          isMultiSelectionMode,
+          () => _popupStateKey.currentState?.onValidate(),
+        );
       case UiMode.adaptive:
         final props = widget.popupProps as AdaptivePopupProps<T>;
-
-        return openAdaptiveModalBottomSheet(context, _popupWidgetInstance(), props.modalBottomSheetProps);
+        return openAdaptiveModalBottomSheet(
+          context,
+          _popupWidgetInstance(),
+          props.modalBottomSheetProps,
+          isMultiSelectionMode,
+          () => _popupStateKey.currentState?.onValidate(),
+        );
       case UiMode.material:
       default:
         final props = widget.popupProps as PopupProps<T>;
@@ -554,6 +565,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   Widget _popupWidgetInstance() {
     return DropdownSearchPopup<T>(
       key: _popupStateKey,
+      uiMode: widget.uiMode,
       props: widget.popupProps,
       itemAsString: widget.itemAsString,
       filterFn: widget.filterFn,

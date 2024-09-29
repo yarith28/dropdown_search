@@ -36,6 +36,21 @@ Future openAdaptiveBottomSheet(BuildContext context, Widget content, AdaptiveBot
 Future openCupertinoBottomSheet(BuildContext context, Widget content, CupertinoBottomSheetProps props) {
   return showCupertinoModalPopup(
     context: context,
-    builder: (ctx) => content,
+    anchorPoint: props.anchorPoint,
+    useRootNavigator: props.useRootNavigator,
+    barrierColor: props.barrierLabel,
+    barrierDismissible: props.barrierDismissible,
+    filter: props.filter,
+    semanticsDismissible: props.semanticsDismissible,
+    routeSettings: props.routeSettings,
+    builder: (ctx) {
+      return CupertinoPopupSurface(
+        isSurfacePainted: props.isSurfacePainted,
+        child: Container(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
+          child: content,
+        ),
+      );
+    },
   );
 }
