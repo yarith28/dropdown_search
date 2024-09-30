@@ -6,14 +6,15 @@ class DialogProps {
   final OverflowBarAlignment? actionsOverflowAlignment;
   final double? actionsOverflowButtonSpacing;
   final VerticalDirection? actionsOverflowDirection;
-  final EdgeInsetsGeometry actionsPadding;
-  final EdgeInsets insetPadding;
+  final EdgeInsetsGeometry? actionsPadding;
+  final EdgeInsets? insetPadding;
   final EdgeInsetsGeometry? buttonPadding;
   final EdgeInsetsGeometry contentPadding;
   final Offset? anchorPoint;
   final RouteTransitionsBuilder? transitionBuilder;
   final ShapeBorder? shape;
   final bool useRootNavigator;
+  final RouteSettings? routeSettings;
   final double? elevation;
   final String? semanticLabel;
   final Color? barrierColor;
@@ -21,7 +22,7 @@ class DialogProps {
   final Color? backgroundColor;
   final bool barrierDismissible;
   final Duration transitionDuration;
-  final Clip clipBehavior;
+  final Clip? clipBehavior;
   final AnimationController? animation;
   final AlignmentGeometry? alignment;
   final Color? shadowColor;
@@ -35,6 +36,7 @@ class DialogProps {
   final TextStyle? titleTextStyle;
 
   const DialogProps({
+    this.routeSettings,
     this.iconPadding,
     this.titlePadding,
     this.titleTextStyle,
@@ -57,10 +59,10 @@ class DialogProps {
     this.actionsOverflowAlignment,
     this.actionsOverflowButtonSpacing,
     this.actionsOverflowDirection,
-    this.clipBehavior = Clip.none,
-    this.useRootNavigator = false,
-    this.actionsPadding = EdgeInsets.zero,
-    this.insetPadding = const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+    this.clipBehavior,
+    this.useRootNavigator = true,
+    this.actionsPadding,
+    this.insetPadding,
     this.buttonPadding,
     this.contentPadding = EdgeInsets.zero,
     this.anchorPoint,

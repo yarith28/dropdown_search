@@ -12,6 +12,7 @@ Future openMaterialDialog(BuildContext context, Widget content, DialogProps prop
     useRootNavigator: props.useRootNavigator,
     anchorPoint: props.anchorPoint,
     transitionBuilder: props.transitionBuilder,
+    routeSettings: props.routeSettings,
     pageBuilder: (context, animation, secondaryAnimation) {
       return AlertDialog(
         actions: props.actions,
@@ -44,12 +45,17 @@ Future openMaterialDialog(BuildContext context, Widget content, DialogProps prop
   );
 }
 
-Future openAdaptiveDialog(BuildContext context, Widget content, AdaptiveDialogProps props) {
+Future openAdaptiveDialog(
+  BuildContext context,
+  Widget content,
+  AdaptiveDialogProps props,
+  List<CupertinoDialogAction>? defaultCupertinoActions,
+) {
   final ThemeData theme = Theme.of(context);
   switch (theme.platform) {
     case TargetPlatform.iOS:
     case TargetPlatform.macOS:
-      return openCupertinoDialog(context, content, props.cupertinoProps);
+      return openCupertinoDialog(context, content, props.cupertinoProps, defaultCupertinoActions);
     case TargetPlatform.android:
     case TargetPlatform.fuchsia:
     case TargetPlatform.linux:
@@ -59,7 +65,12 @@ Future openAdaptiveDialog(BuildContext context, Widget content, AdaptiveDialogPr
   }
 }
 
-Future openCupertinoDialog(BuildContext context, Widget content, CupertinoDialogProps props) {
+Future openCupertinoDialog(
+  BuildContext context,
+  Widget content,
+  CupertinoDialogProps props,
+  List<CupertinoDialogAction>? defaultActions,
+) {
   return showCupertinoDialog(
     context: context,
     barrierDismissible: props.barrierDismissible,
@@ -69,19 +80,7 @@ Future openCupertinoDialog(BuildContext context, Widget content, CupertinoDialog
     routeSettings: props.routeSettings,
     builder: (context) {
       return CupertinoAlertDialog(
-        actions: props.actions ??
-            [
-              CupertinoDialogAction(
-                child: Text("Cancel"),
-                isDestructiveAction: true,
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              CupertinoDialogAction(
-                child: Text("OK"),
-                isDefaultAction: true,
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
+        actions: props.actions ?? defaultActions ?? [],
         content: content,
         scrollController: props.scrollController,
         actionScrollController: props.actionScrollController,

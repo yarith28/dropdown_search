@@ -11,11 +11,7 @@ enum MenuAlign {
   topEnd,
 }
 
-abstract class AbstractMenuProps {
-  const AbstractMenuProps();
-}
-
-class MenuProps extends AbstractMenuProps {
+class MenuProps {
   final MenuAlign? align;
   final ShapeBorder? shape;
   final double? elevation;
@@ -40,7 +36,7 @@ class MenuProps extends AbstractMenuProps {
     this.align,
     this.barrierLabel,
     this.elevation,
-    this.shape,
+    this.shape = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
     this.positionCallback,
     this.barrierColor,
     this.backgroundColor,
@@ -59,7 +55,7 @@ class MenuProps extends AbstractMenuProps {
   });
 }
 
-class CupertinoMenuProps<T> extends AbstractMenuProps {
+class CupertinoMenuProps<T> {
   final MenuAlign? align;
   final ShapeBorder? shape;
   final double? elevation;
@@ -84,7 +80,7 @@ class CupertinoMenuProps<T> extends AbstractMenuProps {
     this.align,
     this.barrierLabel,
     this.elevation,
-    this.shape,
+    this.shape = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
     this.positionCallback,
     this.barrierColor,
     this.backgroundColor,
@@ -98,12 +94,12 @@ class CupertinoMenuProps<T> extends AbstractMenuProps {
     this.reverseTransitionDuration,
     this.semanticLabel,
     this.surfaceTintColor,
-    this.margin,
+    this.margin = const EdgeInsets.only(top: 8),
     this.transitionBuilder,
   });
 }
 
-class AdaptiveMenuProps extends AbstractMenuProps {
+class AdaptiveMenuProps {
   final CupertinoMenuProps cupertinoProps;
   final MenuProps materialProps;
 

@@ -36,14 +36,13 @@ Future openAdaptiveModalBottomSheet(
   BuildContext context,
   Widget content,
   AdaptiveModalBottomSheetProps props,
-  bool isMultiSelection,
-  VoidCallback? onValidate,
+  List<CupertinoActionSheetAction>? defaultCupertinoActions,
 ) {
   final ThemeData theme = Theme.of(context);
   switch (theme.platform) {
     case TargetPlatform.iOS:
     case TargetPlatform.macOS:
-      return openCupertinoModalBottomSheet(context, content, props.cupertinoProps, isMultiSelection, onValidate);
+      return openCupertinoModalBottomSheet(context, content, props.cupertinoProps, defaultCupertinoActions);
     case TargetPlatform.android:
     case TargetPlatform.fuchsia:
     case TargetPlatform.linux:
@@ -57,8 +56,7 @@ Future openCupertinoModalBottomSheet(
   BuildContext context,
   Widget content,
   CupertinoModalBottomSheetProps props,
-  bool isMultiSelection,
-  VoidCallback? onValidate,
+  List<CupertinoActionSheetAction>? defaultActions,
 ) {
   return showCupertinoModalPopup(
     context: context,
@@ -76,10 +74,7 @@ Future openCupertinoModalBottomSheet(
         child: CupertinoActionSheet(
           title: props.title,
           actionScrollController: props.actionScrollController,
-          actions: props.actions ??
-              (isMultiSelection && onValidate != null
-                  ? [CupertinoActionSheetAction(onPressed: onValidate, child: Text('OK'))]
-                  : null),
+          actions: props.actions ?? defaultActions,
           cancelButton: props.cancelButton ??
               CupertinoActionSheetAction(
                 isDestructiveAction: true,

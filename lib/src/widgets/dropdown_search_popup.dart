@@ -250,6 +250,12 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
     if (widget.props.validationBuilder != null) return widget.props.validationBuilder!(context, _selectedItems);
 
+    //for cupertino modal and dialog we used already "actions" as Validation method
+    if (getUiToApply(context, widget.uiMode) == UiToApply.cupertino &&
+        (widget.props.mode == PopupMode.modalBottomSheet || widget.props.mode == PopupMode.dialog)) {
+      return SizedBox.shrink();
+    }
+
     Widget defaultMaterialValidation = Container(
       alignment: Alignment.centerRight,
       padding: EdgeInsets.all(8),
@@ -259,12 +265,6 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         child: Text("DONE"),
       ),
     );
-
-    Widget defaultCupertinoModalValidation = SizedBox.shrink();
-
-    if (getUiToApply(context, widget.uiMode) == UiToApply.cupertino && widget.props.mode == PopupMode.modalBottomSheet) {
-      return defaultCupertinoModalValidation;
-    }
 
     return defaultMaterialValidation;
   }

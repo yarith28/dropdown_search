@@ -89,7 +89,7 @@ class _PopupMenuRouteLayout extends SingleChildLayoutDelegate {
 
 class _PopupMenuRoute<T> extends PopupRoute<T> {
   final BasePopupProps<T> popupProps;
-  final dynamic menuProps;//for now menu props are the same for all uiModes
+  final dynamic menuProps; //for now menu props are the same for all uiModes
   final BuildContext parentContext;
   final Widget child;
   final CapturedThemes capturedThemes;
