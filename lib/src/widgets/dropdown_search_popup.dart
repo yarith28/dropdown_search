@@ -174,44 +174,48 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
                             padding: widget.props.scrollbarProps.padding,
                             child: ScrollConfiguration(
                               behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                              child: ListView.builder(
-                                hitTestBehavior: widget.props.listViewProps.hitTestBehavior,
-                                controller: widget.props.listViewProps.controller ?? scrollController,
-                                shrinkWrap: widget.props.listViewProps.shrinkWrap,
-                                padding: widget.props.listViewProps.padding,
-                                scrollDirection: widget.props.listViewProps.scrollDirection,
-                                reverse: widget.props.listViewProps.reverse,
-                                primary: widget.props.listViewProps.primary,
-                                physics: widget.props.listViewProps.physics,
-                                itemExtent: widget.props.listViewProps.itemExtent,
-                                addAutomaticKeepAlives: widget.props.listViewProps.addAutomaticKeepAlives,
-                                addRepaintBoundaries: widget.props.listViewProps.addRepaintBoundaries,
-                                addSemanticIndexes: widget.props.listViewProps.addSemanticIndexes,
-                                cacheExtent: widget.props.listViewProps.cacheExtent,
-                                semanticChildCount: widget.props.listViewProps.semanticChildCount,
-                                dragStartBehavior: widget.props.listViewProps.dragStartBehavior,
-                                keyboardDismissBehavior: widget.props.listViewProps.keyboardDismissBehavior,
-                                restorationId: widget.props.listViewProps.restorationId,
-                                clipBehavior: widget.props.listViewProps.clipBehavior,
-                                prototypeItem: widget.props.listViewProps.prototypeItem,
-                                itemExtentBuilder: widget.props.listViewProps.itemExtentBuilder,
-                                findChildIndexCallback: widget.props.listViewProps.findChildIndexCallback,
-                                itemCount: itemCount + (isInfiniteScrollEnded ? 0 : 1),
-                                itemBuilder: (context, index) {
-                                  if (index < itemCount) {
-                                    var item = snapshot.data![index];
-                                    return widget.isMultiSelectionMode
-                                        ? _itemWidgetMultiSelection(item)
-                                        : _itemWidgetSingleSelection(item);
-                                  }
-                                  //if infiniteScroll enabled && data received not less then take request
-                                  else if (!isInfiniteScrollEnded) {
-                                    _manageLoadMoreItems(searchBoxController.text, skip: itemCount, showLoading: false);
-                                    return _infiniteScrollLoadingMoreWidget(itemCount);
-                                  }
+                              child: Material(
+                                type: MaterialType.transparency,
+                                //temp solution till fix this Flutter issue here https://github.com/flutter/flutter/issues/155198
+                                child: ListView.builder(
+                                  hitTestBehavior: widget.props.listViewProps.hitTestBehavior,
+                                  controller: widget.props.listViewProps.controller ?? scrollController,
+                                  shrinkWrap: widget.props.listViewProps.shrinkWrap,
+                                  padding: widget.props.listViewProps.padding,
+                                  scrollDirection: widget.props.listViewProps.scrollDirection,
+                                  reverse: widget.props.listViewProps.reverse,
+                                  primary: widget.props.listViewProps.primary,
+                                  physics: widget.props.listViewProps.physics,
+                                  itemExtent: widget.props.listViewProps.itemExtent,
+                                  addAutomaticKeepAlives: widget.props.listViewProps.addAutomaticKeepAlives,
+                                  addRepaintBoundaries: widget.props.listViewProps.addRepaintBoundaries,
+                                  addSemanticIndexes: widget.props.listViewProps.addSemanticIndexes,
+                                  cacheExtent: widget.props.listViewProps.cacheExtent,
+                                  semanticChildCount: widget.props.listViewProps.semanticChildCount,
+                                  dragStartBehavior: widget.props.listViewProps.dragStartBehavior,
+                                  keyboardDismissBehavior: widget.props.listViewProps.keyboardDismissBehavior,
+                                  restorationId: widget.props.listViewProps.restorationId,
+                                  clipBehavior: widget.props.listViewProps.clipBehavior,
+                                  prototypeItem: widget.props.listViewProps.prototypeItem,
+                                  itemExtentBuilder: widget.props.listViewProps.itemExtentBuilder,
+                                  findChildIndexCallback: widget.props.listViewProps.findChildIndexCallback,
+                                  itemCount: itemCount + (isInfiniteScrollEnded ? 0 : 1),
+                                  itemBuilder: (context, index) {
+                                    if (index < itemCount) {
+                                      var item = snapshot.data![index];
+                                      return widget.isMultiSelectionMode
+                                          ? _itemWidgetMultiSelection(item)
+                                          : _itemWidgetSingleSelection(item);
+                                    }
+                                    //if infiniteScroll enabled && data received not less then take request
+                                    else if (!isInfiniteScrollEnded) {
+                                      _manageLoadMoreItems(searchBoxController.text, skip: itemCount, showLoading: false);
+                                      return _infiniteScrollLoadingMoreWidget(itemCount);
+                                    }
 
-                                  return SizedBox.shrink();
-                                },
+                                    return SizedBox.shrink();
+                                  },
+                                ),
                               ),
                             ),
                           );

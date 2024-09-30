@@ -14,6 +14,7 @@ Future openMaterialDialog(BuildContext context, Widget content, DialogProps prop
     transitionBuilder: props.transitionBuilder,
     pageBuilder: (context, animation, secondaryAnimation) {
       return AlertDialog(
+        actions: props.actions,
         buttonPadding: props.buttonPadding,
         actionsOverflowButtonSpacing: props.actionsOverflowButtonSpacing,
         insetPadding: props.insetPadding,
@@ -21,7 +22,6 @@ Future openMaterialDialog(BuildContext context, Widget content, DialogProps prop
         actionsOverflowDirection: props.actionsOverflowDirection,
         actionsOverflowAlignment: props.actionsOverflowAlignment,
         actionsAlignment: props.actionsAlignment,
-        actions: props.actions,
         alignment: props.alignment,
         clipBehavior: props.clipBehavior,
         elevation: props.elevation,
@@ -69,7 +69,19 @@ Future openCupertinoDialog(BuildContext context, Widget content, CupertinoDialog
     routeSettings: props.routeSettings,
     builder: (context) {
       return CupertinoAlertDialog(
-        actions: props.actions,
+        actions: props.actions ??
+            [
+              CupertinoDialogAction(
+                child: Text("Cancel"),
+                isDestructiveAction: true,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              CupertinoDialogAction(
+                child: Text("OK"),
+                isDefaultAction: true,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
         content: content,
         scrollController: props.scrollController,
         actionScrollController: props.actionScrollController,

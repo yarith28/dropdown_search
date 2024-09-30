@@ -77,7 +77,7 @@ class CupertinoDialogProps {
   final RouteSettings? routeSettings;
   final Offset? anchorPoint;
 
-  final List<Widget> actions;
+  final List<Widget>? actions;
   final Widget? content;
   final ScrollController? scrollController;
   final ScrollController? actionScrollController;
@@ -92,7 +92,7 @@ class CupertinoDialogProps {
     this.routeSettings,
     this.anchorPoint,
     this.title,
-    this.actions = const <Widget>[],
+    this.actions,
     this.content,
     this.scrollController,
     this.actionScrollController,

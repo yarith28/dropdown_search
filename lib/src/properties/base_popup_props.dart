@@ -106,16 +106,16 @@ abstract class BasePopupProps<T> {
 
   const BasePopupProps({
     required this.mode,
-    required this.fit,
-    required this.showSearchBox,
-    required this.searchFieldProps,
-    required this.scrollbarProps,
-    required this.listViewProps,
-    required this.suggestionsProps,
-    required this.searchDelay,
-    required this.itemClickProps,
-    this.title,
     required this.constraints,
+    this.fit = FlexFit.tight,
+    this.showSearchBox = false,
+    this.searchFieldProps = const TextFieldProps(),
+    this.suggestionsProps = const SuggestionsProps(),
+    this.scrollbarProps = const ScrollbarProps(),
+    this.listViewProps = const ListViewProps(),
+    this.searchDelay = const Duration(milliseconds: 700),
+    this.itemClickProps = const ClickProps(),
+    this.title,
     this.onDismissed,
     this.emptyBuilder,
     this.itemBuilder,
@@ -134,6 +134,6 @@ abstract class BasePopupProps<T> {
     this.onItemRemoved,
     this.checkBoxBuilder,
     this.validationBuilder,
-    required this.textDirection,
+    this.textDirection = TextDirection.ltr,
   }) : assert(infiniteScrollProps == null || disableFilter);
 }

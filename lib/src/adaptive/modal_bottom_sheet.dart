@@ -70,24 +70,24 @@ Future openCupertinoModalBottomSheet(
     semanticsDismissible: props.semanticsDismissible,
     routeSettings: props.routeSettings,
     builder: (ctx) {
-      return CupertinoActionSheet(
-        title: props.title,
-        actionScrollController: props.actionScrollController,
-        actions: props.actions ??
-            (isMultiSelection && onValidate != null
-                ? [CupertinoActionSheetAction(onPressed: onValidate, child: Text('OK'))]
-                : null),
-        cancelButton: props.cancelButton ??
-            CupertinoActionSheetAction(
-              isDestructiveAction: true,
-              onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
-            ),
-        messageScrollController: props.messageScrollController,
-        message: Container(
-          constraints: BoxConstraints.expand(height: 400),
-          padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
-          child: content,
+      return Container(
+        //to move layout up if keyboard is showed up
+        margin: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
+        child: CupertinoActionSheet(
+          title: props.title,
+          actionScrollController: props.actionScrollController,
+          actions: props.actions ??
+              (isMultiSelection && onValidate != null
+                  ? [CupertinoActionSheetAction(onPressed: onValidate, child: Text('OK'))]
+                  : null),
+          cancelButton: props.cancelButton ??
+              CupertinoActionSheetAction(
+                isDestructiveAction: true,
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel'),
+              ),
+          messageScrollController: props.messageScrollController,
+          message: content,
         ),
       );
     },
