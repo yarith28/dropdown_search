@@ -23,9 +23,10 @@ Future openMaterialModalBottomSheet(BuildContext context, Widget content, ModalB
     useRootNavigator: props.useRootNavigator,
     transitionAnimationController: props.animation,
     constraints: props.constraints,
+    routeSettings: props.routeSettings,
     builder: (ctx) {
       return Container(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
+        margin: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
         child: content,
       );
     },

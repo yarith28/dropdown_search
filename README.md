@@ -4,7 +4,7 @@
 </h1>
 
 <h4 align="center">
-  Simple and reactive DropdownSearch with item search feature, making it possible to use an offline item list or filtering URL for easy customization.
+  Simple and highly customizable Flutter Dropdown with a lot of features (search, adaptive, async/sync values, ...) with multi mode like menu, modal, dialog, bottomSheet and etc.
 </h4>
 
 <p align="center">

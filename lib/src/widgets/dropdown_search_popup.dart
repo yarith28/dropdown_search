@@ -511,6 +511,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
             isDisabledItemFn: (item) => _isDisabled(item),
             itemAsString: (item) => _itemAsString(item),
             onClick: (value) => _handleSelectedItem(value),
+            uiToApply: getUiToApply(context, widget.uiMode),
           );
         } else {
           return SizedBox.shrink();

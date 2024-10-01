@@ -2,13 +2,8 @@ import 'package:dropdown_search/src/base_dropdown_search.dart';
 import 'package:dropdown_search/src/properties/base_popup_props.dart';
 import 'package:dropdown_search/src/properties/bottom_sheet_props.dart';
 import 'package:dropdown_search/src/properties/dialog_props.dart';
-import 'package:dropdown_search/src/properties/dropdown_props.dart';
-import 'package:dropdown_search/src/properties/list_view_props.dart';
 import 'package:dropdown_search/src/properties/menu_props.dart';
 import 'package:dropdown_search/src/properties/modal_bottom_sheet_props.dart';
-import 'package:dropdown_search/src/properties/scrollbar_props.dart';
-import 'package:dropdown_search/src/properties/suggestions_props.dart';
-import 'package:dropdown_search/src/properties/text_field_props.dart';
 import 'package:flutter/material.dart';
 
 class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
@@ -153,7 +148,7 @@ class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
     super.loadingBuilder,
     super.showSelectedItems,
     super.containerBuilder,
-    super.constraints = const BoxConstraints(maxHeight: 500),
+    super.constraints = const BoxConstraints.tightFor(height: 400),
     super.interceptCallBacks,
     super.infiniteScrollProps,
     super.onItemsLoaded,
@@ -243,6 +238,36 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
         super(mode: PopupMode.dialog);
 
   const CupertinoPopupProps.modalBottomSheet({
+    this.modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
+    super.fit = FlexFit.tight,
+    super.searchFieldProps,
+    super.suggestionsProps,
+    super.scrollbarProps,
+    super.listViewProps,
+    super.searchDelay,
+    super.itemClickProps,
+    super.showSearchBox,
+    super.title,
+    super.disableFilter,
+    super.cacheItems,
+    super.itemBuilder,
+    super.disabledItemFn,
+    super.onDismissed,
+    super.emptyBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems,
+    super.containerBuilder,
+    super.constraints = const BoxConstraints.tightFor(height: 400),
+    super.interceptCallBacks,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
+  })  : menuProps = const CupertinoMenuProps(),
+        dialogProps = const CupertinoDialogProps(),
+        bottomSheetProps = const CupertinoBottomSheetProps(),
+        super(mode: PopupMode.modalBottomSheet);
+
+  const CupertinoPopupProps.bottomSheet({
     this.bottomSheetProps = const CupertinoBottomSheetProps(),
     super.fit = FlexFit.tight,
     super.searchFieldProps,
@@ -268,37 +293,7 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
     super.infiniteScrollProps,
     super.onItemsLoaded,
   })  : menuProps = const CupertinoMenuProps(),
-        dialogProps = const CupertinoDialogProps(),
         modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
-        super(mode: PopupMode.bottomSheet);
-
-  const CupertinoPopupProps.bottomSheet({
-    this.modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
-    super.fit = FlexFit.tight,
-    super.searchFieldProps,
-    super.suggestionsProps,
-    super.scrollbarProps,
-    super.listViewProps,
-    super.searchDelay,
-    super.itemClickProps,
-    super.showSearchBox,
-    super.title,
-    super.disableFilter,
-    super.cacheItems,
-    super.itemBuilder,
-    super.disabledItemFn,
-    super.onDismissed,
-    super.emptyBuilder,
-    super.errorBuilder,
-    super.loadingBuilder,
-    super.showSelectedItems,
-    super.containerBuilder,
-    super.constraints = const BoxConstraints(maxHeight: 500),
-    super.interceptCallBacks,
-    super.infiniteScrollProps,
-    super.onItemsLoaded,
-  })  : menuProps = const CupertinoMenuProps(),
-        bottomSheetProps = const CupertinoBottomSheetProps(),
         dialogProps = const CupertinoDialogProps(),
-        super(mode: PopupMode.modalBottomSheet);
+        super(mode: PopupMode.bottomSheet);
 }

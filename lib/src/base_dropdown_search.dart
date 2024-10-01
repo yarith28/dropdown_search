@@ -620,7 +620,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
           : widget.popupProps as AdaptivePopupProps<T>;
     } else {
       menuProps =
-          isMultiSelectionMode ? widget.popupProps as MultiSelectionPopupProps<T> : widget.popupProps as CupertinoMenuProps<T>;
+          isMultiSelectionMode ? widget.popupProps as MultiSelectionPopupProps<T> : widget.popupProps as PopupProps<T>;
     }
     return openMenu<T>(
       menuProps: menuProps.menuProps,

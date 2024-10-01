@@ -1,4 +1,5 @@
 import 'package:dropdown_search/src/properties/suggestions_props.dart';
+import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
 import 'package:dropdown_search/src/widgets/custom_wrap.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class SuggestionsWidget<T> extends StatelessWidget {
   final bool Function(T item) isDisabledItemFn;
   final String Function(T item) itemAsString;
   final ValueChanged<T>? onClick;
+  final UiToApply uiToApply;
 
   const SuggestionsWidget({
     super.key,
@@ -21,6 +23,7 @@ class SuggestionsWidget<T> extends StatelessWidget {
     required this.isSelectedItemFn,
     required this.isDisabledItemFn,
     required this.itemAsString,
+    required this.uiToApply,
   });
 
   @override
@@ -66,6 +69,9 @@ class SuggestionsWidget<T> extends StatelessWidget {
               isEnabled: isEnabled,
               selected: isSelected,
               showCheckmark: isSelected,
+              shape: uiToApply == UiToApply.cupertino
+                  ? RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18)))
+                  : null,
             ),
           );
         }).toList(),

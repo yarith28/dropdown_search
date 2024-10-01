@@ -57,10 +57,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: CupertinoDropdownSearch<String>.multiSelection(
-          items: (filter, loadProps) => ["13kklnklnknknknl3", "2lkmlkmlkmllkmk", "hkjnkjnjknkjnkjn", "4", "5", "2", "3", "4", "5"],
-          popupProps: CupertinoMultiSelectionPopupProps.menu(
-            suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["13kklnklnknknknl3", "2lkmlkmlkmllkmk", "hkjnkjnjknkjnkjn", "4", "5", "2", "3", "4", "5", "2lkmlkmlkmllkmk", "hkjnkjnjknkjnkjn", "4", "5", "2", "3", "4", "5"]),
+        child: CupertinoDropdownSearch<String>(
+          items: (filter, loadProps) => ["1", "2", "3", ],
+          selectedItem: "2",
+          popupProps: CupertinoPopupProps.modalBottomSheet(
+            //fit: FlexFit.loose,
+            //constraints: BoxConstraints.loose(height: 400, width: 300),
+            suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["1", "2", "3", "4"]),
             showSearchBox: true,
           ),
         ),

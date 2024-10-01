@@ -21,6 +21,7 @@ class ModalBottomSheetProps {
   final AnimationStyle? sheetAnimationStyle;
   final String? barrierLabel;
   final double scrollControlDisabledMaxHeightRatio;
+  final RouteSettings? routeSettings;
 
   const ModalBottomSheetProps({
     this.anchorPoint,
@@ -41,6 +42,7 @@ class ModalBottomSheetProps {
     this.showDragHandle,
     this.barrierLabel,
     this.scrollControlDisabledMaxHeightRatio = 9.0 / 16.0,
+    this.routeSettings,
   });
 }
 

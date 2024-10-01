@@ -1,4 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/widgets/CustomSafeArea.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -44,11 +45,14 @@ Future openCupertinoBottomSheet(BuildContext context, Widget content, CupertinoB
     semanticsDismissible: props.semanticsDismissible,
     routeSettings: props.routeSettings,
     builder: (ctx) {
-      return CupertinoPopupSurface(
-        isSurfacePainted: props.isSurfacePainted,
-        child: Container(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
-          child: content,
+      return CustomSafeArea(
+        props: props.safeAreaProps,
+        child: CupertinoPopupSurface(
+          isSurfacePainted: props.isSurfacePainted,
+          child: Container(
+            margin: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
+            child: content,
+          ),
         ),
       );
     },

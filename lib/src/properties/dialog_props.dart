@@ -18,7 +18,7 @@ class DialogProps {
   final double? elevation;
   final String? semanticLabel;
   final Color? barrierColor;
-  final String barrierLabel;
+  final String? barrierLabel;
   final Color? backgroundColor;
   final bool barrierDismissible;
   final Duration transitionDuration;
@@ -49,9 +49,9 @@ class DialogProps {
     this.semanticLabel,
     this.shape,
     this.barrierColor,
-    this.barrierLabel = '',
+    this.barrierLabel,
     this.backgroundColor,
-    this.barrierDismissible = true,
+    this.barrierDismissible = false,
     this.transitionDuration = kThemeChangeDuration,
     this.animation,
     this.actions,
@@ -59,7 +59,7 @@ class DialogProps {
     this.actionsOverflowAlignment,
     this.actionsOverflowButtonSpacing,
     this.actionsOverflowDirection,
-    this.clipBehavior,
+    this.clipBehavior = Clip.hardEdge,
     this.useRootNavigator = true,
     this.actionsPadding,
     this.insetPadding,

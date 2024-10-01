@@ -43,8 +43,8 @@ RelativeRect getPosition(RenderBox dropdown, RenderBox overlay, Size menuSize, M
 
 enum UiToApply { cupertino, material }
 
-UiToApply getUiToApply(BuildContext context, UiMode mode) {
-  switch (mode) {
+UiToApply getUiToApply(BuildContext context, UiMode uiMode) {
+  switch (uiMode) {
     case UiMode.cupertino:
       return UiToApply.cupertino;
     case UiMode.adaptive:
