@@ -20,7 +20,7 @@ class DropdownSearchPopup<T> extends StatefulWidget {
   final List<T> defaultSelectedItems;
   final BasePopupProps<T> props;
   final bool isMultiSelectionMode;
-  final UiMode uiMode;
+  final UiToApply uiMode;
 
   const DropdownSearchPopup({
     super.key,
@@ -251,7 +251,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     if (widget.props.validationBuilder != null) return widget.props.validationBuilder!(context, _selectedItems);
 
     //for cupertino modal and dialog we used already "actions" as Validation method
-    if (getUiToApply(context, widget.uiMode) == UiToApply.cupertino &&
+    if (widget.uiMode == UiToApply.cupertino &&
         (widget.props.mode == PopupMode.modalBottomSheet || widget.props.mode == PopupMode.dialog)) {
       return SizedBox.shrink();
     }
@@ -511,7 +511,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
             isDisabledItemFn: (item) => _isDisabled(item),
             itemAsString: (item) => _itemAsString(item),
             onClick: (value) => _handleSelectedItem(value),
-            uiToApply: getUiToApply(context, widget.uiMode),
+            uiToApply: widget.uiMode,
           );
         } else {
           return SizedBox.shrink();

@@ -453,7 +453,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     return data.toString();
   }
 
-  ///function that manage Trailing icons(close, dropDown)
+  ///function that manage Trailing icons(clear, dropDown)
   Widget? _manageSuffixIcons() {
     Widget? getClearButton() {
       final props = ClearButtonProps().merge(widget.suffixProps.clearButtonProps);
@@ -660,7 +660,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   Widget _popupWidgetInstance() {
     return DropdownSearchPopup<T>(
       key: _popupStateKey,
-      uiMode: widget.uiMode,
+      uiMode: _uiToApply,
       props: widget.popupProps,
       itemAsString: widget.itemAsString,
       filterFn: widget.filterFn,
