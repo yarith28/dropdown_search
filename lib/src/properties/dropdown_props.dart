@@ -2,11 +2,11 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 class DropdownButtonProps extends IconButtonProps {
-  final Widget iconOpened;
+  final Widget? iconOpened;
 
   const DropdownButtonProps({
-    this.iconOpened = const Icon(Icons.arrow_drop_up, size: 24),
-    Widget iconClosed = const Icon(Icons.arrow_drop_down, size: 24),
+    this.iconOpened,
+    Widget? iconClosed,
     super.isVisible = true,
     super.iconSize,
     super.visualDensity,
@@ -29,6 +29,90 @@ class DropdownButtonProps extends IconButtonProps {
     super.isSelected,
     super.selectedIcon,
   }) : super(icon: iconClosed);
+
+  @override
+  DropdownButtonProps copyWith({
+    double? iconSize,
+    VisualDensity? visualDensity,
+    EdgeInsetsGeometry? padding,
+    AlignmentGeometry? alignment,
+    double? splashRadius,
+    Widget? icon,
+    Widget? iconOpened,
+    Color? focusColor,
+    Color? hoverColor,
+    Color? color,
+    Color? splashColor,
+    Color? highlightColor,
+    Color? disabledColor,
+    MouseCursor? mouseCursor,
+    FocusNode? focusNode,
+    bool? autofocus,
+    String? tooltip,
+    bool? enableFeedback,
+    BoxConstraints? constraints,
+    bool? isVisible,
+    ButtonStyle? style,
+    bool? isSelected,
+    Widget? selectedIcon,
+  }) {
+    return DropdownButtonProps(
+      iconSize: iconSize ?? this.iconSize,
+      visualDensity: visualDensity ?? this.visualDensity,
+      padding: padding ?? this.padding,
+      alignment: alignment ?? this.alignment,
+      splashRadius: splashRadius ?? this.splashRadius,
+      focusColor: focusColor ?? this.focusColor,
+      hoverColor: hoverColor ?? this.hoverColor,
+      color: color ?? this.color,
+      splashColor: splashColor ?? this.splashColor,
+      highlightColor: highlightColor ?? this.highlightColor,
+      disabledColor: disabledColor ?? this.disabledColor,
+      mouseCursor: mouseCursor ?? this.mouseCursor,
+      focusNode: focusNode ?? this.focusNode,
+      autofocus: autofocus ?? this.autofocus,
+      tooltip: tooltip ?? this.tooltip,
+      enableFeedback: enableFeedback ?? this.enableFeedback,
+      constraints: constraints ?? this.constraints,
+      isVisible: isVisible ?? this.isVisible,
+      style: style ?? this.style,
+      isSelected: isSelected ?? this.isSelected,
+      selectedIcon: selectedIcon ?? this.selectedIcon,
+      iconOpened: iconOpened ?? this.iconOpened,
+      iconClosed: icon ?? this.icon,
+    );
+  }
+
+  @override
+  DropdownButtonProps merge(IconButtonProps? other) {
+    super.merge(other);
+    if (other == null) return this;
+
+    return copyWith(
+      iconSize: other.iconSize,
+      visualDensity: other.visualDensity,
+      padding: other.padding,
+      alignment: other.alignment,
+      splashRadius: other.splashRadius,
+      icon: other.icon,
+      focusColor: other.focusColor,
+      hoverColor: other.hoverColor,
+      color: other.color,
+      splashColor: other.splashColor,
+      highlightColor: other.highlightColor,
+      disabledColor: other.disabledColor,
+      mouseCursor: other.mouseCursor,
+      focusNode: other.focusNode,
+      autofocus: other.autofocus,
+      tooltip: other.tooltip,
+      enableFeedback: other.enableFeedback,
+      constraints: other.constraints,
+      isVisible: other.isVisible,
+      style: other.style,
+      isSelected: other.isSelected,
+      selectedIcon: other.selectedIcon,
+    );
+  }
 }
 
 class ClickProps {

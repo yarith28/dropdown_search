@@ -10,6 +10,7 @@ environment:
 
 
 dependencies:
+  cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
 
@@ -17,3 +18,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lints: ^4.0.0
+
+topics:
+  - dropdown
+  - search
+  - form
+  - material
+  - adaptive

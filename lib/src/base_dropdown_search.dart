@@ -2,14 +2,8 @@ import 'dart:async';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_search/src/adaptive/bottom_sheets.dart';
 import 'package:dropdown_search/src/adaptive/modal_bottom_sheet.dart';
-import 'package:dropdown_search/src/properties/adaptive_popup_props.dart';
-import 'package:dropdown_search/src/properties/chip_props.dart';
-import 'package:dropdown_search/src/properties/cupertino_popup_props.dart';
-import 'package:dropdown_search/src/properties/dropdown_props.dart';
-import 'package:dropdown_search/src/properties/infinite_scroll_props.dart';
-import 'package:dropdown_search/src/properties/material_popup_props.dart';
-import 'package:dropdown_search/src/properties/scroll_props.dart';
 import 'package:dropdown_search/src/properties/wrap_props.dart';
+import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
 import 'package:dropdown_search/src/widgets/custom_icon_button.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
@@ -19,10 +13,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'adaptive/dialogs.dart';
-import 'properties/dropdown_suffix_props.dart';
-import 'properties/base_popup_props.dart';
 import 'widgets/custom_scroll_view.dart';
-import 'widgets/dropdown_search_popup.dart';
 import 'adaptive/menu.dart';
 
 typedef DropdownSearchOnFind<T> = FutureOr<List<T>> Function(String filter, LoadProps? loadProps);
@@ -264,17 +255,23 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   final ValueNotifier<List<T>> _selectedItemsNotifier = ValueNotifier([]);
   final ValueNotifier<bool> _isFocused = ValueNotifier(false);
   final _popupStateKey = GlobalKey<DropdownSearchPopupState<T>>();
+  var _uiToApply = UiToApply.material;
 
   @override
   void initState() {
     super.initState();
     _selectedItemsNotifier.value = List.from(widget.selectedItems);
+    _uiToApply = getUiToApply(context, widget.uiMode);
   }
 
   @override
   void didUpdateWidget(BaseDropdownSearch<T> oldWidget) {
     if (!listEquals(oldWidget.selectedItems, widget.selectedItems)) {
       _selectedItemsNotifier.value = List.from(widget.selectedItems);
+    }
+
+    if (widget.uiMode != oldWidget.uiMode) {
+      _uiToApply = getUiToApply(context, widget.uiMode);
     }
 
     ///this code check if we need to refresh the popup widget to update
@@ -317,7 +314,13 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     Widget defaultItemMultiSelectionMode(T item) {
       return CustomChip(
         label: Text(_itemAsString(item)),
-        props: widget.chipProps ?? ChipProps(onDeleted: () => removeItem(item)),
+        props: (widget.chipProps ?? ChipProps()).copyWith(
+          onDeleted: () => removeItem(item),
+          shape: _uiToApply == UiToApply.cupertino
+              ? RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18)))
+              : null,
+          deleteIcon: _uiToApply == UiToApply.cupertino ? Icon(CupertinoIcons.multiply_circle_fill) : null,
+        ),
       );
     }
 
@@ -455,20 +458,27 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     clearButtonPressed() => clear();
     dropdownButtonPressed() => _selectSearchMode();
 
-    if (!widget.suffixProps.dropdownButtonProps.isVisible && !widget.suffixProps.clearButtonProps.isVisible) return null;
+    final dropDownButton = DropdownButtonProps().merge(widget.suffixProps.dropdownButtonProps);
+    final dropDownOpenIcon = Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.chevron_up : Icons.arrow_drop_up);
+    final dropDownClosedIcon = Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.chevron_down : Icons.arrow_drop_down);
+
+    if (!dropDownButton.isVisible && widget.suffixProps.clearButtonProps?.isVisible != true) return null;
 
     return Row(
       textDirection: widget.suffixProps.direction,
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        if (widget.suffixProps.clearButtonProps.isVisible && getSelectedItems.isNotEmpty)
-          CustomIconButton(props: widget.suffixProps.clearButtonProps, onPressed: clearButtonPressed),
-        if (widget.suffixProps.dropdownButtonProps.isVisible)
+        if (widget.suffixProps.clearButtonProps?.isVisible == true && getSelectedItems.isNotEmpty)
           CustomIconButton(
-            props: widget.suffixProps.dropdownButtonProps,
-            icon:
-                isFocused ? widget.suffixProps.dropdownButtonProps.iconOpened : widget.suffixProps.dropdownButtonProps.icon,
+            props: ClearButtonProps().merge(widget.suffixProps.clearButtonProps),
+            onPressed: clearButtonPressed,
+            icon: Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.clear_circled_solid : Icons.clear),
+          ),
+        if (dropDownButton.isVisible)
+          CustomIconButton(
+            props: dropDownButton,
+            icon: isFocused ? dropDownOpenIcon : dropDownClosedIcon,
             onPressed: dropdownButtonPressed,
           ),
       ],

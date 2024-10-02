@@ -57,15 +57,34 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: CupertinoDropdownSearch<String>(
-          items: (filter, loadProps) => ["1", "2", "3", ],
-          selectedItem: "2",
-          popupProps: CupertinoPopupProps.modalBottomSheet(
-            //fit: FlexFit.loose,
-            //constraints: BoxConstraints.loose(height: 400, width: 300),
-            suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["1", "2", "3", "4"]),
-            showSearchBox: true,
-          ),
+        child: Column(
+          children: [
+            CupertinoDropdownSearch<String>.multiSelection(
+              items: (filter, loadProps) => ["1", "2", "3"],
+              selectedItems: ["2",'3'],
+              suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+
+              popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
+
+                //fit: FlexFit.loose,
+                //constraints: BoxConstraints.loose(height: 400, width: 300),
+                suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["1", "2", "3", "4"]),
+                showSearchBox: true,
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 8)),
+            DropdownSearch<String>.multiSelection(
+              items: (filter, loadProps) => ["1", "2", "3"],
+              selectedItems: ["2",'3'],
+              suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+              popupProps: MultiSelectionPopupProps.modalBottomSheet(
+                //fit: FlexFit.loose,
+                //constraints: BoxConstraints.loose(height: 400, width: 300),
+                suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["1", "2", "3", "4"]),
+                showSearchBox: true,
+              ),
+            ),
+          ],
         ),
       ),
     );
