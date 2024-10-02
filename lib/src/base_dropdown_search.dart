@@ -455,32 +455,49 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   ///function that manage Trailing icons(close, dropDown)
   Widget? _manageSuffixIcons() {
-    clearButtonPressed() => clear();
-    dropdownButtonPressed() => _selectSearchMode();
+    Widget? getClearButton() {
+      final props = ClearButtonProps().merge(widget.suffixProps.clearButtonProps);
+      if (widget.suffixProps.clearButtonProps?.isVisible == true && getSelectedItems.isNotEmpty) {
+        return CustomIconButton(
+          props: props,
+          onPressed: () => clear(),
+          icon: props.icon ?? Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.clear_circled_solid : Icons.clear),
+        );
+      }
 
-    final dropDownButton = DropdownButtonProps().merge(widget.suffixProps.dropdownButtonProps);
-    final dropDownOpenIcon = Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.chevron_up : Icons.arrow_drop_up);
-    final dropDownClosedIcon = Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.chevron_down : Icons.arrow_drop_down);
+      return null;
+    }
 
-    if (!dropDownButton.isVisible && widget.suffixProps.clearButtonProps?.isVisible != true) return null;
+    Widget? getDropdownButton() {
+      final dropDownButton = DropdownButtonProps().merge(widget.suffixProps.dropdownButtonProps);
+      final dropDownOpenIcon = dropDownButton.iconOpened ??
+          Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.chevron_up : Icons.arrow_drop_up);
+      final dropDownClosedIcon = dropDownButton.icon ??
+          Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.chevron_down : Icons.arrow_drop_down);
+
+      if (dropDownButton.isVisible) {
+        return CustomIconButton(
+          props: dropDownButton,
+          icon: isFocused ? dropDownOpenIcon : dropDownClosedIcon,
+          onPressed: () => _selectSearchMode(),
+        );
+      }
+
+      return null;
+    }
+
+    final dropdownButton = getDropdownButton();
+    final clearButton = getClearButton();
+
+    if (dropdownButton == null && clearButton == null) return null;
 
     return Row(
       textDirection: widget.suffixProps.direction,
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        if (widget.suffixProps.clearButtonProps?.isVisible == true && getSelectedItems.isNotEmpty)
-          CustomIconButton(
-            props: ClearButtonProps().merge(widget.suffixProps.clearButtonProps),
-            onPressed: clearButtonPressed,
-            icon: Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.clear_circled_solid : Icons.clear),
-          ),
-        if (dropDownButton.isVisible)
-          CustomIconButton(
-            props: dropDownButton,
-            icon: isFocused ? dropDownOpenIcon : dropDownClosedIcon,
-            onPressed: dropdownButtonPressed,
-          ),
+        if (clearButton != null) clearButton,
+        if (dropdownButton != null) dropdownButton,
       ],
     );
   }
