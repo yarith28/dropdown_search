@@ -528,7 +528,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
             CupertinoDialogAction(
               child: Text("Cancel"),
               isDestructiveAction: true,
-              onPressed: () => _popupStateKey.currentState?.closePopup(),
+              onPressed: () => closeDropDownSearch(),
             ),
             if (isMultiSelectionMode)
               CupertinoDialogAction(
@@ -549,7 +549,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
             CupertinoDialogAction(
               child: Text("Cancel"),
               isDestructiveAction: true,
-              onPressed: () => _popupStateKey.currentState?.closePopup(),
+              onPressed: () => closeDropDownSearch(),
             ),
             if (isMultiSelectionMode)
               CupertinoDialogAction(
@@ -611,7 +611,9 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
           isMultiSelectionMode
               ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).modalBottomSheetProps
               : (widget.popupProps as CupertinoPopupProps<T>).modalBottomSheetProps,
-          isMultiSelectionMode ? [CupertinoActionSheetAction(onPressed: () {}, child: Text('OK'))] : null,
+          isMultiSelectionMode
+              ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))]
+              : null,
         );
       case UiMode.adaptive:
         return openAdaptiveModalBottomSheet(
@@ -620,7 +622,9 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
           isMultiSelectionMode
               ? (widget.popupProps as AdaptiveMultiSelectionPopupProps<T>).modalBottomSheetProps
               : (widget.popupProps as AdaptivePopupProps<T>).modalBottomSheetProps,
-          isMultiSelectionMode ? [CupertinoActionSheetAction(onPressed: () {}, child: Text('OK'))] : null,
+          isMultiSelectionMode
+              ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))]
+              : null,
         );
       case UiMode.material:
       default:
@@ -746,7 +750,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   @override
   void dispose() {
-    _popupStateKey.currentState?.closePopup();
+    closeDropDownSearch();
     super.dispose();
   }
 
