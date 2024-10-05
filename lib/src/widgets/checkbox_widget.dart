@@ -1,4 +1,4 @@
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/properties/click_props.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
 import 'package:flutter/material.dart';
 

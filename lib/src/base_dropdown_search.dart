@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_search/src/adaptive/bottom_sheets.dart';
 import 'package:dropdown_search/src/adaptive/modal_bottom_sheet.dart';
+import 'package:dropdown_search/src/properties/click_props.dart';
 import 'package:dropdown_search/src/properties/wrap_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
@@ -456,34 +457,48 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   ///function that manage Trailing icons(clear, dropDown)
   Widget? _manageSuffixIcons() {
     Widget? getClearButton() {
-      final props = ClearButtonProps().merge(widget.suffixProps.clearButtonProps);
-      if (widget.suffixProps.clearButtonProps?.isVisible == true && getSelectedItems.isNotEmpty) {
-        return CustomIconButton(
-          props: props,
-          onPressed: () => clear(),
-          icon: props.icon ?? Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.clear_circled_solid : Icons.clear),
-        );
+      final props = widget.suffixProps.clearButtonProps;
+      if (props == null || !props.isVisible || getSelectedItems.isEmpty) {
+        return null;
       }
-
-      return null;
+      return CustomIconButton(
+        props: props,
+        onPressed: () => clear(),
+        icon: props.icon ?? Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.clear_circled_solid : Icons.clear),
+      );
     }
 
     Widget? getDropdownButton() {
-      final dropDownButton = DropdownButtonProps().merge(widget.suffixProps.dropdownButtonProps);
-      final dropDownOpenIcon = dropDownButton.iconOpened ??
-          Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.chevron_up : Icons.arrow_drop_up);
+      final dropDownButton = widget.suffixProps.dropdownButtonProps ??
+          DropdownButtonProps(
+            animationBuilder: (child, isOpen) {
+              return AnimatedRotation(
+                turns: isOpen ? .5 : 0,
+                duration: Duration(milliseconds: 400),
+                child: child,
+              );
+            },
+          );
+      if (!dropDownButton.isVisible) return null;
+
+      //icon required
       final dropDownClosedIcon = dropDownButton.icon ??
           Icon(_uiToApply == UiToApply.cupertino ? CupertinoIcons.chevron_down : Icons.arrow_drop_down);
 
-      if (dropDownButton.isVisible) {
-        return CustomIconButton(
-          props: dropDownButton,
-          icon: isFocused ? dropDownOpenIcon : dropDownClosedIcon,
-          onPressed: () => _selectSearchMode(),
-        );
-      }
+      final icon = dropDownButton.iconOpened == null
+          ? dropDownClosedIcon
+          : (isFocused ? dropDownButton.iconOpened! : dropDownClosedIcon);
 
-      return null;
+      final button = CustomIconButton(
+        key: ValueKey(isFocused), //useful for AnimatedSwitch uses for example
+        props: dropDownButton,
+        icon: icon,
+        onPressed: () => _selectSearchMode(),
+      );
+
+      if (dropDownButton.animationBuilder != null) return dropDownButton.animationBuilder!(button, isFocused);
+
+      return button;
     }
 
     final dropdownButton = getDropdownButton();
@@ -611,9 +626,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
           isMultiSelectionMode
               ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).modalBottomSheetProps
               : (widget.popupProps as CupertinoPopupProps<T>).modalBottomSheetProps,
-          isMultiSelectionMode
-              ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))]
-              : null,
+          isMultiSelectionMode ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))] : null,
         );
       case UiMode.adaptive:
         return openAdaptiveModalBottomSheet(
@@ -622,9 +635,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
           isMultiSelectionMode
               ? (widget.popupProps as AdaptiveMultiSelectionPopupProps<T>).modalBottomSheetProps
               : (widget.popupProps as AdaptivePopupProps<T>).modalBottomSheetProps,
-          isMultiSelectionMode
-              ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))]
-              : null,
+          isMultiSelectionMode ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))] : null,
         );
       case UiMode.material:
       default:

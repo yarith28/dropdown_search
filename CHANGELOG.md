@@ -13,7 +13,35 @@
           ).animate(animation),
           child: child,
         );
-      },
+      }
+    ```
+    
+  * add new property `animationBuilder` to `DropdownButtonProps`, examples of uses
+   ```dart
+      /* Example 1: animation with only one icon ("iconClosed") like rotation */
+      animationBuilder: (child, isOpen) {
+        return AnimatedRotation(
+          turns: isOpen ? .5 : 0,
+          duration: Duration(milliseconds: 400),
+          child: child,
+        );
+      }
+    ```
+
+    ```dart
+      /* Example 2 : animation with two icons like switch */
+      dropdownButtonProps: DropdownButtonProps(
+        iconClosed: Icon(Icons.arrow_drop_down),
+        iconOpened: Icon(Icons.arrow_drop_up),
+        animationBuilder: (child, isOpen) {
+          return AnimatedSwitcher(
+            switchOutCurve: Curves.easeIn,
+            switchInCurve: Curves.easeIn,
+            duration: Duration(milliseconds: 400),
+            child: child,
+          );
+        },
+      )
     ```
   * add `SuggestionsProps` to `popupProps`
   * add `builder` property for `SuggestionsProps` to override the hole suggestion widget
