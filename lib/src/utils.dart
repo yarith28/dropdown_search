@@ -1,5 +1,22 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+// Value inspected from Xcode 11 & iOS 13.0 Simulator.
+const kCupertinoBorderSide = BorderSide(
+  color: CupertinoDynamicColor.withBrightness(
+    color: Color(0x33000000),
+    darkColor: Color(0x33FFFFFF),
+  ),
+  width: 0.0,
+);
+
+const kCupertinoTextFieldBG = CupertinoDynamicColor.withBrightness(
+  color: CupertinoColors.white,
+  darkColor: CupertinoColors.black,
+);
+
+const kCupertinoBorderRadius = BorderRadius.all(Radius.circular(5));
 
 RelativeRect getPosition(RenderBox dropdown, RenderBox overlay, Size menuSize, MenuAlign? menuAlign) {
   final dropDownX = dropdown.localToGlobal(Offset.zero, ancestor: overlay).dx;
@@ -43,25 +60,27 @@ RelativeRect getPosition(RenderBox dropdown, RenderBox overlay, Size menuSize, M
 
 enum UiToApply { cupertino, material }
 
-UiToApply getUiToApply(BuildContext context, UiMode uiMode) {
-  switch (uiMode) {
-    case UiMode.cupertino:
-      return UiToApply.cupertino;
-    case UiMode.adaptive:
-      final ThemeData theme = Theme.of(context);
-      switch (theme.platform) {
-        case TargetPlatform.iOS:
-        case TargetPlatform.macOS:
-          return UiToApply.cupertino;
-        case TargetPlatform.android:
-        case TargetPlatform.fuchsia:
-        case TargetPlatform.linux:
-        case TargetPlatform.windows:
-        default:
-          return UiToApply.material;
-      }
-    case UiMode.material:
-    default:
-      return UiToApply.material;
+extension PlatformUi on BuildContext {
+  UiToApply getUiToApply(UiMode uiMode) {
+    switch (uiMode) {
+      case UiMode.cupertino:
+        return UiToApply.cupertino;
+      case UiMode.adaptive:
+        final ThemeData theme = Theme.of(this);
+        switch (theme.platform) {
+          case TargetPlatform.iOS:
+          case TargetPlatform.macOS:
+            return UiToApply.cupertino;
+          case TargetPlatform.android:
+          case TargetPlatform.fuchsia:
+          case TargetPlatform.linux:
+          case TargetPlatform.windows:
+          default:
+            return UiToApply.material;
+        }
+      case UiMode.material:
+      default:
+        return UiToApply.material;
+    }
   }
 }

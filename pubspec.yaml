@@ -21,7 +21,7 @@ dev_dependencies:
 
 topics:
   - dropdown
-  - search
+  - autocomplete
   - form
   - material
   - adaptive

@@ -1,21 +1,19 @@
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/material.dart';
+import 'package:dropdown_search/src/properties/cupertino_text_field_props.dart';
+import 'package:flutter/cupertino.dart';
 
-class CustomTextFields extends StatelessWidget {
-  final TextFieldProps props;
+class CustomCupertinoTextFields extends StatelessWidget {
+  final CupertinoTextFieldProps props;
   final TextEditingController? controller;
 
-  const CustomTextFields({super.key, required this.props, this.controller});
+  const CustomCupertinoTextFields({super.key, required this.props, this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return CupertinoTextField(
       controller: controller,
-      groupId: props.groupId,
       onChanged: props.onChanged,
       onEditingComplete: props.onEditingComplete,
       onSubmitted: props.onSubmitted,
-      onTapAlwaysCalled: props.onTapAlwaysCalled,
       enableIMEPersonalizedLearning: props.enableIMEPersonalizedLearning,
       clipBehavior: props.clipBehavior,
       style: props.style,
@@ -43,7 +41,6 @@ class CustomTextFields extends StatelessWidget {
       expands: props.expands,
       maxLengthEnforcement: props.maxLengthEnforcement,
       maxLength: props.maxLength,
-      onAppPrivateCommand: props.onAppPrivateCommand,
       inputFormatters: props.inputFormatters,
       enabled: props.enabled,
       cursorWidth: props.cursorWidth,
@@ -58,23 +55,27 @@ class CustomTextFields extends StatelessWidget {
       enableInteractiveSelection: props.enableInteractiveSelection,
       selectionControls: props.selectionControls,
       onTap: props.onTap,
-      mouseCursor: props.mouseCursor,
-      buildCounter: props.buildCounter,
       scrollController: props.scrollController,
       scrollPhysics: props.scrollPhysics,
       autofillHints: props.autofillHints,
       restorationId: props.restorationId,
-      canRequestFocus: props.canRequestFocus,
-      statesController: props.statesController,
       contentInsertionConfiguration: props.contentInsertionConfiguration,
-      cursorErrorColor: props.cursorErrorColor,
       cursorOpacityAnimates: props.cursorOpacityAnimates,
-      ignorePointers: props.ignorePointers,
       magnifierConfiguration: props.magnifierConfiguration,
       onTapOutside: props.onTapOutside,
       scribbleEnabled: props.scribbleEnabled,
       undoController: props.undoController,
       spellCheckConfiguration: props.spellCheckConfiguration,
+      padding: props.padding,
+      clearButtonMode: props.clearButtonMode,
+      clearButtonSemanticLabel: props.clearButtonSemanticLabel,
+      groupId: props.groupId,
+      placeholder: props.placeholder,
+      placeholderStyle: props.placeholderStyle,
+      prefix: props.prefix,
+      prefixMode: props.prefixMode,
+      suffix: props.suffix,
+      suffixMode: props.suffixMode,
     );
   }
 }

@@ -1,19 +1,34 @@
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:dropdown_search/src/properties/base_text_field_props.dart';
+import 'package:dropdown_search/src/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-///check [TextField] properties
-class TextFieldProps extends BaseTextFieldProps {
+///check [CupertinoTextField] properties
+
+const Border _kDefaultRoundedBorder = Border(
+  top: kCupertinoBorderSide,
+  bottom: kCupertinoBorderSide,
+  left: kCupertinoBorderSide,
+  right: kCupertinoBorderSide,
+);
+
+const BoxDecoration _kDefaultRoundedBorderDecoration = BoxDecoration(
+  color: kCupertinoTextFieldBG,
+  border: _kDefaultRoundedBorder,
+  borderRadius: kCupertinoBorderRadius,
+);
+
+class CupertinoTextFieldProps extends BaseTextFieldProps {
   final FocusNode? focusNode;
   final bool enableIMEPersonalizedLearning;
   final Clip clipBehavior;
   final SmartDashesType? smartDashesType;
   final SmartQuotesType? smartQuotesType;
   final EditableTextContextMenuBuilder? contextMenuBuilder;
-  final InputDecoration decoration;
+  final BoxDecoration? decoration;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final TextCapitalization textCapitalization;
@@ -34,12 +49,11 @@ class TextFieldProps extends BaseTextFieldProps {
   final bool? showCursor;
   final int? maxLength;
   final MaxLengthEnforcement? maxLengthEnforcement;
-  final AppPrivateCommandCallback? onAppPrivateCommand;
   final List<TextInputFormatter>? inputFormatters;
-  final bool? enabled;
+  final bool enabled;
   final double cursorWidth;
   final double? cursorHeight;
-  final Radius? cursorRadius;
+  final Radius cursorRadius;
   final Color? cursorColor;
   final ui.BoxHeightStyle selectionHeightStyle;
   final ui.BoxWidthStyle selectionWidthStyle;
@@ -49,18 +63,12 @@ class TextFieldProps extends BaseTextFieldProps {
   final TextSelectionControls? selectionControls;
   final DragStartBehavior dragStartBehavior;
   final GestureTapCallback? onTap;
-  final MouseCursor? mouseCursor;
-  final InputCounterWidgetBuilder? buildCounter;
   final ScrollPhysics? scrollPhysics;
   final ScrollController? scrollController;
   final Iterable<String>? autofillHints;
   final String? restorationId;
-  final bool canRequestFocus;
-  final WidgetStatesController? statesController;
   final ContentInsertionConfiguration? contentInsertionConfiguration;
-  final Color? cursorErrorColor;
-  final bool? cursorOpacityAnimates;
-  final bool? ignorePointers;
+  final bool cursorOpacityAnimates;
   final TextMagnifierConfiguration? magnifierConfiguration;
   final TapRegionCallback? onTapOutside;
   final bool scribbleEnabled;
@@ -69,18 +77,38 @@ class TextFieldProps extends BaseTextFieldProps {
   final ValueChanged<String>? onChanged;
   final VoidCallback? onEditingComplete;
   final ValueChanged<String>? onSubmitted;
-  final bool onTapAlwaysCalled;
-  final Object groupId;
 
-  const TextFieldProps({
+  final EdgeInsetsGeometry padding;
+  final OverlayVisibilityMode clearButtonMode;
+  final String? clearButtonSemanticLabel;
+  final Object groupId;
+  final String? placeholder;
+  final TextStyle? placeholderStyle;
+  final Widget? prefix;
+  final OverlayVisibilityMode prefixMode;
+  final Widget? suffix;
+  final OverlayVisibilityMode suffixMode;
+
+  const CupertinoTextFieldProps({
     this.groupId = EditableText,
+    this.padding = const EdgeInsets.all(7.0),
+    this.clearButtonMode = OverlayVisibilityMode.never,
+    this.clearButtonSemanticLabel,
+    this.placeholder,
+    this.placeholderStyle = const TextStyle(
+      fontWeight: FontWeight.w400,
+      color: CupertinoColors.placeholderText,
+    ),
+    this.prefix,
+    this.prefixMode = OverlayVisibilityMode.always,
+    this.suffix,
+    this.suffixMode = OverlayVisibilityMode.always,
     super.controller,
     super.containerBuilder,
     this.onSubmitted,
-    this.onTapAlwaysCalled = false,
     this.onEditingComplete,
     this.onChanged,
-    this.decoration = const InputDecoration(border: OutlineInputBorder()),
+    this.decoration = _kDefaultRoundedBorderDecoration,
     this.keyboardType,
     this.textInputAction,
     this.textCapitalization = TextCapitalization.none,
@@ -104,12 +132,11 @@ class TextFieldProps extends BaseTextFieldProps {
     this.expands = false,
     this.maxLength,
     this.maxLengthEnforcement,
-    this.onAppPrivateCommand,
     this.inputFormatters,
-    this.enabled,
+    this.enabled = true,
     this.cursorWidth = 2.0,
     this.cursorHeight,
-    this.cursorRadius,
+    this.cursorRadius = const Radius.circular(2.0),
     this.cursorColor,
     this.selectionHeightStyle = ui.BoxHeightStyle.tight,
     this.selectionWidthStyle = ui.BoxWidthStyle.tight,
@@ -119,8 +146,6 @@ class TextFieldProps extends BaseTextFieldProps {
     this.enableInteractiveSelection = true,
     this.selectionControls,
     this.onTap,
-    this.mouseCursor,
-    this.buildCounter,
     this.scrollController,
     this.scrollPhysics,
     this.autofillHints,
@@ -128,12 +153,8 @@ class TextFieldProps extends BaseTextFieldProps {
     this.clipBehavior = Clip.hardEdge,
     this.enableIMEPersonalizedLearning = true,
     this.focusNode,
-    this.canRequestFocus = true,
-    this.statesController,
     this.contentInsertionConfiguration,
-    this.cursorErrorColor,
-    this.cursorOpacityAnimates,
-    this.ignorePointers,
+    this.cursorOpacityAnimates = true,
     this.magnifierConfiguration,
     this.onTapOutside,
     this.scribbleEnabled = true,
@@ -142,7 +163,7 @@ class TextFieldProps extends BaseTextFieldProps {
   });
 
   static Widget _defaultContextMenuBuilder(BuildContext context, EditableTextState editableTextState) {
-    return AdaptiveTextSelectionToolbar.editableText(
+    return CupertinoAdaptiveTextSelectionToolbar.editableText(
       editableTextState: editableTextState,
     );
   }

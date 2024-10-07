@@ -47,9 +47,11 @@
   * add `builder` property for `SuggestionsProps` to override the hole suggestion widget
   * add properties to `scrollView` and `wrap` widget for selected items in multiSelection mode
   * `Chips` are fully customizable in multiSelection and suggestions
+  * replace `padding` in `searchFieldProps` with `containerBuilder`
 
 * #### Breaking changes
   * `suggestedItemsProps` is placed inside `SuggestionsProps`
+  * `Semantics` is removed from searchBox, to add it use `containerBuilder` like this you have full access to Semantic properties.
 
 ## [6.0.1] - 2024.09.21
 * #### New Feature:

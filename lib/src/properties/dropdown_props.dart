@@ -37,7 +37,7 @@ class DropdownButtonProps extends IconButtonProps {
 }
 
 class DropDownDecoratorProps {
-  final InputDecoration decoration;
+  final InputDecoration? decoration;
   final TextStyle? baseStyle;
   final TextAlign? textAlign;
   final TextAlignVertical? textAlignVertical;
@@ -45,10 +45,7 @@ class DropDownDecoratorProps {
   final bool isHovering;
 
   const DropDownDecoratorProps({
-    this.decoration = const InputDecoration(
-      contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-      border: OutlineInputBorder(),
-    ),
+    this.decoration,
     this.baseStyle,
     this.textAlign,
     this.textAlignVertical,

@@ -30,13 +30,13 @@ class SuggestionsProps<T> {
 class SuggestedItemProps<T> {
   final ContainerBuilder? containerBuilder;
   final ScrollProps scrollProps;
-  final ChipProps chipProps;
+  final ChipProps? chipProps;
   final WrapProps wrapProps;
 
   const SuggestedItemProps({
     this.containerBuilder,
+    this.chipProps,
     this.wrapProps = const WrapProps(runSpacing: 4, spacing: 4),
-    this.chipProps = const ChipProps(),
     this.scrollProps = const ScrollProps(scrollDirection: Axis.horizontal),
   });
 }

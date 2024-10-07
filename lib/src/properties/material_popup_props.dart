@@ -2,12 +2,8 @@ import 'package:dropdown_search/src/base_dropdown_search.dart';
 import 'package:dropdown_search/src/properties/base_popup_props.dart';
 import 'package:dropdown_search/src/properties/bottom_sheet_props.dart';
 import 'package:dropdown_search/src/properties/dialog_props.dart';
-import 'package:dropdown_search/src/properties/dropdown_props.dart';
-import 'package:dropdown_search/src/properties/list_view_props.dart';
 import 'package:dropdown_search/src/properties/menu_props.dart';
 import 'package:dropdown_search/src/properties/modal_bottom_sheet_props.dart';
-import 'package:dropdown_search/src/properties/scrollbar_props.dart';
-import 'package:dropdown_search/src/properties/suggestions_props.dart';
 import 'package:dropdown_search/src/properties/text_field_props.dart';
 import 'package:flutter/material.dart';
 
@@ -26,8 +22,8 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
 
   const MultiSelectionPopupProps.menu({
     this.menuProps = const MenuProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -58,12 +54,12 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
-        super(mode: PopupMode.menu);
+        super(mode: PopupMode.menu, searchFieldProps: searchFieldProps);
 
   const MultiSelectionPopupProps.dialog({
     this.dialogProps = const DialogProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -98,12 +94,12 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : bottomSheetProps = const BottomSheetProps(),
         menuProps = const MenuProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
-        super(mode: PopupMode.dialog);
+        super(mode: PopupMode.dialog, searchFieldProps: searchFieldProps);
 
   const MultiSelectionPopupProps.bottomSheet({
     this.bottomSheetProps = const BottomSheetProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -134,12 +130,12 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const MenuProps(),
         dialogProps = const DialogProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
-        super(mode: PopupMode.bottomSheet);
+        super(mode: PopupMode.bottomSheet, searchFieldProps: searchFieldProps);
 
   const MultiSelectionPopupProps.modalBottomSheet({
     this.modalBottomSheetProps = const ModalBottomSheetProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -170,7 +166,7 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const MenuProps(),
         bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
-        super(mode: PopupMode.modalBottomSheet);
+        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
 }
 
 class PopupProps<T> extends BasePopupProps<T> {
@@ -188,8 +184,8 @@ class PopupProps<T> extends BasePopupProps<T> {
 
   const PopupProps.menu({
     this.menuProps = const MenuProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -214,12 +210,12 @@ class PopupProps<T> extends BasePopupProps<T> {
   })  : bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
-        super(mode: PopupMode.menu);
+        super(mode: PopupMode.menu, searchFieldProps: searchFieldProps);
 
   const PopupProps.dialog({
     this.dialogProps = const DialogProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit = FlexFit.tight,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -248,12 +244,12 @@ class PopupProps<T> extends BasePopupProps<T> {
   })  : bottomSheetProps = const BottomSheetProps(),
         menuProps = const MenuProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
-        super(mode: PopupMode.dialog);
+        super(mode: PopupMode.dialog, searchFieldProps: searchFieldProps);
 
   const PopupProps.modalBottomSheet({
     this.bottomSheetProps = const BottomSheetProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit = FlexFit.tight,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -278,12 +274,12 @@ class PopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const MenuProps(),
         dialogProps = const DialogProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
-        super(mode: PopupMode.bottomSheet);
+        super(mode: PopupMode.bottomSheet, searchFieldProps: searchFieldProps);
 
   const PopupProps.bottomSheet({
     this.modalBottomSheetProps = const ModalBottomSheetProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit = FlexFit.tight,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -308,5 +304,5 @@ class PopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const MenuProps(),
         bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
-        super(mode: PopupMode.modalBottomSheet);
+        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
 }

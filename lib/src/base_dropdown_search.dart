@@ -262,7 +262,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   void initState() {
     super.initState();
     _selectedItemsNotifier.value = List.from(widget.selectedItems);
-    _uiToApply = getUiToApply(context, widget.uiMode);
+    _uiToApply = context.getUiToApply(widget.uiMode);
   }
 
   @override
@@ -272,7 +272,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     }
 
     if (widget.uiMode != oldWidget.uiMode) {
-      _uiToApply = getUiToApply(context, widget.uiMode);
+      _uiToApply = context.getUiToApply(widget.uiMode);
     }
 
     ///this code check if we need to refresh the popup widget to update
@@ -315,13 +315,15 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     Widget defaultItemMultiSelectionMode(T item) {
       return CustomChip(
         label: Text(_itemAsString(item)),
-        props: (widget.chipProps ?? ChipProps()).copyWith(
+        props: ChipProps(
           onDeleted: () => removeItem(item),
           shape: _uiToApply == UiToApply.cupertino
               ? RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18)))
               : null,
+          padding: const EdgeInsets.all(0),
+          selected: true,
           deleteIcon: _uiToApply == UiToApply.cupertino ? Icon(CupertinoIcons.multiply_circle_fill) : null,
-        ),
+        ).merge(widget.chipProps),
       );
     }
 
@@ -416,27 +418,50 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
           });
         }
         return ValueListenableBuilder<bool>(
-            valueListenable: _isFocused,
-            builder: (context, isFocused, w) {
-              return InputDecorator(
-                baseStyle: _getBaseTextStyle(),
-                textAlign: widget.decoratorProps.textAlign,
-                textAlignVertical: widget.decoratorProps.textAlignVertical,
-                isEmpty: getSelectedItems.isEmpty,
-                expands: widget.decoratorProps.expands,
-                isHovering: widget.decoratorProps.isHovering,
-                isFocused: isFocused,
-                decoration: _manageDropdownDecoration(state),
-                child: _defaultSelectedItemWidget(),
-              );
-            });
+          valueListenable: _isFocused,
+          builder: (context, isFocused, w) {
+            return InputDecorator(
+              baseStyle: _getBaseTextStyle(),
+              textAlign: widget.decoratorProps.textAlign,
+              textAlignVertical: widget.decoratorProps.textAlignVertical,
+              isEmpty: getSelectedItems.isEmpty,
+              expands: widget.decoratorProps.expands,
+              isHovering: widget.decoratorProps.isHovering,
+              isFocused: isFocused,
+              decoration: _manageDropdownDecoration(state),
+              child: _defaultSelectedItemWidget(),
+            );
+          },
+        );
       },
     );
   }
 
   ///manage dropdownSearch field decoration
   InputDecoration _manageDropdownDecoration(FormFieldState state) {
-    return widget.decoratorProps.decoration.applyDefaults(Theme.of(state.context).inputDecorationTheme).copyWith(
+    final cupertinoBorder = OutlineInputBorder(
+      borderRadius: kCupertinoBorderRadius,
+      borderSide: kCupertinoBorderSide,
+    );
+
+    final cupertinoDecoration = InputDecoration(
+      border: cupertinoBorder,
+      enabledBorder: cupertinoBorder,
+      focusedBorder: cupertinoBorder,
+      filled: true,
+      fillColor: kCupertinoTextFieldBG,
+      hoverColor: kCupertinoTextFieldBG,
+      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+    );
+
+    final materialDefaultDecoration = const InputDecoration(
+      contentPadding: EdgeInsets.fromLTRB(12, 4, 12, 4),
+      border: OutlineInputBorder(),
+    );
+
+    final decoration = widget.decoratorProps.decoration ??
+        (_uiToApply == UiToApply.cupertino ? cupertinoDecoration : materialDefaultDecoration);
+    return decoration.applyDefaults(Theme.of(state.context).inputDecorationTheme).copyWith(
           enabled: widget.enabled,
           suffixIcon: _manageSuffixIcons(),
           errorText: state.errorText,
@@ -531,135 +556,87 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   ///open dialog
   Future _openSelectDialog() {
-    switch (widget.uiMode) {
-      case UiMode.cupertino:
-        return openCupertinoDialog(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).dialogProps
-              : (widget.popupProps as CupertinoPopupProps<T>).dialogProps,
-          [
+    if (_uiToApply == UiToApply.cupertino) {
+      return openCupertinoDialog(
+        context,
+        _popupWidgetInstance(),
+        isMultiSelectionMode
+            ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).dialogProps
+            : (widget.popupProps as CupertinoPopupProps<T>).dialogProps,
+        [
+          CupertinoDialogAction(
+            child: Text("Cancel"),
+            isDestructiveAction: true,
+            onPressed: () => closeDropDownSearch(),
+          ),
+          if (isMultiSelectionMode)
             CupertinoDialogAction(
-              child: Text("Cancel"),
-              isDestructiveAction: true,
-              onPressed: () => closeDropDownSearch(),
+              child: Text("OK"),
+              isDefaultAction: true,
+              onPressed: () => _popupStateKey.currentState?.onValidate(),
             ),
-            if (isMultiSelectionMode)
-              CupertinoDialogAction(
-                child: Text("OK"),
-                isDefaultAction: true,
-                onPressed: () => _popupStateKey.currentState?.onValidate(),
-              ),
-          ],
-        );
-      case UiMode.adaptive:
-        return openAdaptiveDialog(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as AdaptiveMultiSelectionPopupProps<T>).dialogProps
-              : (widget.popupProps as AdaptivePopupProps<T>).dialogProps,
-          [
-            CupertinoDialogAction(
-              child: Text("Cancel"),
-              isDestructiveAction: true,
-              onPressed: () => closeDropDownSearch(),
-            ),
-            if (isMultiSelectionMode)
-              CupertinoDialogAction(
-                child: Text("OK"),
-                isDefaultAction: true,
-                onPressed: () => _popupStateKey.currentState?.onValidate(),
-              ),
-          ],
-        );
-      case UiMode.material:
-      default:
-        return openMaterialDialog(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as MultiSelectionPopupProps<T>).dialogProps
-              : (widget.popupProps as PopupProps<T>).dialogProps,
-        );
+        ],
+      );
     }
+
+    return openMaterialDialog(
+      context,
+      _popupWidgetInstance(),
+      isMultiSelectionMode
+          ? (widget.popupProps as MultiSelectionPopupProps<T>).dialogProps
+          : (widget.popupProps as PopupProps<T>).dialogProps,
+    );
   }
 
   Future _openBottomSheet() {
-    switch (widget.uiMode) {
-      case UiMode.cupertino:
-        return openCupertinoBottomSheet(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).bottomSheetProps
-              : (widget.popupProps as CupertinoPopupProps<T>).bottomSheetProps,
-        );
-      case UiMode.adaptive:
-        return openAdaptiveBottomSheet(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as AdaptiveMultiSelectionPopupProps<T>).bottomSheetProps
-              : (widget.popupProps as AdaptivePopupProps<T>).bottomSheetProps,
-        );
-      case UiMode.material:
-      default:
-        return openMaterialBottomSheet(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as MultiSelectionPopupProps<T>).bottomSheetProps
-              : (widget.popupProps as PopupProps<T>).bottomSheetProps,
-        );
+    if (_uiToApply == UiToApply.cupertino) {
+      return openCupertinoBottomSheet(
+        context,
+        _popupWidgetInstance(),
+        isMultiSelectionMode
+            ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).bottomSheetProps
+            : (widget.popupProps as CupertinoPopupProps<T>).bottomSheetProps,
+      );
     }
+
+    return openMaterialBottomSheet(
+      context,
+      _popupWidgetInstance(),
+      isMultiSelectionMode
+          ? (widget.popupProps as MultiSelectionPopupProps<T>).bottomSheetProps
+          : (widget.popupProps as PopupProps<T>).bottomSheetProps,
+    );
   }
 
   ///open BottomSheet (Dialog mode)
   Future _openModalBottomSheet() {
-    switch (widget.uiMode) {
-      case UiMode.cupertino:
-        return openCupertinoModalBottomSheet(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).modalBottomSheetProps
-              : (widget.popupProps as CupertinoPopupProps<T>).modalBottomSheetProps,
-          isMultiSelectionMode ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))] : null,
-        );
-      case UiMode.adaptive:
-        return openAdaptiveModalBottomSheet(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as AdaptiveMultiSelectionPopupProps<T>).modalBottomSheetProps
-              : (widget.popupProps as AdaptivePopupProps<T>).modalBottomSheetProps,
-          isMultiSelectionMode ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))] : null,
-        );
-      case UiMode.material:
-      default:
-        return openMaterialModalBottomSheet(
-          context,
-          _popupWidgetInstance(),
-          isMultiSelectionMode
-              ? (widget.popupProps as MultiSelectionPopupProps<T>).modalBottomSheetProps
-              : (widget.popupProps as PopupProps<T>).modalBottomSheetProps,
-        );
+    if (_uiToApply == UiToApply.cupertino) {
+      return openCupertinoModalBottomSheet(
+        context,
+        _popupWidgetInstance(),
+        isMultiSelectionMode
+            ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).modalBottomSheetProps
+            : (widget.popupProps as CupertinoPopupProps<T>).modalBottomSheetProps,
+        isMultiSelectionMode ? [CupertinoActionSheetAction(onPressed: () => popupOnValidate(), child: Text('OK'))] : null,
+      );
     }
+
+    return openMaterialModalBottomSheet(
+      context,
+      _popupWidgetInstance(),
+      isMultiSelectionMode
+          ? (widget.popupProps as MultiSelectionPopupProps<T>).modalBottomSheetProps
+          : (widget.popupProps as PopupProps<T>).modalBottomSheetProps,
+    );
   }
 
   ///openMenu
   Future _openMenu() {
     dynamic menuProps = widget.popupProps;
-    if (widget.uiMode == UiMode.cupertino) {
+    if (_uiToApply == UiToApply.cupertino) {
       menuProps = isMultiSelectionMode
           ? widget.popupProps as CupertinoMultiSelectionPopupProps<T>
           : widget.popupProps as CupertinoPopupProps<T>;
-    } else if (widget.uiMode == UiMode.adaptive) {
-      menuProps = isMultiSelectionMode
-          ? widget.popupProps as AdaptiveMultiSelectionPopupProps<T>
-          : widget.popupProps as AdaptivePopupProps<T>;
     } else {
       menuProps =
           isMultiSelectionMode ? widget.popupProps as MultiSelectionPopupProps<T> : widget.popupProps as PopupProps<T>;

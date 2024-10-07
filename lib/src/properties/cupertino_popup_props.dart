@@ -1,9 +1,5 @@
-import 'package:dropdown_search/src/base_dropdown_search.dart';
-import 'package:dropdown_search/src/properties/base_popup_props.dart';
-import 'package:dropdown_search/src/properties/bottom_sheet_props.dart';
-import 'package:dropdown_search/src/properties/dialog_props.dart';
-import 'package:dropdown_search/src/properties/menu_props.dart';
-import 'package:dropdown_search/src/properties/modal_bottom_sheet_props.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/properties/cupertino_text_field_props.dart';
 import 'package:flutter/material.dart';
 
 class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
@@ -21,8 +17,8 @@ class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
 
   const CupertinoMultiSelectionPopupProps.menu({
     this.menuProps = const CupertinoMenuProps(),
+    CupertinoTextFieldProps searchFieldProps = const CupertinoTextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -53,12 +49,12 @@ class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : bottomSheetProps = const CupertinoBottomSheetProps(),
         dialogProps = const CupertinoDialogProps(),
         modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
-        super(mode: PopupMode.menu);
+        super(mode: PopupMode.menu, searchFieldProps: searchFieldProps);
 
   const CupertinoMultiSelectionPopupProps.dialog({
     this.dialogProps = const CupertinoDialogProps(),
+    CupertinoTextFieldProps searchFieldProps = const CupertinoTextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -89,12 +85,12 @@ class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : bottomSheetProps = const CupertinoBottomSheetProps(),
         menuProps = const CupertinoMenuProps(),
         modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
-        super(mode: PopupMode.dialog);
+        super(mode: PopupMode.dialog, searchFieldProps: searchFieldProps);
 
   const CupertinoMultiSelectionPopupProps.bottomSheet({
     this.bottomSheetProps = const CupertinoBottomSheetProps(),
+    CupertinoTextFieldProps searchFieldProps = const CupertinoTextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -125,12 +121,12 @@ class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const CupertinoMenuProps(),
         dialogProps = const CupertinoDialogProps(),
         modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
-        super(mode: PopupMode.bottomSheet);
+        super(mode: PopupMode.bottomSheet, searchFieldProps: searchFieldProps);
 
   const CupertinoMultiSelectionPopupProps.modalBottomSheet({
     this.modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
+    CupertinoTextFieldProps searchFieldProps = const CupertinoTextFieldProps(),
     super.fit = FlexFit.tight,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -161,7 +157,7 @@ class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const CupertinoMenuProps(),
         bottomSheetProps = const CupertinoBottomSheetProps(),
         dialogProps = const CupertinoDialogProps(),
-        super(mode: PopupMode.modalBottomSheet);
+        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
 }
 
 class CupertinoPopupProps<T> extends BasePopupProps<T> {
@@ -179,8 +175,8 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
 
   const CupertinoPopupProps.menu({
     this.menuProps = const CupertinoMenuProps(),
+    CupertinoTextFieldProps searchFieldProps = const CupertinoTextFieldProps(),
     super.fit,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -205,12 +201,12 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
   })  : bottomSheetProps = const CupertinoBottomSheetProps(),
         dialogProps = const CupertinoDialogProps(),
         modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
-        super(mode: PopupMode.menu);
+        super(mode: PopupMode.menu, searchFieldProps: searchFieldProps);
 
   const CupertinoPopupProps.dialog({
     this.dialogProps = const CupertinoDialogProps(),
+    CupertinoTextFieldProps searchFieldProps = const CupertinoTextFieldProps(),
     super.fit = FlexFit.tight,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -235,12 +231,12 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
   })  : bottomSheetProps = const CupertinoBottomSheetProps(),
         menuProps = const CupertinoMenuProps(),
         modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
-        super(mode: PopupMode.dialog);
+        super(mode: PopupMode.dialog, searchFieldProps: searchFieldProps);
 
   const CupertinoPopupProps.modalBottomSheet({
     this.modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
+    CupertinoTextFieldProps searchFieldProps = const CupertinoTextFieldProps(),
     super.fit = FlexFit.tight,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -265,12 +261,12 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const CupertinoMenuProps(),
         dialogProps = const CupertinoDialogProps(),
         bottomSheetProps = const CupertinoBottomSheetProps(),
-        super(mode: PopupMode.modalBottomSheet);
+        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
 
   const CupertinoPopupProps.bottomSheet({
     this.bottomSheetProps = const CupertinoBottomSheetProps(),
+    CupertinoTextFieldProps searchFieldProps = const CupertinoTextFieldProps(),
     super.fit = FlexFit.tight,
-    super.searchFieldProps,
     super.suggestionsProps,
     super.scrollbarProps,
     super.listViewProps,
@@ -295,5 +291,5 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const CupertinoMenuProps(),
         modalBottomSheetProps = const CupertinoModalBottomSheetProps(),
         dialogProps = const CupertinoDialogProps(),
-        super(mode: PopupMode.bottomSheet);
+        super(mode: PopupMode.bottomSheet, searchFieldProps: searchFieldProps);
 }

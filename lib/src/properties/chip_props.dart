@@ -5,8 +5,8 @@ class ChipProps {
   final Widget? avatar;
   final TextStyle? labelStyle;
   final EdgeInsetsGeometry? labelPadding;
-  final bool selected;
-  final bool isEnabled;
+  final bool? selected;
+  final bool? isEnabled;
   final ValueChanged<bool>? onSelected;
   final Widget? deleteIcon;
   final VoidCallback? onDeleted;
@@ -43,8 +43,8 @@ class ChipProps {
     this.avatar,
     this.labelStyle,
     this.labelPadding,
-    this.selected = true,
-    this.isEnabled = true,
+    this.selected,
+    this.isEnabled,
     this.onSelected,
     this.deleteIcon,
     this.onDeleted,
@@ -70,7 +70,7 @@ class ChipProps {
     this.surfaceTintColor,
     this.iconTheme,
     this.selectedShadowColor,
-    this.showCheckmark = false,
+    this.showCheckmark,
     this.checkmarkColor,
     this.avatarBorder = const CircleBorder(),
     this.avatarBoxConstraints,
@@ -153,6 +153,49 @@ class ChipProps {
       deleteIconBoxConstraints: deleteIconBoxConstraints ?? this.deleteIconBoxConstraints,
       chipAnimationStyle: chipAnimationStyle ?? this.chipAnimationStyle,
       color: color ?? this.color,
+    );
+  }
+
+  ChipProps merge(ChipProps? other) {
+    if (other == null) return this;
+
+    return copyWith(
+      avatar: other.avatar ?? avatar,
+      labelStyle: other.labelStyle ?? labelStyle,
+      labelPadding: other.labelPadding ?? labelPadding,
+      selected: other.selected ?? selected,
+      isEnabled: other.isEnabled ?? isEnabled,
+      onSelected: other.onSelected ?? onSelected,
+      deleteIcon: other.deleteIcon ?? deleteIcon,
+      onDeleted: other.onDeleted ?? onDeleted,
+      deleteIconColor: other.deleteIconColor ?? deleteIconColor,
+      deleteButtonTooltipMessage: other.deleteButtonTooltipMessage ?? deleteButtonTooltipMessage,
+      onPressed: other.onPressed ?? onPressed,
+      pressElevation: other.pressElevation ?? pressElevation,
+      disabledColor: other.disabledColor ?? disabledColor,
+      selectedColor: other.selectedColor ?? selectedColor,
+      tooltip: other.tooltip ?? tooltip,
+      side: other.side ?? side,
+      shape: other.shape ?? shape,
+      clipBehavior: other.clipBehavior,
+      focusNode: other.focusNode ?? focusNode,
+      autofocus: other.autofocus,
+      backgroundColor: other.backgroundColor ?? backgroundColor,
+      padding: other.padding ?? padding,
+      visualDensity: other.visualDensity ?? visualDensity,
+      materialTapTargetSize: other.materialTapTargetSize ?? materialTapTargetSize,
+      elevation: other.elevation ?? elevation,
+      shadowColor: other.shadowColor ?? shadowColor,
+      surfaceTintColor: other.surfaceTintColor ?? surfaceTintColor,
+      selectedShadowColor: other.selectedShadowColor ?? selectedShadowColor,
+      showCheckmark: other.showCheckmark ?? showCheckmark,
+      checkmarkColor: other.checkmarkColor ?? checkmarkColor,
+      avatarBorder: other.avatarBorder,
+      iconTheme: other.iconTheme ?? iconTheme,
+      avatarBoxConstraints: other.avatarBoxConstraints ?? avatarBoxConstraints,
+      deleteIconBoxConstraints: other.deleteIconBoxConstraints ?? deleteIconBoxConstraints,
+      chipAnimationStyle: other.chipAnimationStyle ?? chipAnimationStyle,
+      color: other.color ?? color,
     );
   }
 }

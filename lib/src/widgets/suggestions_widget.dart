@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_search/src/properties/suggestions_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
@@ -64,7 +65,7 @@ class SuggestionsWidget<T> extends StatelessWidget {
           final isSelected = isSelectedItemFn(s);
           return CustomChip(
             label: Text(itemAsString(s)),
-            props: lItemProps.chipProps.copyWith(
+            props: ChipProps(
               onPressed: onClick != null && isEnabled ? () => onClick!(s) : null,
               isEnabled: isEnabled,
               selected: isSelected,
@@ -72,7 +73,7 @@ class SuggestionsWidget<T> extends StatelessWidget {
               shape: uiToApply == UiToApply.cupertino
                   ? RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18)))
                   : null,
-            ),
+            ).merge(lItemProps.chipProps),
           );
         }).toList(),
       ),

@@ -1,4 +1,5 @@
 import 'package:dropdown_search/src/base_dropdown_search.dart';
+import 'package:dropdown_search/src/properties/base_text_field_props.dart';
 import 'package:dropdown_search/src/properties/infinite_scroll_props.dart';
 import 'package:dropdown_search/src/properties/list_view_props.dart';
 import 'package:dropdown_search/src/properties/scrollbar_props.dart';
@@ -19,7 +20,7 @@ abstract class BasePopupProps<T> {
   final DropdownSearchPopupItemBuilder<T>? itemBuilder;
 
   /// object that passes all props to search field
-  final TextFieldProps searchFieldProps;
+  final BaseTextFieldProps searchFieldProps;
 
   /// props for selection list view
   final ListViewProps listViewProps;

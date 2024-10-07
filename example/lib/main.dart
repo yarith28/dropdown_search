@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'user_model.dart';
@@ -27,12 +28,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return CupertinoApp(
+      localizationsDelegates: [
+        DefaultCupertinoLocalizations.delegate,
+        DefaultMaterialLocalizations.delegate,
+      ],
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -50,41 +51,52 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            CupertinoDropdownSearch<String>.multiSelection(
-              items: (filter, loadProps) => ["1", "2", "3"],
-              selectedItems: ["2",'3'],
-              suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-
-              popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
-
-                //fit: FlexFit.loose,
-                //constraints: BoxConstraints.loose(height: 400, width: 300),
-                suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["1", "2", "3", "4"]),
-                showSearchBox: true,
-              ),
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(),
+      child: Material(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                CupertinoDropdownSearch<String>.multiSelection(
+                  items: (filter, loadProps) => ["1", "2", "3"],
+                  selectedItems: ["2", '3'],
+                  suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+                  popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
+                    //fit: FlexFit.loose,
+                    //constraints: BoxConstraints.loose(height: 400, width: 300),
+                    suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) => ["1", "2", "3", "4"]),
+                    showSearchBox: true,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 8)),
+                Row(
+                  children: [
+                    Expanded(child: TextField(decoration: InputDecoration(border: OutlineInputBorder()),)),
+                    Padding(padding: EdgeInsets.only(right: 8)),
+                    Expanded(
+                      child: DropdownSearch<String>.multiSelection(
+                        items: (filter, loadProps) => ["1", "2", "3"],
+                        selectedItems: ["2", '3'],
+                        suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+                        popupProps: MultiSelectionPopupProps.modalBottomSheet(
+                          //fit: FlexFit.loose,
+                          //constraints: BoxConstraints.loose(height: 400, width: 300),
+                          suggestionsProps: SuggestionsProps(
+                            showSuggestions: true,
+                            items: (items) => ["1", "2", "3", "4"],
+                            itemProps: SuggestedItemProps(chipProps: ChipProps())
+                          ),
+                          showSearchBox: true,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            Padding(padding: EdgeInsets.only(top: 8)),
-            DropdownSearch<String>.multiSelection(
-              items: (filter, loadProps) => ["1", "2", "3"],
-              selectedItems: ["2",'3'],
-              suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-              popupProps: MultiSelectionPopupProps.modalBottomSheet(
-                //fit: FlexFit.loose,
-                //constraints: BoxConstraints.loose(height: 400, width: 300),
-                suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) =>["1", "2", "3", "4"]),
-                showSearchBox: true,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

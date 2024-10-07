@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:dropdown_search/src/base_dropdown_search.dart';
 import 'package:dropdown_search/src/properties/base_popup_props.dart';
+import 'package:dropdown_search/src/properties/cupertino_text_field_props.dart';
+import 'package:dropdown_search/src/properties/text_field_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
 import 'package:dropdown_search/src/widgets/custom_text_field.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'checkbox_widget.dart';
+import 'custom_cupertino_text_field.dart';
 import 'suggestions_widget.dart';
 
 class DropdownSearchPopup<T> extends StatefulWidget {
@@ -132,7 +135,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                _searchField(),
+                if (widget.props.title != null) widget.props.title!,
+                if (widget.props.showSearchBox) _searchField(),
                 _suggestedItemsWidget(),
                 Flexible(
                   fit: widget.props.fit,
@@ -444,6 +448,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         isChecked: _isSelectedItem(item),
         isDisabled: _isDisabled(item),
         onChanged: (c) => _handleSelectedItem(item),
+        uiToApply: widget.uiMode,
       );
     } else {
       return CheckBoxWidget(
@@ -454,6 +459,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         isChecked: _isSelectedItem(item),
         isDisabled: _isDisabled(item),
         onChanged: (c) => _handleSelectedItem(item),
+        uiToApply: widget.uiMode,
       );
     }
   }
@@ -478,20 +484,23 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
   }
 
   Widget _searchField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        widget.props.title ?? const SizedBox.shrink(),
-        if (widget.props.showSearchBox)
-          Padding(
-            padding: widget.props.searchFieldProps.padding,
-            child: Semantics(
-              textField: true,
-              child: CustomTextFields(props: widget.props.searchFieldProps, controller: searchBoxController),
-            ),
+    final textField = widget.uiMode == UiToApply.cupertino
+        ? CustomCupertinoTextFields(
+            props: widget.props.searchFieldProps as CupertinoTextFieldProps,
+            controller: searchBoxController,
           )
-      ],
+        : CustomTextFields(
+            props: widget.props.searchFieldProps as TextFieldProps,
+            controller: searchBoxController,
+          );
+
+    if (widget.props.searchFieldProps.containerBuilder != null) {
+      return widget.props.searchFieldProps.containerBuilder!(context, textField);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: textField,
     );
   }
 

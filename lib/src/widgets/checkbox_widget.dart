@@ -1,5 +1,7 @@
 import 'package:dropdown_search/src/properties/click_props.dart';
+import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef WidgetCheckBox = Widget Function(BuildContext context, bool isChecked);
@@ -13,6 +15,7 @@ class CheckBoxWidget extends StatefulWidget {
   final ValueChanged<bool?>? onChanged;
   final bool interceptCallBacks;
   final TextDirection textDirection;
+  final UiToApply uiToApply;
 
   CheckBoxWidget({
     super.key,
@@ -23,6 +26,7 @@ class CheckBoxWidget extends StatefulWidget {
     this.checkBox,
     this.interceptCallBacks = false,
     this.textDirection = TextDirection.ltr,
+    this.uiToApply = UiToApply.material,
     required this.onChanged,
   });
 
@@ -57,13 +61,12 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
           var w = Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              widget.layout != null
-                  ? Expanded(child: widget.layout!(context, v == true))
-                  : SizedBox.shrink(),
+              widget.layout != null ? Expanded(child: widget.layout!(context, v == true)) : SizedBox.shrink(),
               widget.checkBox != null
                   ? widget.checkBox!(context, v == true)
-                  : Checkbox(
-                      value: v, onChanged: widget.isDisabled ? null : (b) {}),
+                  : widget.uiToApply == UiToApply.cupertino
+                      ? CupertinoCheckbox(value: v, onChanged: widget.isDisabled ? null : (b) {})
+                      : Checkbox(value: v, onChanged: widget.isDisabled ? null : (b) {}),
             ],
           );
 
