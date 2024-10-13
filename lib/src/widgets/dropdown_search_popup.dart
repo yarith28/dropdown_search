@@ -24,11 +24,15 @@ class DropdownSearchPopup<T> extends StatefulWidget {
   final BasePopupProps<T> props;
   final bool isMultiSelectionMode;
   final UiToApply uiMode;
+  final Mode dropdownMode;
+  final VoidCallback? onClose;
 
   const DropdownSearchPopup({
     super.key,
-    required this.uiMode,
     required this.props,
+    this.onClose,
+    this.uiMode = UiToApply.material,
+    this.dropdownMode = Mode.form,
     this.defaultSelectedItems = const [],
     this.isMultiSelectionMode = false,
     this.onChanged,
@@ -111,6 +115,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
     //dismiss either by selecting items OR clicking outside the popup
     widget.props.onDismissed?.call();
+    print('disposed');
 
     super.dispose();
   }
@@ -136,7 +141,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 if (widget.props.title != null) widget.props.title!,
-                if (widget.props.showSearchBox) _searchField(),
+                if (widget.props.showSearchBox && widget.dropdownMode != Mode.autoComplete) _searchField(),
                 _suggestedItemsWidget(),
                 Flexible(
                   fit: widget.props.fit,
@@ -245,7 +250,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   ///validation of selected items
   void onValidate() {
-    closePopup();
+    _closePopup();
     if (widget.onChanged != null) widget.onChanged!(_selectedItems);
   }
 
@@ -543,7 +548,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         }
       }
     } else {
-      closePopup();
+      _closePopup();
       if (widget.onChanged != null) {
         widget.onChanged!(List.filled(1, newSelectedItem));
       }
@@ -560,6 +565,9 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
       return data.toString();
     }
   }
+
+  ///close popup
+  void _closePopup() => widget.onClose?.call();
 
   void selectItems(List<T> itemsToSelect) {
     for (var i in itemsToSelect) {
@@ -586,9 +594,6 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     }
     _selectedItemsNotifier.value = List.from(_selectedItems);
   }
-
-  ///close popup
-  void closePopup() => Navigator.pop(context);
 
   void selectAllItems() => selectItems(_currentShowedItems);
 
