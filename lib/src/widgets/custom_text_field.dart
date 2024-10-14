@@ -12,7 +12,7 @@ class CustomTextFields extends StatelessWidget {
     return TextField(
       controller: controller,
       groupId: props.groupId,
-      onChanged: props.onChanged,
+      onChanged: props.onSelected,
       onEditingComplete: props.onEditingComplete,
       onSubmitted: props.onSubmitted,
       onTapAlwaysCalled: props.onTapAlwaysCalled,

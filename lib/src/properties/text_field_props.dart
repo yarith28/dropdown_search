@@ -66,7 +66,7 @@ class TextFieldProps extends BaseTextFieldProps {
   final bool scribbleEnabled;
   final UndoHistoryController? undoController;
   final SpellCheckConfiguration? spellCheckConfiguration;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSelected;
   final VoidCallback? onEditingComplete;
   final ValueChanged<String>? onSubmitted;
   final bool onTapAlwaysCalled;
@@ -79,7 +79,7 @@ class TextFieldProps extends BaseTextFieldProps {
     this.onSubmitted,
     this.onTapAlwaysCalled = false,
     this.onEditingComplete,
-    this.onChanged,
+    this.onSelected,
     this.decoration = const InputDecoration(border: OutlineInputBorder()),
     this.keyboardType,
     this.textInputAction,

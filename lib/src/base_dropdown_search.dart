@@ -53,10 +53,10 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
   final DropdownSearchOnFind<T>? items;
 
   ///called when a new item is selected
-  final ValueChanged<T?>? onChanged;
+  final ValueChanged<T?>? onSelected;
 
   ///called when a new items are selected
-  final ValueChanged<List<T>>? onChangedMultiSelection;
+  final ValueChanged<List<T>>? onSelectedMultiSelection;
 
   ///to customize list of items UI
   final DropdownSearchBuilder<T>? dropdownBuilder;
@@ -148,7 +148,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
     T? selectedItem,
     this.mode = Mode.form,
     this.autoValidateMode = AutovalidateMode.disabled,
-    this.onChanged,
+    this.onSelected,
     this.items,
     this.dropdownBuilder,
     this.suffixProps = const DropdownSuffixProps(),
@@ -190,7 +190,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
         validatorMultiSelection = null,
         onBeforeChangeMultiSelection = null,
         onSavedMultiSelection = null,
-        onChangedMultiSelection = null,
+        onSelectedMultiSelection = null,
         onBeforePopupOpeningMultiSelection = null,
         selectedItemsScrollProps = null,
         selectedItemsWrapProps = null;
@@ -211,7 +211,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
     required this.popupProps,
     required this.uiMode,
     this.selectedItemsWrapProps,
-    ValueChanged<List<T>>? onChanged,
+    ValueChanged<List<T>>? onSelected,
     BeforeChangeMultiSelection<T>? onBeforeChange,
     BeforePopupOpeningMultiSelection<T>? onBeforePopupOpening,
     DropdownSearchBuilderMultiSelection<T>? dropdownBuilder,
@@ -237,7 +237,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
           'autoComplete mode is used only with PopupMode.menu',
         ),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
-        onChangedMultiSelection = onChanged,
+        onSelectedMultiSelection = onSelected,
         onBeforePopupOpeningMultiSelection = onBeforePopupOpening,
         onSavedMultiSelection = onSaved,
         onBeforeChangeMultiSelection = onBeforeChange,
@@ -248,7 +248,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
         validator = null,
         onBeforeChange = null,
         onSaved = null,
-        onChanged = null,
+        onSelected = null,
         onBeforePopupOpening = null;
 
   static List<T> _itemToList<T>(T? item) {
@@ -753,7 +753,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
       itemAsString: widget.itemAsString,
       filterFn: widget.filterFn,
       items: widget.items,
-      onChanged: _handleOnChangeSelectedItems,
+      onSelected: _handleOnChangeSelectedItems,
       compareFn: widget.compareFn,
       isMultiSelectionMode: isMultiSelectionMode,
       defaultSelectedItems: List.from(getSelectedItems),
@@ -778,10 +778,10 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   void _handleOnChangeSelectedItems(List<T> selectedItems) {
     changeItem() {
       _selectedItemsNotifier.value = List.from(selectedItems);
-      if (widget.onChanged != null) {
-        widget.onChanged!(getSelectedItem);
-      } else if (widget.onChangedMultiSelection != null) {
-        widget.onChangedMultiSelection!(selectedItems);
+      if (widget.onSelected != null) {
+        widget.onSelected!(getSelectedItem);
+      } else if (widget.onSelectedMultiSelection != null) {
+        widget.onSelectedMultiSelection!(selectedItems);
       }
     }
 

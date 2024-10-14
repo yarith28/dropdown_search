@@ -74,7 +74,7 @@ class CupertinoTextFieldProps extends BaseTextFieldProps {
   final bool scribbleEnabled;
   final UndoHistoryController? undoController;
   final SpellCheckConfiguration? spellCheckConfiguration;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSelected;
   final VoidCallback? onEditingComplete;
   final ValueChanged<String>? onSubmitted;
 
@@ -107,7 +107,7 @@ class CupertinoTextFieldProps extends BaseTextFieldProps {
     super.containerBuilder,
     this.onSubmitted,
     this.onEditingComplete,
-    this.onChanged,
+    this.onSelected,
     this.decoration = _kDefaultRoundedBorderDecoration,
     this.keyboardType,
     this.textInputAction,

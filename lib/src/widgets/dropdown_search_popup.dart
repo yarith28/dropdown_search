@@ -15,7 +15,7 @@ import 'custom_cupertino_text_field.dart';
 import 'suggestions_widget.dart';
 
 class DropdownSearchPopup<T> extends StatefulWidget {
-  final ValueChanged<List<T>>? onChanged;
+  final ValueChanged<List<T>>? onSelected;
   final DropdownSearchOnFind<T>? items;
   final DropdownSearchItemAsString<T>? itemAsString;
   final DropdownSearchFilterFn<T>? filterFn;
@@ -35,7 +35,7 @@ class DropdownSearchPopup<T> extends StatefulWidget {
     this.dropdownMode = Mode.form,
     this.defaultSelectedItems = const [],
     this.isMultiSelectionMode = false,
-    this.onChanged,
+    this.onSelected,
     this.items,
     this.itemAsString,
     this.filterFn,
@@ -251,7 +251,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
   ///validation of selected items
   void onValidate() {
     _closePopup();
-    if (widget.onChanged != null) widget.onChanged!(_selectedItems);
+    if (widget.onSelected != null) widget.onSelected!(_selectedItems);
   }
 
   Widget _multiSelectionValidation() {
@@ -452,7 +452,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         layout: (context, isChecked) => _itemWidgetSingleSelection(item),
         isChecked: _isSelectedItem(item),
         isDisabled: _isDisabled(item),
-        onChanged: (c) => _handleSelectedItem(item),
+        onSelected: (c) => _handleSelectedItem(item),
         uiToApply: widget.uiMode,
       );
     } else {
@@ -463,7 +463,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         layout: (context, isChecked) => _itemWidgetSingleSelection(item),
         isChecked: _isSelectedItem(item),
         isDisabled: _isDisabled(item),
-        onChanged: (c) => _handleSelectedItem(item),
+        onSelected: (c) => _handleSelectedItem(item),
         uiToApply: widget.uiMode,
       );
     }
@@ -549,8 +549,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
       }
     } else {
       _closePopup();
-      if (widget.onChanged != null) {
-        widget.onChanged!(List.filled(1, newSelectedItem));
+      if (widget.onSelected != null) {
+        widget.onSelected!(List.filled(1, newSelectedItem));
       }
     }
   }

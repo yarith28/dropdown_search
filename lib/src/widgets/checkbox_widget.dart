@@ -12,7 +12,7 @@ class CheckBoxWidget extends StatefulWidget {
   final WidgetCheckBox? checkBox;
   final bool isChecked;
   final bool isDisabled;
-  final ValueChanged<bool?>? onChanged;
+  final ValueChanged<bool?>? onSelected;
   final bool interceptCallBacks;
   final TextDirection textDirection;
   final UiToApply uiToApply;
@@ -27,7 +27,7 @@ class CheckBoxWidget extends StatefulWidget {
     this.interceptCallBacks = false,
     this.textDirection = TextDirection.ltr,
     this.uiToApply = UiToApply.material,
-    required this.onChanged,
+    required this.onSelected,
   });
 
   @override
@@ -79,7 +79,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
                   ? null
                   : () {
                       isCheckedNotifier.value = !v;
-                      if (widget.onChanged != null) widget.onChanged!(v);
+                      if (widget.onSelected != null) widget.onSelected!(v);
                     },
               child: IgnorePointer(child: ExcludeFocus(child: w)),
             );

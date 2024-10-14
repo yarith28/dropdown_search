@@ -48,6 +48,7 @@
   * add properties to `scrollView` and `wrap` widget for selected items in multiSelection mode
   * `Chips` are fully customizable in multiSelection and suggestions
   * replace `padding` in `searchFieldProps` with `containerBuilder`
+  * change `onChanged` to `onSelected`
 
 * #### Breaking changes
   * `suggestedItemsProps` is placed inside `SuggestionsProps`

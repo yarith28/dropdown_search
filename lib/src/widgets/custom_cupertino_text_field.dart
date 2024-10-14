@@ -11,7 +11,7 @@ class CustomCupertinoTextFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTextField(
       controller: controller,
-      onChanged: props.onChanged,
+      onChanged: props.onSelected,
       onEditingComplete: props.onEditingComplete,
       onSubmitted: props.onSubmitted,
       enableIMEPersonalizedLearning: props.enableIMEPersonalizedLearning,
