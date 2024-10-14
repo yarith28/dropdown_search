@@ -7,6 +7,7 @@ import 'package:dropdown_search/src/properties/text_field_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
 import 'package:dropdown_search/src/widgets/custom_text_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -245,7 +246,10 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     if (widget.props.infiniteScrollProps?.loadingMoreBuilder != null) {
       return widget.props.infiniteScrollProps!.loadingMoreBuilder!(context, loadedItems);
     }
-    return const Center(child: CircularProgressIndicator());
+
+    return Center(
+      child: widget.uiMode == UiToApply.cupertino ? CupertinoActivityIndicator() : CircularProgressIndicator(),
+    );
   }
 
   ///validation of selected items
@@ -322,7 +326,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
             return Container(
               height: 70,
               alignment: Alignment.center,
-              child: const CircularProgressIndicator(),
+              child: widget.uiMode == UiToApply.cupertino ? CupertinoActivityIndicator() : CircularProgressIndicator(),
             );
           }
           return const SizedBox.shrink();
