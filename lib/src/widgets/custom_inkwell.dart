@@ -47,6 +47,7 @@ class CustomInkWell extends StatelessWidget {
       containedInkWell: clickProps.containedInkWell,
       highlightShape: clickProps.highlightShape,
       onTap: onTap,
+      focusNode: clickProps.focusNode,
       child: child,
     );
   }

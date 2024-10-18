@@ -1,4 +1,5 @@
 import 'package:dropdown_search/src/base_dropdown_search.dart';
+import 'package:dropdown_search/src/properties/autocomplete_props.dart';
 import 'package:dropdown_search/src/properties/base_popup_props.dart';
 import 'package:dropdown_search/src/properties/bottom_sheet_props.dart';
 import 'package:dropdown_search/src/properties/dialog_props.dart';
@@ -19,6 +20,9 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
 
   ///Menu mode props
   final MenuProps menuProps;
+
+  ///Menu mode props
+  final AutoCompleteProps autoCompleteProps;
 
   const MultiSelectionPopupProps.menu({
     this.menuProps = const MenuProps(),
@@ -53,8 +57,46 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
     super.textDirection = TextDirection.ltr,
   })  : bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
+        autoCompleteProps = const AutoCompleteProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
         super(mode: PopupMode.menu, searchFieldProps: searchFieldProps);
+
+  const MultiSelectionPopupProps.autoComplete({
+    this.autoCompleteProps = const AutoCompleteProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
+    super.fit,
+    super.suggestionsProps,
+    super.scrollbarProps,
+    super.listViewProps,
+    super.searchDelay,
+    super.itemClickProps,
+    super.showSearchBox,
+    super.title,
+    super.disableFilter,
+    super.cacheItems,
+    super.itemBuilder,
+    super.disabledItemFn,
+    super.onDismissed,
+    super.emptyBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems,
+    super.containerBuilder,
+    super.constraints = const BoxConstraints(maxHeight: 350),
+    super.interceptCallBacks,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
+    //multi selection props
+    super.onItemAdded,
+    super.onItemRemoved,
+    super.checkBoxBuilder,
+    super.validationBuilder,
+    super.textDirection = TextDirection.ltr,
+  })  : bottomSheetProps = const BottomSheetProps(),
+        dialogProps = const DialogProps(),
+        menuProps = const MenuProps(),
+        modalBottomSheetProps = const ModalBottomSheetProps(),
+        super(mode: PopupMode.autoComplete, searchFieldProps: searchFieldProps);
 
   const MultiSelectionPopupProps.dialog({
     this.dialogProps = const DialogProps(),
@@ -93,6 +135,7 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
     super.textDirection = TextDirection.ltr,
   })  : bottomSheetProps = const BottomSheetProps(),
         menuProps = const MenuProps(),
+        autoCompleteProps = const AutoCompleteProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
         super(mode: PopupMode.dialog, searchFieldProps: searchFieldProps);
 
@@ -129,6 +172,7 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
     super.textDirection = TextDirection.ltr,
   })  : menuProps = const MenuProps(),
         dialogProps = const DialogProps(),
+        autoCompleteProps = const AutoCompleteProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
         super(mode: PopupMode.bottomSheet, searchFieldProps: searchFieldProps);
 
@@ -166,6 +210,7 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
   })  : menuProps = const MenuProps(),
         bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
+        autoCompleteProps = const AutoCompleteProps(),
         super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
 }
 
@@ -181,6 +226,9 @@ class PopupProps<T> extends BasePopupProps<T> {
 
   ///Menu mode props
   final MenuProps menuProps;
+
+  ///Menu mode props
+  final AutoCompleteProps autoCompleteProps;
 
   const PopupProps.menu({
     this.menuProps = const MenuProps(),
@@ -209,8 +257,40 @@ class PopupProps<T> extends BasePopupProps<T> {
     super.onItemsLoaded,
   })  : bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
+        autoCompleteProps = const AutoCompleteProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
         super(mode: PopupMode.menu, searchFieldProps: searchFieldProps);
+
+  const PopupProps.autoComplete({
+    this.autoCompleteProps = const AutoCompleteProps(),
+    TextFieldProps searchFieldProps = const TextFieldProps(),
+    super.fit,
+    super.suggestionsProps,
+    super.scrollbarProps,
+    super.listViewProps,
+    super.searchDelay,
+    super.itemClickProps,
+    super.showSearchBox,
+    super.title,
+    super.disableFilter,
+    super.cacheItems,
+    super.itemBuilder,
+    super.disabledItemFn,
+    super.onDismissed,
+    super.emptyBuilder,
+    super.errorBuilder,
+    super.loadingBuilder,
+    super.showSelectedItems,
+    super.containerBuilder,
+    super.constraints = const BoxConstraints(maxHeight: 350),
+    super.interceptCallBacks,
+    super.infiniteScrollProps,
+    super.onItemsLoaded,
+  })  : bottomSheetProps = const BottomSheetProps(),
+        dialogProps = const DialogProps(),
+        menuProps = const MenuProps(),
+        modalBottomSheetProps = const ModalBottomSheetProps(),
+        super(mode: PopupMode.autoComplete, searchFieldProps: searchFieldProps);
 
   const PopupProps.dialog({
     this.dialogProps = const DialogProps(),
@@ -243,6 +323,7 @@ class PopupProps<T> extends BasePopupProps<T> {
     super.onItemsLoaded,
   })  : bottomSheetProps = const BottomSheetProps(),
         menuProps = const MenuProps(),
+        autoCompleteProps = const AutoCompleteProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
         super(mode: PopupMode.dialog, searchFieldProps: searchFieldProps);
 
@@ -272,6 +353,7 @@ class PopupProps<T> extends BasePopupProps<T> {
     super.infiniteScrollProps,
     super.onItemsLoaded,
   })  : menuProps = const MenuProps(),
+        autoCompleteProps = const AutoCompleteProps(),
         dialogProps = const DialogProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
         super(mode: PopupMode.bottomSheet, searchFieldProps: searchFieldProps);
@@ -302,6 +384,7 @@ class PopupProps<T> extends BasePopupProps<T> {
     super.infiniteScrollProps,
     super.onItemsLoaded,
   })  : menuProps = const MenuProps(),
+        autoCompleteProps = const AutoCompleteProps(),
         bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
         super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);

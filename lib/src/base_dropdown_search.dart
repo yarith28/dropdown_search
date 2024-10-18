@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/adaptive/autocomplete_overlay.dart';
 import 'package:dropdown_search/src/adaptive/bottom_sheets.dart';
 import 'package:dropdown_search/src/adaptive/modal_bottom_sheet.dart';
 import 'package:dropdown_search/src/properties/click_props.dart';
@@ -12,6 +13,7 @@ import 'package:dropdown_search/src/widgets/custom_wrap.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'adaptive/dialogs.dart';
 import 'widgets/custom_scroll_view.dart';
@@ -39,9 +41,9 @@ typedef OnItemAdded<T> = void Function(List<T> selectedItems, T addedItem);
 typedef OnItemRemoved<T> = void Function(List<T> selectedItems, T removedItem);
 typedef ContainerBuilder<T> = Widget Function(BuildContext context, Widget child);
 
-enum PopupMode { dialog, modalBottomSheet, menu, bottomSheet }
+enum PopupMode { dialog, modalBottomSheet, menu, bottomSheet, autoComplete }
 
-enum Mode { form, autoComplete, custom }
+enum Mode { form, custom }
 
 enum UiMode { adaptive, material, cupertino }
 
@@ -152,7 +154,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
     this.items,
     this.dropdownBuilder,
     this.suffixProps = const DropdownSuffixProps(),
-    this.clickProps = const ClickProps(),
+    ClickProps? clickProps,
     this.enabled = true,
     this.filterFn,
     this.itemAsString,
@@ -179,9 +181,10 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
           'Custom mode has no form properties',
         ),
         assert(
-          mode != Mode.autoComplete || popupProps.mode == PopupMode.menu,
-          'autoComplete mode is used only with PopupMode.menu',
+          popupProps.mode != PopupMode.autoComplete || clickProps == null,
+          "autoComplete mode has no clickProps",
         ),
+        clickProps = clickProps ?? const ClickProps(),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
         selectedItems = _itemToList(selectedItem),
         //to correct
@@ -201,7 +204,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
     this.autoValidateMode = AutovalidateMode.disabled,
     this.items,
     this.suffixProps = const DropdownSuffixProps(),
-    this.clickProps = const ClickProps(),
+    ClickProps? clickProps,
     this.enabled = true,
     this.filterFn,
     this.itemAsString,
@@ -233,9 +236,10 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
           "Custom mode has no form properties",
         ),
         assert(
-          mode != Mode.autoComplete || popupProps.mode == PopupMode.menu,
-          'autoComplete mode is used only with PopupMode.menu',
+          popupProps.mode != PopupMode.autoComplete || clickProps == null,
+          "autoComplete mode has no clickProps",
         ),
+        clickProps = clickProps ?? const ClickProps(),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
         onSelectedMultiSelection = onSelected,
         onBeforePopupOpeningMultiSelection = onBeforePopupOpening,
@@ -273,6 +277,22 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     super.initState();
     _selectedItemsNotifier.value = List.from(widget.selectedItems);
     _uiToApply = context.getUiToApply(widget.uiMode);
+
+    if (widget.popupProps.mode == PopupMode.autoComplete) {
+      HardwareKeyboard.instance.addHandler(_handleAutoCompleteBackPressKeyPress);
+    }
+  }
+
+  bool _handleAutoCompleteBackPressKeyPress(KeyEvent event) {
+    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.backspace) {
+      if (_popupStateKey.currentState?.searchBoxController.text.isEmpty == true) {
+        final item = getSelectedItems.last;
+        removeItem(item);
+        _popupStateKey.currentState?.deselectItems([item]);
+      }
+    }
+
+    return false;
   }
 
   @override
@@ -304,7 +324,16 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
         return IgnorePointer(
           ignoring: !widget.enabled,
           child: CustomInkWell(
-            clickProps: widget.clickProps,
+            clickProps: widget.popupProps.mode == PopupMode.autoComplete
+                ? ClickProps(
+                    canRequestFocus: false,
+                    focusColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    mouseCursor: WidgetStateMouseCursor.textable,
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                  )
+                : widget.clickProps,
             onTap: () => openDropDownSearch(),
             child: _dropDown(),
           ),
@@ -317,13 +346,14 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   void dispose() {
     closeDropDownSearch();
     autoCompleteFocusNode.dispose();
+    HardwareKeyboard.instance.removeHandler(_handleAutoCompleteBackPressKeyPress);
     super.dispose();
   }
 
   Widget _dropDown() {
     if (widget.mode == Mode.custom) {
       return _customField();
-    } else if (widget.mode == Mode.autoComplete) {
+    } else if (widget.popupProps.mode == PopupMode.autoComplete) {
       return _autoCompleteFormFieldMultiSelection();
     } else {
       return _formField();
@@ -358,21 +388,27 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
               isHovering: widget.decoratorProps.isHovering,
               decoration: _manageDropdownDecoration(state),
               child: isFocused
-                  ? Row(
-                      children: [
-                        _defaultSelectedItemWidget(),
-                        if (isFocused)
+                  ? Container(
+                color: Colors.red,
+                    child: Row(
+                        children: [
+                          Flexible(child: _defaultSelectedItemWidget()),
+                          Padding(padding: EdgeInsets.only(left: 4)),
                           Expanded(
-                            child: TextFormField(
-                              groupId: "salim",
-                              focusNode: autoCompleteFocusNode,
-                              controller: _popupStateKey.currentState?.searchBoxController,
-                              decoration: InputDecoration(border: InputBorder.none),
-                              onTap: () => openDropDownSearch(),
+                            child: Container(
+                              color: Colors.green,
+                              child: TextFormField(
+                                groupId: "salim",
+                                focusNode: autoCompleteFocusNode,
+                                controller: _popupStateKey.currentState?.searchBoxController,
+                                decoration: InputDecoration(border: InputBorder.none),
+                                onTap: () => openDropDownSearch(),
+                              ),
                             ),
                           ),
-                      ],
-                    )
+                        ],
+                      ),
+                  )
                   : _defaultSelectedItemWidget(),
             );
           },
@@ -568,8 +604,8 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
           DropdownButtonProps(
             animationBuilder: (child, isOpen) {
               return AnimatedRotation(
-                turns: isOpen ? .5 : 0,
-                duration: Duration(milliseconds: 400),
+                turns: isOpen ? .5 : 1,
+                duration: Duration(milliseconds: 300),
                 child: child,
               );
             },
@@ -619,7 +655,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
       return _openModalBottomSheet();
     } else if (widget.popupProps.mode == PopupMode.bottomSheet) {
       return _openBottomSheet();
-    } else if (widget.popupProps.mode == PopupMode.menu) {
+    } else if (widget.popupProps.mode == PopupMode.autoComplete) {
       return _openAutoCompleteMenu();
     }
 
@@ -635,18 +671,8 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
     return _customOverlyEntry!.open(
       context,
-      Positioned(
-        width: 500,
-        top: 200,
-        child: TextFieldTapRegion(
-          groupId: "salim",
-          onTapOutside: (event) => closeDropDownSearch(),
-          child: Material(
-            child: _popupWidgetInstance(),
-            color: Colors.deepPurpleAccent.withOpacity(0.5),
-          ),
-        ),
-      ),
+      _popupWidgetInstance(),
+      (event) => closeDropDownSearch(),
     );
   }
 
@@ -757,7 +783,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
       compareFn: widget.compareFn,
       isMultiSelectionMode: isMultiSelectionMode,
       defaultSelectedItems: List.from(getSelectedItems),
-      dropdownMode: widget.mode,
+      dropdownMode: widget.popupProps.mode,
       onClose: () => closeDropDownSearch(),
     );
   }
@@ -800,8 +826,6 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     } else {
       changeItem();
     }
-
-    _handleFocus(false);
   }
 
   ///compared two items base on user params
@@ -909,7 +933,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   ///close dropdownSearch popup if it's open
   void closeDropDownSearch() {
-    if (widget.mode == Mode.autoComplete) {
+    if (widget.popupProps.mode == PopupMode.autoComplete) {
       _customOverlyEntry?.close();
       _customOverlyEntry = null;
     } else {
@@ -927,28 +951,4 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   List<T> get popupGetItems => _popupStateKey.currentState?.getLoadedItems ?? [];
 
   void updatePopupState() => _popupStateKey.currentState?.setState(() {});
-}
-
-class CustomOverlyEntry {
-  OverlayEntry? overlayEntry;
-  Completer? completer;
-
-  Future<void> open(BuildContext context, Widget content) async {
-    if (completer?.isCompleted == false) return;
-
-    completer = Completer();
-
-    overlayEntry = OverlayEntry(builder: (context) => content);
-    Overlay.of(context).insert(overlayEntry!);
-
-    await completer?.future;
-  }
-
-  void close() {
-    overlayEntry?.remove();
-    overlayEntry = null;
-    completer?.complete();
-  }
-
-  bool isOpen() => completer?.isCompleted == false;
 }

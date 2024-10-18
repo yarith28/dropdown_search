@@ -25,7 +25,7 @@ class DropdownSearchPopup<T> extends StatefulWidget {
   final BasePopupProps<T> props;
   final bool isMultiSelectionMode;
   final UiToApply uiMode;
-  final Mode dropdownMode;
+  final PopupMode dropdownMode;
   final VoidCallback? onClose;
 
   const DropdownSearchPopup({
@@ -33,7 +33,7 @@ class DropdownSearchPopup<T> extends StatefulWidget {
     required this.props,
     this.onClose,
     this.uiMode = UiToApply.material,
-    this.dropdownMode = Mode.form,
+    this.dropdownMode = PopupMode.menu,
     this.defaultSelectedItems = const [],
     this.isMultiSelectionMode = false,
     this.onSelected,
@@ -61,7 +61,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
   Timer? _debounce;
   String lastSearchText = '';
 
-  void searchBoxControllerListener() {
+  void _searchBoxControllerListener() {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
     //handle case when editText get focused, onTextChange was called !
@@ -79,7 +79,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     _selectedItemsNotifier.value = widget.defaultSelectedItems;
 
     searchBoxController = widget.props.searchFieldProps.controller ?? TextEditingController();
-    searchBoxController.addListener(searchBoxControllerListener);
+    searchBoxController.addListener(_searchBoxControllerListener);
 
     lastSearchText = searchBoxController.text;
 
@@ -107,7 +107,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     if (widget.props.searchFieldProps.controller == null) {
       searchBoxController.dispose();
     } else {
-      searchBoxController.removeListener(searchBoxControllerListener);
+      searchBoxController.removeListener(_searchBoxControllerListener);
     }
 
     if (widget.props.listViewProps.controller == null) {
@@ -142,7 +142,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 if (widget.props.title != null) widget.props.title!,
-                if (widget.props.showSearchBox && widget.dropdownMode != Mode.autoComplete) _searchField(),
+                if (widget.props.showSearchBox && widget.dropdownMode != PopupMode.autoComplete) _searchField(),
                 _suggestedItemsWidget(),
                 Flexible(
                   fit: widget.props.fit,

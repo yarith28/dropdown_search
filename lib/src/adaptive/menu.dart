@@ -103,10 +103,10 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
   });
 
   @override
-  Duration get transitionDuration => menuProps.transitionDuration ?? Duration(milliseconds: 200);
+  Duration get transitionDuration => menuProps.transitionDuration ?? Duration.zero;
 
   @override
-  Duration get reverseTransitionDuration => menuProps.reverseTransitionDuration ?? Duration(milliseconds: 200);
+  Duration get reverseTransitionDuration => menuProps.reverseTransitionDuration ?? Duration.zero;
 
   @override
   bool get barrierDismissible => menuProps.barrierDismissible;
@@ -134,7 +134,7 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
       shape: menuProps.shape ?? popupMenuTheme.shape,
       color: menuProps.backgroundColor ?? popupMenuTheme.color,
       type: MaterialType.card,
-      elevation: menuProps.elevation ?? popupMenuTheme.elevation ?? 8.0,
+      elevation: menuProps.elevation ?? popupMenuTheme.elevation ?? 2.0,
       clipBehavior: menuProps.clipBehavior,
       borderRadius: menuProps.borderRadius,
       shadowColor: menuProps.shadowColor,
