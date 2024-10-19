@@ -334,7 +334,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
                     hoverColor: Colors.transparent,
                   )
                 : widget.clickProps,
-            onTap: () => openDropDownSearch(),
+            onTap: () => widget.popupProps.mode == PopupMode.autocomplete && isFocused ? null : openDropDownSearch(),
             child: _dropDown(),
           ),
         );
@@ -354,112 +354,113 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     if (widget.mode == Mode.custom) {
       return _customField();
     } else if (widget.popupProps.mode == PopupMode.autocomplete) {
-      return _autoCompleteFormFieldMultiSelection();
+      return _autocompleteFormFieldMultiSelection();
     } else {
       return _formField();
     }
   }
 
-  Widget _autoCompleteFormFieldMultiSelection() {
-    return FormField<List<T>>(
-      enabled: widget.enabled,
-      onSaved: widget.onSavedMultiSelection,
-      validator: widget.validatorMultiSelection,
-      autovalidateMode: widget.autoValidateMode,
-      initialValue: widget.selectedItems,
-      builder: (FormFieldState<List<T>> state) {
-        if (!listEquals(state.value, getSelectedItems)) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              state.didChange(getSelectedItems);
-            }
-          });
-        }
-        return ValueListenableBuilder<bool>(
-          valueListenable: _isFocused,
-          builder: (context, isFocused, w) {
-            return InputDecorator(
-              baseStyle: _getBaseTextStyle(),
-              textAlign: widget.decoratorProps.textAlign,
-              textAlignVertical: widget.decoratorProps.textAlignVertical,
-              isEmpty: getSelectedItem == null,
-              isFocused: isFocused,
-              expands: widget.decoratorProps.expands,
-              isHovering: widget.decoratorProps.isHovering,
-              decoration: _manageDropdownDecoration(state),
-              child: isFocused
-                  ? Container(
-                color: Colors.red,
-                    child: Row(
+  Widget _autocompleteFormFieldMultiSelection() {
+    return TapRegion(
+      groupId: 'salim',
+      child: FormField<List<T>>(
+        enabled: widget.enabled,
+        onSaved: widget.onSavedMultiSelection,
+        validator: widget.validatorMultiSelection,
+        autovalidateMode: widget.autoValidateMode,
+        initialValue: widget.selectedItems,
+        builder: (FormFieldState<List<T>> state) {
+          if (!listEquals(state.value, getSelectedItems)) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                state.didChange(getSelectedItems);
+              }
+            });
+          }
+          return ValueListenableBuilder<bool>(
+            valueListenable: _isFocused,
+            builder: (context, isFocused, w) {
+              final selectedItems = _buildSelectedItemsWidget();
+              return InputDecorator(
+                baseStyle: _getBaseTextStyle(),
+                textAlign: widget.decoratorProps.textAlign,
+                textAlignVertical: widget.decoratorProps.textAlignVertical,
+                isEmpty: getSelectedItem == null,
+                isFocused: isFocused,
+                expands: widget.decoratorProps.expands,
+                isHovering: widget.decoratorProps.isHovering,
+                decoration: _manageDropdownDecoration(state),
+                child: isFocused
+                    ? Row(
                         children: [
-                          Flexible(child: _defaultSelectedItemWidget()),
-                          Padding(padding: EdgeInsets.only(left: 4)),
+                          if (selectedItems != null) Flexible(child: selectedItems),
+                          if (selectedItems != null) Padding(padding: EdgeInsets.only(left: 4)),
                           Expanded(
-                            child: Container(
-                              color: Colors.green,
-                              child: TextFormField(
-                                groupId: "salim",
-                                focusNode: autoCompleteFocusNode,
-                                controller: _popupStateKey.currentState?.searchBoxController,
-                                decoration: InputDecoration(border: InputBorder.none),
-                                onTap: () => openDropDownSearch(),
-                              ),
+                            child: TextFormField(
+                              focusNode: autoCompleteFocusNode,
+                              controller: _popupStateKey.currentState?.searchBoxController,
+                              decoration: InputDecoration(border: InputBorder.none),
                             ),
                           ),
                         ],
-                      ),
-                  )
-                  : _defaultSelectedItemWidget(),
-            );
-          },
-        );
-      },
+                      )
+                    : selectedItems,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
-  Widget _defaultSelectedItemWidget() {
-    Widget defaultItemMultiSelectionMode(T item) {
-      return CustomChip(
-        label: Text(_itemAsString(item)),
-        props: ChipProps(
-          onDeleted: () => removeItem(item),
-          shape: _uiToApply == UiToApply.cupertino
-              ? RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18)))
-              : null,
-          padding: const EdgeInsets.all(0),
-          selected: true,
-          deleteIcon: _uiToApply == UiToApply.cupertino ? Icon(CupertinoIcons.multiply_circle_fill) : null,
-        ).merge(widget.chipProps),
+  Widget? _buildSelectedItemsWidget() {
+    Widget? defaultSelectedItems(List<T> items) {
+      if (items.isEmpty) return null;
+      return CustomSingleScrollView(
+        scrollProps: widget.selectedItemsScrollProps ?? ScrollProps(),
+        child: CustomWrap(
+          props: widget.selectedItemsWrapProps ??
+              WrapProps(
+                spacing: 6,
+                runSpacing: 6,
+                crossAxisAlignment: WrapCrossAlignment.center,
+              ),
+          children: items.map((e) {
+            return CustomChip(
+              label: Text(_itemAsString(e)),
+              props: ChipProps(
+                onDeleted: () => removeItem(e),
+                shape: _uiToApply == UiToApply.cupertino
+                    ? RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18)))
+                    : null,
+                padding: const EdgeInsets.all(0),
+                selected: true,
+                deleteIcon: _uiToApply == UiToApply.cupertino ? Icon(CupertinoIcons.multiply_circle_fill) : null,
+              ).merge(widget.chipProps),
+            );
+          }).toList(),
+        ),
       );
     }
 
-    Widget selectedItemWidget() {
-      if (widget.dropdownBuilder != null) {
-        return widget.dropdownBuilder!(context, getSelectedItem);
-      } else if (widget.dropdownBuilderMultiSelection != null) {
-        return widget.dropdownBuilderMultiSelection!(context, getSelectedItems);
-      } else if (isMultiSelectionMode) {
-        return CustomSingleScrollView(
-          scrollProps: widget.selectedItemsScrollProps ?? ScrollProps(),
-          child: CustomWrap(
-            props: widget.selectedItemsWrapProps ??
-                WrapProps(
-                  spacing: 6,
-                  runSpacing: 6,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                ),
-            children: getSelectedItems.map((e) => defaultItemMultiSelectionMode(e)).toList(),
-          ),
-        );
-      }
+    Widget? defaultSelectedItemWidget(T? item) {
+      if (item == null) return null;
       return Text(
-        _itemAsString(getSelectedItem),
+        _itemAsString(item),
         style: _getBaseTextStyle(),
         textAlign: widget.decoratorProps.textAlign,
       );
     }
 
-    return selectedItemWidget();
+    if (widget.dropdownBuilder != null) {
+      return widget.dropdownBuilder!(context, getSelectedItem);
+    } else if (widget.dropdownBuilderMultiSelection != null) {
+      return widget.dropdownBuilderMultiSelection!(context, getSelectedItems);
+    } else if (isMultiSelectionMode) {
+      return defaultSelectedItems(getSelectedItems);
+    }
+
+    return defaultSelectedItemWidget(getSelectedItem);
   }
 
   TextStyle? _getBaseTextStyle() {
@@ -472,7 +473,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     return isMultiSelectionMode ? _formFieldMultiSelection() : _formFieldSingleSelection();
   }
 
-  Widget _customField() => _defaultSelectedItemWidget();
+  Widget _customField() => _buildSelectedItemsWidget() ?? SizedBox.shrink();
 
   Widget _formFieldSingleSelection() {
     return FormField<T>(
@@ -501,7 +502,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
                 expands: widget.decoratorProps.expands,
                 isHovering: widget.decoratorProps.isHovering,
                 decoration: _manageDropdownDecoration(state),
-                child: _defaultSelectedItemWidget(),
+                child: _buildSelectedItemsWidget(),
               );
             });
       },
@@ -535,7 +536,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
               isHovering: widget.decoratorProps.isHovering,
               isFocused: isFocused,
               decoration: _manageDropdownDecoration(state),
-              child: _defaultSelectedItemWidget(),
+              child: _buildSelectedItemsWidget(),
             );
           },
         );
@@ -939,6 +940,10 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     } else {
       Navigator.of(context).pop();
     }
+  }
+
+  void toggleDropDownSearch() {
+    isFocused ? closeDropDownSearch() : openDropDownSearch();
   }
 
   ///returns true if all popup's items are selected; other wise False

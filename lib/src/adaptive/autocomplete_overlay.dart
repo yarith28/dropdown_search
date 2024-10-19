@@ -45,20 +45,22 @@ class CustomOverlyEntry {
     final pos = _position(dropdownBox, overlayBox);
 
     overlayEntry = OverlayEntry(builder: (context) {
-      return Positioned(
-        top: pos.top+100,
-        left: pos.left,
-        right: pos.right,
-        bottom: pos.bottom,
-        child: Container(
-          constraints: BoxConstraints(),
-          child: TextFieldTapRegion(
-            groupId: "salim",
-            onTapOutside: onTapOutside,
-            child: Material(
-              elevation: PopupMenuTheme.of(context).elevation ?? 1,
-              child: child,
-              color: PopupMenuTheme.of(context).color,
+      return Expanded(
+        child: Positioned(
+          top: pos.top+100,
+          left: pos.left,
+          right: pos.right,
+          bottom: pos.bottom,
+          child: Container(
+            constraints: BoxConstraints(),
+            child: TapRegion(
+              groupId: 'salim',
+              onTapOutside: onTapOutside,
+              child: Material(
+                elevation: PopupMenuTheme.of(context).elevation ?? 4,
+                child: child,
+                color: PopupMenuTheme.of(context).color,
+              ),
             ),
           ),
         ),
