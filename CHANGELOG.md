@@ -48,9 +48,10 @@
   * add properties to `scrollView` and `wrap` widget for selected items in multiSelection mode
   * `Chips` are fully customizable in multiSelection and suggestions
   * replace `padding` in `searchFieldProps` with `containerBuilder`
-  * change `onChanged` to `onSelected`
+  * add `onDisplayed` callback to `popupProps`
 
 * #### Breaking changes
+  * change `onChanged` to `onSelected`
   * `suggestedItemsProps` is placed inside `SuggestionsProps`
   * `Semantics` is removed from searchBox, to add it use `containerBuilder` like this you have full access to Semantic properties.
 

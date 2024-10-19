@@ -33,8 +33,11 @@ abstract class BasePopupProps<T> {
   /// if you do not use online search
   final Duration searchDelay;
 
-  ///called when popup is dismissed
+  ///called when popup is dismissed/destroyed
   final VoidCallback? onDismissed;
+
+  ///called when popup is showed/loaded/built
+  final VoidCallback? onDisplayed;
 
   ///custom layout for empty results
   final EmptyBuilder? emptyBuilder;
@@ -119,6 +122,7 @@ abstract class BasePopupProps<T> {
     this.itemClickProps = const ClickProps(),
     this.title,
     this.onDismissed,
+    this.onDisplayed,
     this.emptyBuilder,
     this.itemBuilder,
     this.errorBuilder,
@@ -137,5 +141,8 @@ abstract class BasePopupProps<T> {
     this.checkBoxBuilder,
     this.validationBuilder,
     this.textDirection = TextDirection.ltr,
-  }) : assert(infiniteScrollProps == null || disableFilter);
+  }) : assert(
+          !cacheItems || !disableFilter,
+          'Caching items will be unuseful if the local filter disableFilter is disabled ',
+        );
 }

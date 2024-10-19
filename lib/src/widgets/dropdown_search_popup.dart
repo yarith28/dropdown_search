@@ -89,6 +89,12 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
       Duration.zero,
       () => _manageLoadItems(searchBoxController.text, isFirstLoad: true),
     );
+
+    WidgetsBinding.instance.endOfFrame.then(
+      (_) {
+        if (mounted) widget.props.onDisplayed?.call();
+      },
+    );
   }
 
   @override
