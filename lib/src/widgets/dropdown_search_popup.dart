@@ -148,7 +148,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 if (widget.props.title != null) widget.props.title!,
-                if (widget.props.showSearchBox && widget.dropdownMode != PopupMode.autoComplete) _searchField(),
+                if (widget.props.showSearchBox && widget.dropdownMode != PopupMode.autocomplete) _searchField(),
                 _suggestedItemsWidget(),
                 Flexible(
                   fit: widget.props.fit,

@@ -41,7 +41,7 @@ typedef OnItemAdded<T> = void Function(List<T> selectedItems, T addedItem);
 typedef OnItemRemoved<T> = void Function(List<T> selectedItems, T removedItem);
 typedef ContainerBuilder<T> = Widget Function(BuildContext context, Widget child);
 
-enum PopupMode { dialog, modalBottomSheet, menu, bottomSheet, autoComplete }
+enum PopupMode { dialog, modalBottomSheet, menu, bottomSheet, autocomplete }
 
 enum Mode { form, custom }
 
@@ -181,8 +181,8 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
           'Custom mode has no form properties',
         ),
         assert(
-          popupProps.mode != PopupMode.autoComplete || clickProps == null,
-          "autoComplete mode has no clickProps",
+          popupProps.mode != PopupMode.autocomplete || clickProps == null,
+          "autocomplete mode has no clickProps",
         ),
         clickProps = clickProps ?? const ClickProps(),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
@@ -236,8 +236,8 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
           "Custom mode has no form properties",
         ),
         assert(
-          popupProps.mode != PopupMode.autoComplete || clickProps == null,
-          "autoComplete mode has no clickProps",
+          popupProps.mode != PopupMode.autocomplete || clickProps == null,
+          "autocomplete mode has no clickProps",
         ),
         clickProps = clickProps ?? const ClickProps(),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
@@ -278,7 +278,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
     _selectedItemsNotifier.value = List.from(widget.selectedItems);
     _uiToApply = context.getUiToApply(widget.uiMode);
 
-    if (widget.popupProps.mode == PopupMode.autoComplete) {
+    if (widget.popupProps.mode == PopupMode.autocomplete) {
       HardwareKeyboard.instance.addHandler(_handleAutoCompleteBackPressKeyPress);
     }
   }
@@ -324,7 +324,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
         return IgnorePointer(
           ignoring: !widget.enabled,
           child: CustomInkWell(
-            clickProps: widget.popupProps.mode == PopupMode.autoComplete
+            clickProps: widget.popupProps.mode == PopupMode.autocomplete
                 ? ClickProps(
                     canRequestFocus: false,
                     focusColor: Colors.transparent,
@@ -353,7 +353,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   Widget _dropDown() {
     if (widget.mode == Mode.custom) {
       return _customField();
-    } else if (widget.popupProps.mode == PopupMode.autoComplete) {
+    } else if (widget.popupProps.mode == PopupMode.autocomplete) {
       return _autoCompleteFormFieldMultiSelection();
     } else {
       return _formField();
@@ -655,7 +655,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
       return _openModalBottomSheet();
     } else if (widget.popupProps.mode == PopupMode.bottomSheet) {
       return _openBottomSheet();
-    } else if (widget.popupProps.mode == PopupMode.autoComplete) {
+    } else if (widget.popupProps.mode == PopupMode.autocomplete) {
       return _openAutoCompleteMenu();
     }
 
@@ -933,7 +933,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   ///close dropdownSearch popup if it's open
   void closeDropDownSearch() {
-    if (widget.popupProps.mode == PopupMode.autoComplete) {
+    if (widget.popupProps.mode == PopupMode.autocomplete) {
       _customOverlyEntry?.close();
       _customOverlyEntry = null;
     } else {

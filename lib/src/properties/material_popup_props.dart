@@ -61,7 +61,7 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
         modalBottomSheetProps = const ModalBottomSheetProps(),
         super(mode: PopupMode.menu, searchFieldProps: searchFieldProps);
 
-  const MultiSelectionPopupProps.autoComplete({
+  const MultiSelectionPopupProps.autocomplete({
     this.autoCompleteProps = const AutoCompleteProps(),
     TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit,
@@ -96,7 +96,7 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
         dialogProps = const DialogProps(),
         menuProps = const MenuProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
-        super(mode: PopupMode.autoComplete, searchFieldProps: searchFieldProps);
+        super(mode: PopupMode.autocomplete, searchFieldProps: searchFieldProps);
 
   const MultiSelectionPopupProps.dialog({
     this.dialogProps = const DialogProps(),
@@ -261,7 +261,7 @@ class PopupProps<T> extends BasePopupProps<T> {
         modalBottomSheetProps = const ModalBottomSheetProps(),
         super(mode: PopupMode.menu, searchFieldProps: searchFieldProps);
 
-  const PopupProps.autoComplete({
+  const PopupProps.autocomplete({
     this.autoCompleteProps = const AutoCompleteProps(),
     TextFieldProps searchFieldProps = const TextFieldProps(),
     super.fit,
@@ -290,7 +290,7 @@ class PopupProps<T> extends BasePopupProps<T> {
         dialogProps = const DialogProps(),
         menuProps = const MenuProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
-        super(mode: PopupMode.autoComplete, searchFieldProps: searchFieldProps);
+        super(mode: PopupMode.autocomplete, searchFieldProps: searchFieldProps);
 
   const PopupProps.dialog({
     this.dialogProps = const DialogProps(),
