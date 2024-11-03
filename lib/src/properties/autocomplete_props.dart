@@ -1,14 +1,6 @@
 import 'package:dropdown_search/src/base_dropdown_search.dart';
+import 'package:dropdown_search/src/properties/menu_props.dart';
 import 'package:flutter/material.dart';
-
-enum MenuAlign {
-  bottomStart,
-  bottomCenter,
-  bottomEnd,
-  topStart,
-  topCenter,
-  topEnd,
-}
 
 class AutoCompleteProps {
   final MenuAlign? align;
@@ -34,7 +26,7 @@ class AutoCompleteProps {
   const AutoCompleteProps({
     this.align,
     this.barrierLabel,
-    this.elevation,
+    this.elevation = 4,
     this.shape = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
     this.positionCallback,
     this.barrierColor,
@@ -78,7 +70,7 @@ class CupertinoAutoCompleteProps<T> {
   const CupertinoAutoCompleteProps({
     this.align,
     this.barrierLabel,
-    this.elevation,
+    this.elevation = 8,
     this.shape = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
     this.positionCallback,
     this.barrierColor,

@@ -1,53 +1,100 @@
 import 'dart:async';
 
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/properties/autocomplete_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:flutter/material.dart';
 
-class CustomOverlyEntry {
+abstract class CustomOverlayEntry {
   OverlayEntry? overlayEntry;
   Completer? completer;
 
-  Future<void> open(BuildContext context, Widget child, TapRegionCallback? onTapOutside) async {
+  OverlayEntry getOverlayEntry(BuildContext context);
+
+  void close() {
+    overlayEntry?.remove();
+    overlayEntry = null;
+    completer?.complete();
+  }
+
+  Future<void> open(BuildContext context) async {
     if (completer?.isCompleted == false) return;
 
     completer = Completer();
 
-    RelativeRect _position(RenderBox dropdown, RenderBox overlay) {
-      var menuMinWidth = 0.0;
-      var menuMaxWidth = double.infinity;
+    overlayEntry = getOverlayEntry(context);
 
-      var menuMinHeight = 0.0;
-      var menuMaxHeight = double.infinity;
+    Overlay.of(context).insert(overlayEntry!);
 
-      var menuWidth = dropdown.size.width;
-      var menuHeight = 350.0;
+    await completer?.future;
+  }
 
-      if (menuMinWidth > 0) {
-        menuWidth = menuMinWidth;
-      }
-      if (menuMaxWidth > 0 && menuMaxWidth < menuWidth) {
-        menuWidth = menuMaxWidth;
-      }
+  bool isOpen() => completer?.isCompleted == false;
+}
 
-      if (menuMinHeight > 0) {
-        menuHeight = menuMinHeight;
-      }
-      if (menuMaxHeight > 0 && menuMaxHeight < menuHeight) {
-        menuHeight = menuMaxHeight;
-      }
+class MaterialCustomOverlyEntry extends CustomOverlayEntry {
+  final AutoCompleteProps props;
+  final BoxConstraints constraints;
+  final TapRegionCallback? onTapOutside;
+  final Widget? child;
 
-      return getPosition(dropdown, overlay, Size(menuWidth, menuHeight), MenuAlign.bottomEnd);
-    }
+  MaterialCustomOverlyEntry({required this.props, required this.constraints, this.child, this.onTapOutside});
 
+  @override
+  getOverlayEntry(BuildContext context) {
     final dropdownBox = context.findRenderObject() as RenderBox;
     final overlayBox = Overlay.of(context).context.findRenderObject() as RenderBox;
-    final pos = _position(dropdownBox, overlayBox);
+    final dropdownSize = computePopupSize(dropdownBox, overlayBox, constraints);
+    final pos = getPosition(dropdownBox, overlayBox, dropdownSize, props.align);
 
-    overlayEntry = OverlayEntry(builder: (context) {
+    return OverlayEntry(builder: (context) {
+      return Positioned(
+        top: pos.top,
+        left: pos.left,
+        right: pos.right,
+        bottom: pos.bottom,
+        child: Container(
+          constraints: constraints,
+          child: TapRegion(
+            groupId: 'salim',
+            onTapOutside: onTapOutside,
+            child: Material(
+              type: MaterialType.card,
+              shape: props.shape ?? PopupMenuTheme.of(context).shape,
+              elevation: props.elevation ?? PopupMenuTheme.of(context).elevation ?? 4,
+              color: props.color ?? PopupMenuTheme.of(context).color,
+              clipBehavior: props.clipBehavior,
+              borderRadius: props.borderRadius,
+              shadowColor: props.shadowColor,
+              borderOnForeground: props.borderOnForeground,
+              surfaceTintColor: props.surfaceTintColor,
+              child: child,
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class CupertinoCustomOverlyEntry extends CustomOverlayEntry {
+  final CupertinoAutoCompleteProps props;
+  final TapRegionCallback? onTapOutside;
+  final BoxConstraints constraints;
+  final Widget? child;
+
+  CupertinoCustomOverlyEntry({required this.props, required this.constraints, this.child, this.onTapOutside});
+
+  @override
+  OverlayEntry getOverlayEntry(BuildContext context) {
+    final dropdownBox = context.findRenderObject() as RenderBox;
+    final overlayBox = Overlay.of(context).context.findRenderObject() as RenderBox;
+    final dropdownSize = computePopupSize(dropdownBox, overlayBox, BoxConstraints());
+    final pos = getPosition(dropdownBox, overlayBox, dropdownSize, props.align);
+
+    return OverlayEntry(builder: (context) {
       return Expanded(
         child: Positioned(
-          top: pos.top+100,
+          top: pos.top,
           left: pos.left,
           right: pos.right,
           bottom: pos.bottom,
@@ -57,25 +104,22 @@ class CustomOverlyEntry {
               groupId: 'salim',
               onTapOutside: onTapOutside,
               child: Material(
-                elevation: PopupMenuTheme.of(context).elevation ?? 4,
+                animationDuration: Duration(seconds: 1),
+                type: MaterialType.card,
+                shape: props.shape ?? PopupMenuTheme.of(context).shape,
+                elevation: props.elevation ?? PopupMenuTheme.of(context).elevation ?? 8,
+                color: props.color ?? PopupMenuTheme.of(context).color,
+                clipBehavior: props.clipBehavior,
+                borderRadius: props.borderRadius,
+                shadowColor: props.shadowColor,
+                borderOnForeground: props.borderOnForeground,
+                surfaceTintColor: props.surfaceTintColor,
                 child: child,
-                color: PopupMenuTheme.of(context).color,
               ),
             ),
           ),
         ),
       );
     });
-    Overlay.of(context).insert(overlayEntry!);
-
-    await completer?.future;
   }
-
-  void close() {
-    overlayEntry?.remove();
-    overlayEntry = null;
-    completer?.complete();
-  }
-
-  bool isOpen() => completer?.isCompleted == false;
 }

@@ -1,7 +1,6 @@
 import 'package:dropdown_search/src/base_dropdown_search.dart';
 import 'package:flutter/material.dart';
 
-
 enum MenuAlign {
   bottomStart,
   bottomCenter,
@@ -55,7 +54,7 @@ class MenuProps {
   });
 }
 
-class CupertinoMenuProps<T> {
+class CupertinoMenuProps {
   final MenuAlign? align;
   final ShapeBorder? shape;
   final double? elevation;

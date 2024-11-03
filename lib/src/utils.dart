@@ -58,7 +58,42 @@ RelativeRect getPosition(RenderBox dropdown, RenderBox overlay, Size menuSize, M
   return RelativeRect.fromSize(Offset(dX, dY) & menuSize, overlay.size);
 }
 
+Size computePopupSize(RenderBox dropdown, RenderBox overlay, BoxConstraints popUpConstraints) {
+  var menuMinWidth = popUpConstraints.minWidth;
+  var menuMaxWidth = popUpConstraints.maxWidth;
+
+  var menuMinHeight = popUpConstraints.minHeight;
+  var menuMaxHeight = popUpConstraints.maxHeight;
+
+  var menuWidth = dropdown.size.width;
+  var menuHeight = 350.0;
+
+  if (menuMinWidth > 0) {
+    menuWidth = menuMinWidth;
+  }
+  if (menuMaxWidth > 0 && menuMaxWidth < menuWidth) {
+    menuWidth = menuMaxWidth;
+  }
+
+  if (menuMinHeight > 0) {
+    menuHeight = menuMinHeight;
+  }
+  if (menuMaxHeight > 0 && menuMaxHeight < menuHeight) {
+    menuHeight = menuMaxHeight;
+  }
+
+  return Size(menuWidth, menuHeight);
+}
+
 enum UiToApply { cupertino, material }
+
+extension RelativeRectEx on RelativeRect {
+  RelativeRect addMargin(EdgeInsets? margin) {
+    if (margin == null) return this;
+
+    return RelativeRect.fromLTRB(left + margin.left, top + margin.top, right + margin.right, bottom + margin.bottom);
+  }
+}
 
 extension PlatformUi on BuildContext {
   UiToApply getUiToApply(UiMode uiMode) {

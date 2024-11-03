@@ -269,7 +269,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
   final ValueNotifier<bool> _isFocused = ValueNotifier(false);
   final _popupStateKey = GlobalKey<DropdownSearchPopupState<T>>();
   var _uiToApply = UiToApply.material;
-  CustomOverlyEntry? _customOverlyEntry;
+  CustomOverlayEntry? _customOverlyEntry;
   final autoCompleteFocusNode = FocusNode();
 
   @override
@@ -625,7 +625,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
         key: ValueKey(isFocused), //useful for AnimatedSwitch uses for example
         props: dropDownButton,
         icon: icon,
-        onPressed: () => openDropDownSearch(),
+        onPressed: () => toggleDropDownSearch(),
       );
 
       if (dropDownButton.animationBuilder != null) return dropDownButton.animationBuilder!(button, isFocused);
@@ -668,13 +668,24 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
     autoCompleteFocusNode.requestFocus();
 
-    _customOverlyEntry = CustomOverlyEntry();
-
-    return _customOverlyEntry!.open(
-      context,
-      _popupWidgetInstance(),
-      (event) => closeDropDownSearch(),
-    );
+    if (_uiToApply == UiToApply.cupertino) {
+      _customOverlyEntry = CupertinoCustomOverlyEntry(
+          child: _popupWidgetInstance(),
+          constraints: widget.popupProps.constraints,
+          onTapOutside: (event) => closeDropDownSearch(),
+          props: isMultiSelectionMode
+              ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).autoCompleteProps
+              : (widget.popupProps as CupertinoPopupProps<T>).autoCompleteProps);
+    } else {
+      _customOverlyEntry = MaterialCustomOverlyEntry(
+          child: _popupWidgetInstance(),
+          constraints: widget.popupProps.constraints,
+          onTapOutside: (event) => closeDropDownSearch(),
+          props: isMultiSelectionMode
+              ? (widget.popupProps as MultiSelectionPopupProps<T>).autoCompleteProps
+              : (widget.popupProps as PopupProps<T>).autoCompleteProps);
+    }
+    return _customOverlyEntry!.open(context);
   }
 
   ///open dialog
@@ -755,21 +766,28 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   ///openMenu
   Future _openMenu() {
-    dynamic menuProps = widget.popupProps;
     if (_uiToApply == UiToApply.cupertino) {
-      menuProps = isMultiSelectionMode
-          ? widget.popupProps as CupertinoMultiSelectionPopupProps<T>
-          : widget.popupProps as CupertinoPopupProps<T>;
+      final menuProps = isMultiSelectionMode
+          ? (widget.popupProps as CupertinoMultiSelectionPopupProps<T>).menuProps
+          : (widget.popupProps as CupertinoPopupProps<T>).menuProps;
+
+      return CupertinoCustomMenu<T>(
+        props: menuProps,
+        child: _popupWidgetInstance(),
+        constraints: widget.popupProps.constraints,
+        context: context,
+      ).openMenu();
     } else {
-      menuProps =
-          isMultiSelectionMode ? widget.popupProps as MultiSelectionPopupProps<T> : widget.popupProps as PopupProps<T>;
+      final menuProps = isMultiSelectionMode
+          ? (widget.popupProps as MultiSelectionPopupProps<T>).menuProps
+          : (widget.popupProps as PopupProps<T>).menuProps;
+      return MaterialCustomMenu<T>(
+        props: menuProps,
+        child: _popupWidgetInstance(),
+        constraints: widget.popupProps.constraints,
+        context: context,
+      ).openMenu();
     }
-    return openMenu<T>(
-      menuProps: menuProps.menuProps,
-      props: widget.popupProps,
-      parentContext: context,
-      child: _popupWidgetInstance(),
-    );
   }
 
   Widget _popupWidgetInstance() {
