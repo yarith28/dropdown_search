@@ -171,7 +171,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
                             thumbVisibility: widget.props.scrollbarProps.thumbVisibility,
                             trackVisibility: widget.props.scrollbarProps.trackVisibility,
                             thickness: widget.props.scrollbarProps.thickness,
-                            radius: widget.props.scrollbarProps.radius,
+                            radius: widget.props.scrollbarProps.radius ??
+                                (widget.uiMode == UiToApply.cupertino ? Radius.circular(4) : null),
                             notificationPredicate: widget.props.scrollbarProps.notificationPredicate,
                             interactive: widget.props.scrollbarProps.interactive,
                             scrollbarOrientation: widget.props.scrollbarProps.scrollbarOrientation,

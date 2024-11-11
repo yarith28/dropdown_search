@@ -10,6 +10,23 @@ enum MenuAlign {
   topEnd,
 }
 
+extension MenuAlignDirection on MenuAlign {
+  bool get isDown => this == MenuAlign.bottomStart || this == MenuAlign.bottomCenter || this == MenuAlign.bottomEnd;
+
+  bool get isUp => !isDown;
+
+  MenuAlign get reverse {
+    switch(this){
+      case MenuAlign.topStart: return MenuAlign.bottomStart;
+      case MenuAlign.topCenter: return MenuAlign.bottomCenter;
+      case MenuAlign.topEnd: return MenuAlign.bottomEnd;
+      case MenuAlign.bottomStart: return MenuAlign.topStart;
+      case MenuAlign.bottomCenter: return MenuAlign.topCenter;
+      case MenuAlign.bottomEnd: return MenuAlign.topEnd;
+    }
+  }
+}
+
 class MenuProps {
   final MenuAlign? align;
   final ShapeBorder? shape;

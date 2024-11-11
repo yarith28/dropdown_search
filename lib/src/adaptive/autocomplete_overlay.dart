@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dropdown_search/src/properties/autocomplete_props.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -25,14 +25,71 @@ abstract class CustomOverlayEntry {
 
     Overlay.of(context).insert(overlayEntry!);
 
+    //add screen size change listener
+    WidgetsBinding.instance.addObserver(CustomWidgetsBindingObserver(overlayEntry!));
+
     await completer?.future;
   }
 
   bool isOpen() => completer?.isCompleted == false;
+
+  ///return overlay position based on different params such, constrains, alignment and screen size
+  RelativeRect getOverlayPosition(BuildContext pContext, MenuAlign? pAlign, BoxConstraints pConstraints) {
+    final dropdownBox = pContext.findRenderObject() as RenderBox;
+    final overlayBox = Overlay.of(pContext).context.findRenderObject() as RenderBox;
+    var popupSize = computePopupSize(dropdownBox, overlayBox, pConstraints);
+    var lAlign = pAlign ?? MenuAlign.bottomCenter;
+
+    final dropDownY = dropdownBox.localToGlobal(Offset.zero, ancestor: overlayBox).dy;
+    final bottomHeight = overlayBox.size.height - dropDownY - dropdownBox.size.height;
+    final topHeight = dropDownY;
+
+    //get best orientation
+    if (lAlign.isDown && popupSize.height > bottomHeight) {
+      //check if there enough space in opposite direction,
+      if (popupSize.height <= topHeight) {
+        lAlign = lAlign.reverse;
+      } else if (topHeight > bottomHeight) {
+        //if there is more available space in the opposite direction then use that direction
+        lAlign = lAlign.reverse;
+        popupSize = Size(popupSize.width, topHeight);
+      } else {
+        //Other wise minimize the height to max available space
+        popupSize = Size(popupSize.width, bottomHeight);
+      }
+    } else if (lAlign.isUp && popupSize.height > topHeight) {
+
+      //check if there enough space in opposite direction,
+      if (popupSize.height <= bottomHeight) {
+        lAlign = lAlign.reverse;
+      } else if (bottomHeight > topHeight) {
+        //if there is more available space in the opposite direction then use that direction
+        lAlign = lAlign.reverse;
+        popupSize = Size(popupSize.width, bottomHeight);
+      } else {
+        //Other wise minimize the height to max available space
+        popupSize = Size(popupSize.width, topHeight);
+      }
+    }
+
+    return getPosition(dropdownBox, overlayBox, popupSize, lAlign);
+  }
+}
+
+class CustomWidgetsBindingObserver with WidgetsBindingObserver {
+  final OverlayEntry overlayEntry;
+
+  CustomWidgetsBindingObserver(this.overlayEntry);
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    overlayEntry.markNeedsBuild();
+  }
 }
 
 class MaterialCustomOverlyEntry extends CustomOverlayEntry {
-  final AutoCompleteProps props;
+  final AutocompleteProps props;
   final BoxConstraints constraints;
   final TapRegionCallback? onTapOutside;
   final Widget? child;
@@ -41,12 +98,8 @@ class MaterialCustomOverlyEntry extends CustomOverlayEntry {
 
   @override
   getOverlayEntry(BuildContext context) {
-    final dropdownBox = context.findRenderObject() as RenderBox;
-    final overlayBox = Overlay.of(context).context.findRenderObject() as RenderBox;
-    final dropdownSize = computePopupSize(dropdownBox, overlayBox, constraints);
-    final pos = getPosition(dropdownBox, overlayBox, dropdownSize, props.align);
-
-    return OverlayEntry(builder: (context) {
+    return OverlayEntry(builder: (ctx) {
+      final pos = getOverlayPosition(context, props.align, constraints);
       return Positioned(
         top: pos.top,
         left: pos.left,
@@ -77,7 +130,7 @@ class MaterialCustomOverlyEntry extends CustomOverlayEntry {
 }
 
 class CupertinoCustomOverlyEntry extends CustomOverlayEntry {
-  final CupertinoAutoCompleteProps props;
+  final CupertinoAutocompleteProps props;
   final TapRegionCallback? onTapOutside;
   final BoxConstraints constraints;
   final Widget? child;
@@ -86,36 +139,29 @@ class CupertinoCustomOverlyEntry extends CustomOverlayEntry {
 
   @override
   OverlayEntry getOverlayEntry(BuildContext context) {
-    final dropdownBox = context.findRenderObject() as RenderBox;
-    final overlayBox = Overlay.of(context).context.findRenderObject() as RenderBox;
-    final dropdownSize = computePopupSize(dropdownBox, overlayBox, BoxConstraints());
-    final pos = getPosition(dropdownBox, overlayBox, dropdownSize, props.align);
-
-    return OverlayEntry(builder: (context) {
-      return Expanded(
-        child: Positioned(
-          top: pos.top,
-          left: pos.left,
-          right: pos.right,
-          bottom: pos.bottom,
-          child: Container(
-            constraints: BoxConstraints(),
-            child: TapRegion(
-              groupId: 'salim',
-              onTapOutside: onTapOutside,
-              child: Material(
-                animationDuration: Duration(seconds: 1),
-                type: MaterialType.card,
-                shape: props.shape ?? PopupMenuTheme.of(context).shape,
-                elevation: props.elevation ?? PopupMenuTheme.of(context).elevation ?? 8,
-                color: props.color ?? PopupMenuTheme.of(context).color,
-                clipBehavior: props.clipBehavior,
-                borderRadius: props.borderRadius,
-                shadowColor: props.shadowColor,
-                borderOnForeground: props.borderOnForeground,
-                surfaceTintColor: props.surfaceTintColor,
-                child: child,
-              ),
+    return OverlayEntry(builder: (ctx) {
+      final pos = getOverlayPosition(context, props.align, constraints);
+      return Positioned(
+        top: pos.top,
+        left: pos.left,
+        right: pos.right,
+        bottom: pos.bottom,
+        child: Container(
+          constraints: constraints,
+          child: TapRegion(
+            groupId: 'salim',
+            onTapOutside: onTapOutside,
+            child: Material(
+              type: MaterialType.card,
+              shape: props.shape ?? PopupMenuTheme.of(context).shape,
+              elevation: props.elevation ?? PopupMenuTheme.of(context).elevation ?? 8,
+              color: props.color ?? PopupMenuTheme.of(context).color,
+              clipBehavior: props.clipBehavior,
+              borderRadius: props.borderRadius,
+              shadowColor: props.shadowColor,
+              borderOnForeground: props.borderOnForeground,
+              surfaceTintColor: props.surfaceTintColor,
+              child: child,
             ),
           ),
         ),
