@@ -108,7 +108,7 @@ class MaterialCustomOverlyEntry extends CustomOverlayEntry {
         child: Container(
           constraints: constraints,
           child: TapRegion(
-            groupId: 'salim',
+            groupId: kGroupIdAutoComplete,
             onTapOutside: onTapOutside,
             child: Material(
               type: MaterialType.card,
@@ -149,7 +149,7 @@ class CupertinoCustomOverlyEntry extends CustomOverlayEntry {
         child: Container(
           constraints: constraints,
           child: TapRegion(
-            groupId: 'salim',
+            groupId: kGroupIdAutoComplete,
             onTapOutside: onTapOutside,
             child: Material(
               type: MaterialType.card,

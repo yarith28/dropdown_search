@@ -362,7 +362,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   Widget _autocompleteFormFieldMultiSelection() {
     return TapRegion(
-      groupId: 'salim',
+      groupId: kGroupIdAutoComplete,
       child: FormField<List<T>>(
         enabled: widget.enabled,
         onSaved: widget.onSavedMultiSelection,
