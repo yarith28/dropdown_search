@@ -3,7 +3,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_search/src/adaptive/autocomplete_overlay.dart';
 import 'package:dropdown_search/src/adaptive/bottom_sheets.dart';
 import 'package:dropdown_search/src/adaptive/modal_bottom_sheet.dart';
-import 'package:dropdown_search/src/properties/click_props.dart';
 import 'package:dropdown_search/src/properties/wrap_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
@@ -145,8 +144,11 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
 
   final UiMode uiMode;
 
+  final Object? groupId;
+
   BaseDropdownSearch({
     super.key,
+    this.groupId,
     T? selectedItem,
     this.mode = Mode.form,
     this.autoValidateMode = AutovalidateMode.disabled,
@@ -184,6 +186,10 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
           popupProps.mode != PopupMode.autocomplete || clickProps == null,
           "autocomplete mode has no clickProps",
         ),
+        assert(
+          popupProps.mode != PopupMode.autocomplete || mode != Mode.custom,
+          "autocomplete mode and custom mode can't be used together",
+        ),
         clickProps = clickProps ?? const ClickProps(),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
         selectedItems = _itemToList(selectedItem),
@@ -200,6 +206,7 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
 
   BaseDropdownSearch.multiSelection({
     super.key,
+    this.groupId,
     this.mode = Mode.form,
     this.autoValidateMode = AutovalidateMode.disabled,
     this.items,
@@ -238,6 +245,10 @@ abstract class BaseDropdownSearch<T> extends StatefulWidget {
         assert(
           popupProps.mode != PopupMode.autocomplete || clickProps == null,
           "autocomplete mode has no clickProps",
+        ),
+        assert(
+          popupProps.mode != PopupMode.autocomplete || mode != Mode.custom,
+          "autocomplete mode and custom mode can't be used together",
         ),
         clickProps = clickProps ?? const ClickProps(),
         decoratorProps = decoratorProps ?? const DropDownDecoratorProps(),
@@ -362,7 +373,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
 
   Widget _autocompleteFormFieldMultiSelection() {
     return TapRegion(
-      groupId: kGroupIdAutoComplete,
+      groupId: widget.groupId,
       child: FormField<List<T>>(
         enabled: widget.enabled,
         onSaved: widget.onSavedMultiSelection,
@@ -956,7 +967,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
       _customOverlyEntry?.close();
       _customOverlyEntry = null;
     } else {
-      Navigator.of(context).pop();
+      if (_popupStateKey.currentState != null) Navigator.of(context).pop();
     }
   }
 

@@ -23,7 +23,11 @@ class CupertinoDropdownSearch<T> extends BaseDropdownSearch<T> {
     super.onSaved,
     super.validator,
     super.decoratorProps,
-  }) : super(popupProps: popupProps, uiMode: UiMode.cupertino);
+  }) : super(
+          popupProps: popupProps,
+          uiMode: UiMode.cupertino,
+          groupId: popupProps.autoCompleteProps.groupId,
+        );
 
   CupertinoDropdownSearch.multiSelection({
     CupertinoMultiSelectionPopupProps<T> popupProps = const CupertinoMultiSelectionPopupProps.menu(),
@@ -47,5 +51,9 @@ class CupertinoDropdownSearch<T> extends BaseDropdownSearch<T> {
     super.onSaved,
     super.validator,
     super.decoratorProps,
-  }) : super.multiSelection(popupProps: popupProps, uiMode: UiMode.cupertino);
+  }) : super.multiSelection(
+          popupProps: popupProps,
+          uiMode: UiMode.cupertino,
+          groupId: popupProps.autoCompleteProps.groupId,
+        );
 }

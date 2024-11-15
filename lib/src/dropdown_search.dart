@@ -23,7 +23,11 @@ class DropdownSearch<T> extends BaseDropdownSearch<T> {
     super.onSaved,
     super.validator,
     super.decoratorProps,
-  }) : super(popupProps: popupProps, uiMode: UiMode.material);
+  }) : super(
+          popupProps: popupProps,
+          uiMode: UiMode.material,
+          groupId: popupProps.autoCompleteProps.groupId,
+        );
 
   DropdownSearch.multiSelection({
     MultiSelectionPopupProps<T> popupProps = const MultiSelectionPopupProps.menu(),
@@ -47,5 +51,9 @@ class DropdownSearch<T> extends BaseDropdownSearch<T> {
     super.onSaved,
     super.validator,
     super.decoratorProps,
-  }) : super.multiSelection(popupProps: popupProps, uiMode: UiMode.material);
+  }) : super.multiSelection(
+          popupProps: popupProps,
+          uiMode: UiMode.material,
+          groupId: popupProps.autoCompleteProps.groupId,
+        );
 }

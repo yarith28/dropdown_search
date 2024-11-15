@@ -58,7 +58,6 @@ abstract class CustomOverlayEntry {
         popupSize = Size(popupSize.width, bottomHeight);
       }
     } else if (lAlign.isUp && popupSize.height > topHeight) {
-
       //check if there enough space in opposite direction,
       if (popupSize.height <= bottomHeight) {
         lAlign = lAlign.reverse;
@@ -99,7 +98,7 @@ class MaterialCustomOverlyEntry extends CustomOverlayEntry {
   @override
   getOverlayEntry(BuildContext context) {
     return OverlayEntry(builder: (ctx) {
-      final pos = getOverlayPosition(context, props.align, constraints);
+      final pos = getOverlayPosition(context, props.align, constraints).addMargin(props.margin);
       return Positioned(
         top: pos.top,
         left: pos.left,
@@ -108,18 +107,18 @@ class MaterialCustomOverlyEntry extends CustomOverlayEntry {
         child: Container(
           constraints: constraints,
           child: TapRegion(
-            groupId: kGroupIdAutoComplete,
+            groupId: props.groupId,
             onTapOutside: onTapOutside,
             child: Material(
               type: MaterialType.card,
               shape: props.shape ?? PopupMenuTheme.of(context).shape,
+              color:  props.color ?? PopupMenuTheme.of(context).surfaceTintColor,
               elevation: props.elevation ?? PopupMenuTheme.of(context).elevation ?? 4,
-              color: props.color ?? PopupMenuTheme.of(context).color,
+              shadowColor: props.shadowColor ?? PopupMenuTheme.of(context).shadowColor,
+              surfaceTintColor: props.surfaceTintColor ?? PopupMenuTheme.of(context).surfaceTintColor,
               clipBehavior: props.clipBehavior,
               borderRadius: props.borderRadius,
-              shadowColor: props.shadowColor,
               borderOnForeground: props.borderOnForeground,
-              surfaceTintColor: props.surfaceTintColor,
               child: child,
             ),
           ),
@@ -140,7 +139,7 @@ class CupertinoCustomOverlyEntry extends CustomOverlayEntry {
   @override
   OverlayEntry getOverlayEntry(BuildContext context) {
     return OverlayEntry(builder: (ctx) {
-      final pos = getOverlayPosition(context, props.align, constraints);
+      final pos = getOverlayPosition(context, props.align, constraints).addMargin(props.margin);
       return Positioned(
         top: pos.top,
         left: pos.left,
@@ -149,7 +148,7 @@ class CupertinoCustomOverlyEntry extends CustomOverlayEntry {
         child: Container(
           constraints: constraints,
           child: TapRegion(
-            groupId: kGroupIdAutoComplete,
+            groupId: props.groupId,
             onTapOutside: onTapOutside,
             child: Material(
               type: MaterialType.card,

@@ -59,7 +59,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                             labelText: "Dialog with title",
                             hintText: "Select an Int"),
                       ),
-                      popupProps: BasePopupProps.bottomSheet(
+                      popupProps: PopupProps.bottomSheet(
                         title: Container(
                           decoration: BoxDecoration(
                             color: Colors.deepPurple,
@@ -97,7 +97,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                           filled: true,
                         ),
                       ),
-                      popupProps: PopupPropsMultiSelection.bottomSheet(
+                      popupProps: PopupProps.bottomSheet(
                         disabledItemFn: (int i) => i <= 3,
                       ),
                     ),
@@ -115,7 +115,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                     child: DropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: PopupPropsMultiSelection.bottomSheet(
+                      popupProps: PopupProps.bottomSheet(
                         showSelectedItems: true,
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
@@ -135,7 +135,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                     child: DropdownSearch<UserModel>.multiSelection(
                       items: (filter, s) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: PopupPropsMultiSelection.bottomSheet(
+                      popupProps: MultiSelectionPopupProps.bottomSheet(
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
                         suggestionsProps: SuggestionsProps(
@@ -145,27 +145,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                                 .where((e) => e.name.contains("Mrs"))
                                 .toList();
                           },
-                          itemProps: SuggestedItemProps(itemBuilder: (context, item, isSelected, isDisabled) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey[100]),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    item.name,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.indigo),
-                                  ),
-                                  Padding(padding: EdgeInsets.only(left: 8)),
-                                  isSelected ? Icon(Icons.check_box_outlined) : SizedBox.shrink(),
-                                ],
-                              ),
-                            );
-                          }),
+                          itemProps: SuggestedItemProps(),
                         ),
                       ),
                     ),
@@ -180,7 +160,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
               DropdownSearch<String>.multiSelection(
                 key: _dropDownCustomBGKey,
                 items: (f, cs) => List.generate(30, (index) => "$index"),
-                popupProps: PopupPropsMultiSelection.bottomSheet(
+                popupProps: MultiSelectionPopupProps.bottomSheet(
                   bottomSheetProps:
                       BottomSheetProps(backgroundColor: Colors.grey.shade200),
                   showSearchBox: true,
@@ -244,7 +224,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                       items: (filter, t) => getData(filter),
                       suffixProps: DropdownSuffixProps(
                           clearButtonProps: ClearButtonProps(isVisible: true)),
-                      popupProps: PopupPropsMultiSelection.bottomSheet(
+                      popupProps: MultiSelectionPopupProps.bottomSheet(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
@@ -276,7 +256,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                   Expanded(
                     child: DropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
-                      popupProps: PopupPropsMultiSelection.bottomSheet(
+                      popupProps: PopupProps.bottomSheet(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
@@ -303,7 +283,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                 key: _dropdownMultiLevelKey,
                 items: (f, cs) => myMultiLevelItems,
                 compareFn: (i1, i2) => i1.level1 == i2.level1,
-                popupProps: BasePopupProps.bottomSheet(
+                popupProps: PopupProps.bottomSheet(
                   showSelectedItems: true,
                   interceptCallBacks: true, //important line
                   itemBuilder: (ctx, item, isDisabled, isSelected) {

@@ -6,7 +6,6 @@ class AutocompleteProps {
   final MenuAlign? align;
   final ShapeBorder? shape;
   final double? elevation;
-  final Color? backgroundColor;
   final Clip clipBehavior;
   final BorderRadiusGeometry? borderRadius;
   final Color? shadowColor;
@@ -15,13 +14,14 @@ class AutocompleteProps {
   final Color? color;
   final Color? surfaceTintColor;
   final EdgeInsets? margin;
+  final Object? groupId;
 
   const AutocompleteProps({
+    this.groupId = 'DropdownSearchAutocomplete',
     this.align,
     this.elevation = 4,
     this.shape = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
     this.positionCallback,
-    this.backgroundColor,
     this.clipBehavior = Clip.none,
     this.borderOnForeground = false,
     this.borderRadius,
@@ -36,7 +36,6 @@ class CupertinoAutocompleteProps<T> {
   final MenuAlign? align;
   final ShapeBorder? shape;
   final double? elevation;
-  final Color? backgroundColor;
   final Clip clipBehavior;
   final BorderRadiusGeometry? borderRadius;
   final Color? shadowColor;
@@ -45,13 +44,13 @@ class CupertinoAutocompleteProps<T> {
   final Color? color;
   final Color? surfaceTintColor;
   final EdgeInsets? margin;
-
+  final Object? groupId;
   const CupertinoAutocompleteProps({
+    this.groupId = 'DropdownSearchAutocomplete',
     this.align,
     this.elevation = 8,
     this.shape = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
     this.positionCallback,
-    this.backgroundColor,
     this.clipBehavior = Clip.none,
     this.borderOnForeground = false,
     this.borderRadius,

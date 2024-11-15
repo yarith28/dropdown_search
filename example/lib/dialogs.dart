@@ -54,7 +54,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(labelText: "Dialog with title", hintText: "Select an Int"),
                       ),
-                      popupProps: BasePopupProps.dialog(
+                      popupProps: PopupProps.dialog(
                         title: Container(
                           decoration: BoxDecoration(color: Colors.deepPurple),
                           alignment: Alignment.center,
@@ -85,7 +85,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                           filled: true,
                         ),
                       ),
-                      popupProps: PopupPropsMultiSelection.dialog(
+                      popupProps: PopupProps.dialog(
                         disabledItemFn: (int i) => i <= 3,
                       ),
                     ),
@@ -103,7 +103,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                     child: DropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: BasePopupProps.dialog(
+                      popupProps: PopupProps.dialog(
                         disabledItemFn: (item) => item.name.contains('Am'),
                         showSelectedItems: true,
                         showSearchBox: true,
@@ -124,7 +124,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                       child: DropdownSearch<UserModel>.multiSelection(
                         items: (filter, s) => getData(filter),
                         compareFn: (i, s) => i.isEqual(s),
-                        popupProps: PopupPropsMultiSelection.dialog(
+                        popupProps: MultiSelectionPopupProps.dialog(
                           showSearchBox: true,
                           itemBuilder: userModelPopupItem,
                           suggestionsProps: SuggestionsProps(
@@ -132,27 +132,6 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                             items: (us) {
                               return us.where((e) => e.name.contains("Mrs")).toList();
                             },
-                            itemProps: SuggestedItemProps(itemBuilder: (context, item, isSelected, isDisabled) {
-                              return Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[100]),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      item.name,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.indigo),
-                                    ),
-                                    Padding(padding: EdgeInsets.only(left: 8)),
-                                    isSelected ? Icon(Icons.check_box_outlined) : SizedBox.shrink(),
-                                  ],
-                                ),
-                              );
-                            }),
                           ),
                         ),
                       ),
@@ -176,7 +155,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                     child: DropdownSearch<String>.multiSelection(
                       key: _dropDownCustomBGKey,
                       items: (f, cs) => List.generate(30, (index) => "$index"),
-                      popupProps: PopupPropsMultiSelection.dialog(
+                      popupProps: MultiSelectionPopupProps.dialog(
                         showSearchBox: true,
                         containerBuilder: (ctx, popupWidget) {
                           return Column(
@@ -237,7 +216,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                     child: DropdownSearch<UserModel>.multiSelection(
                       items: (filter, t) => getData(filter),
                       suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-                      popupProps: PopupPropsMultiSelection.dialog(
+                      popupProps: MultiSelectionPopupProps.dialog(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
@@ -267,7 +246,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                   Expanded(
                     child: DropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
-                      popupProps: PopupPropsMultiSelection.dialog(
+                      popupProps: PopupProps.dialog(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
@@ -293,7 +272,7 @@ class _DialogExamplesPageState extends State<DialogExamplesPage> {
                 key: _dropdownMultiLevelKey,
                 items: (f, cs) => myMultiLevelItems,
                 compareFn: (i1, i2) => i1.level1 == i2.level1,
-                popupProps: BasePopupProps.dialog(
+                popupProps: PopupProps.dialog(
                   showSelectedItems: true,
                   interceptCallBacks: true, //important line
                   itemBuilder: (ctx, item, isDisabled, isSelected) {
@@ -385,7 +364,7 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
           contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
         ),
       ),
-      popupProps: PopupPropsMultiSelection.dialog(
+      popupProps: MultiSelectionPopupProps.dialog(
         onItemAdded: (l, s) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),
         onItemRemoved: (l, s) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),
         onItemsLoaded: (value) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),

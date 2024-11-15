@@ -24,3 +24,4 @@ export 'src/properties/adaptive_popup_props.dart';
 export 'src/properties/cupertino_popup_props.dart';
 export 'src/base_dropdown_search.dart';
 export 'src/properties/autocomplete_props.dart';
+export 'src/properties/click_props.dart';

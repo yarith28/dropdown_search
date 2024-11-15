@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'user_model.dart';
 
-class MenuExamplesPage extends StatefulWidget {
+class AutocompleteExamplesPage extends StatefulWidget {
   @override
-  State<MenuExamplesPage> createState() => _MenuExamplesPageState();
+  State<AutocompleteExamplesPage> createState() => _AutocompleteExamplesPageState();
 }
 
-class _MenuExamplesPageState extends State<MenuExamplesPage> {
+class _AutocompleteExamplesPageState extends State<AutocompleteExamplesPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -30,74 +30,47 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  DropdownSearch<String>.multiSelection(
-                    mode: Mode.custom,
-                    items: (f, cs) => ["Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                    popupProps: MultiSelectionPopupProps.menu(
-                      disabledItemFn: (item) => item == 'Tuesday',
-                      constraints: BoxConstraints(minWidth: 250),
-                      fit: FlexFit.loose
-                    ),
-                    dropdownBuilder: (ctx, selectedItem) => Icon(Icons.calendar_month_outlined, size: 54),
-                  ),
-                  DropdownSearch<(String, Color)>(
-                    clickProps: ClickProps(borderRadius: BorderRadius.circular(20)),
-                    mode: Mode.custom,
-                    items: (f, cs) => [
-                      ("Red", Colors.red),
-                      ("Black", Colors.black),
-                      ("Yellow", Colors.yellow),
-                      ('Blue', Colors.blue),
-                    ],
-                    compareFn: (item1, item2) => item1.$1 == item2.$1,
-                    popupProps: PopupProps.menu(
-                      menuProps: MenuProps(align: MenuAlign.bottomCenter),
-                      constraints: BoxConstraints(minWidth: 128),
-                      fit: FlexFit.loose,
-                      itemBuilder: (context, item, isDisabled, isSelected) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(item.$1, style: TextStyle(color: item.$2, fontSize: 16)),
+                  Expanded(
+                    child: DropdownSearch<String>.multiSelection(
+                      items: (f, cs) => ["Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                      popupProps: MultiSelectionPopupProps.autocomplete(
+                        autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                        disabledItemFn: (item) => item == 'Tuesday',
                       ),
+                      dropdownBuilder: (ctx, selectedItems) =>
+                          selectedItems.isEmpty ? SizedBox.shrink() : Text('$selectedItems'),
                     ),
-                    dropdownBuilder: (ctx, selectedItem) => Icon(Icons.face, color: selectedItem?.$2, size: 54),
                   ),
-                  DropdownSearch<String>(
-                    mode: Mode.custom,
-                    items: (f, cs) => ['Facebook', 'Twitter', 'Instagram', 'SnapChat', 'Other'],
-                    dropdownBuilder: (context, selectedItem) {
-                      int r = 0;
-                      switch (selectedItem) {
-                        case 'Facebook':
-                          r = 5;
-                          break;
-                        case 'Twitter':
-                          r = -55;
-                          break;
-                        case 'Instagram':
-                          r = 185;
-                          break;
-                        case 'SnapChat':
-                          r = 245;
-                          break;
-                      }
-                      return RotationTransition(
-                        turns: AlwaysStoppedAnimation(r / 360),
-                        child: Image.asset('assets/images/networks.png', height: 164, width: 164),
-                      );
-                    },
-                    clickProps: ClickProps(borderRadius: BorderRadius.all(Radius.circular(50))),
-                    popupProps: PopupProps.menu(
-                      fit: FlexFit.loose,
-                      menuProps: MenuProps(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                            topLeft: Radius.zero,
-                            topRight: Radius.zero,
-                          ),
+                  Padding(padding: EdgeInsets.only(right: 16)),
+                  Expanded(
+                    child: DropdownSearch<(String, Color)>(
+                      items: (f, cs) => [
+                        ("Red", Colors.red),
+                        ("Black", Colors.black),
+                        ("Yellow", Colors.yellow),
+                        ('Blue', Colors.blue),
+                      ],
+                      compareFn: (item1, item2) => item1.$1 == item2.$1,
+                      itemAsString: (item) => item.$1,
+                      popupProps: PopupProps.autocomplete(
+                        autoCompleteProps: AutocompleteProps(align: MenuAlign.bottomCenter, groupId: UniqueKey()),
+                        constraints: BoxConstraints(minWidth: 128),
+                        fit: FlexFit.loose,
+                        itemBuilder: (context, item, isDisabled, isSelected) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(item.$1, style: TextStyle(color: item.$2, fontSize: 16)),
                         ),
                       ),
+                      dropdownBuilder: (ctx, selectedItem) {
+                        if (selectedItem == null) return SizedBox.shrink();
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.face, color: selectedItem.$2, size: 54),
+                            Text(selectedItem.$1),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -110,6 +83,9 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                 children: [
                   Expanded(
                     child: DropdownSearch<int>(
+                      popupProps: PopupProps.autocomplete(
+                        autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                      ),
                       items: (f, cs) => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                     ),
                   ),
@@ -118,6 +94,9 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                     child: SizedBox(
                       height: 50,
                       child: DropdownSearch<int>.multiSelection(
+                        popupProps: MultiSelectionPopupProps.autocomplete(
+                          autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                        ),
                         items: (f, cs) => List.generate(50, (i) => i),
                         selectedItemsScrollProps: ScrollProps(scrollDirection: Axis.horizontal),
                       ),
@@ -146,9 +125,12 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                           title: Text(selectedItem.name),
                         );
                       },
-                      popupProps: PopupProps.menu(
-                        disableFilter: true, //data will be filtered by the backend
+                      popupProps: PopupProps.autocomplete(
+                        disableFilter: true,
                         showSearchBox: true,
+                        autoCompleteProps: AutocompleteProps(
+                          groupId: UniqueKey(),
+                        ),
                         showSelectedItems: true,
                         itemBuilder: (ctx, item, isDisabled, isSelected) {
                           return ListTile(
@@ -208,15 +190,19 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                         ),
                       ),
                       dropdownBuilder: (context, selectedItem) {
-                        return ListTile(
-                          leading: Icon(selectedItem!.$1, color: Colors.white),
-                          title: Text(
+                        if (selectedItem == null) return SizedBox.shrink();
+                        return Row(mainAxisSize: MainAxisSize.min, children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Icon(selectedItem.$1, color: Colors.white),
+                          ),
+                          Text(
                             selectedItem.$2,
                             style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                        );
+                        ]);
                       },
-                      popupProps: PopupProps.menu(
+                      popupProps: PopupProps.autocomplete(
                         itemBuilder: (context, item, isDisabled, isSelected) {
                           return ListTile(
                             contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -228,8 +214,10 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                           );
                         },
                         fit: FlexFit.loose,
-                        menuProps: MenuProps(
-                          backgroundColor: Colors.transparent,
+                        autoCompleteProps: AutocompleteProps(
+                          groupId: UniqueKey(),
+                          surfaceTintColor: Colors.transparent,
+                          color: Colors.transparent,
                           elevation: 0,
                           margin: EdgeInsets.only(top: 16),
                         ),
@@ -273,7 +261,7 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                       decoratorProps: DropDownDecoratorProps(
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 20),
+                          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -292,7 +280,13 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                           hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey),
                         ),
                       ),
-                      popupProps: PopupProps.menu(
+                      dropdownBuilder: (context, selectedItem) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          child: Text(selectedItem ?? ''),
+                        );
+                      },
+                      popupProps: PopupProps.autocomplete(
                         itemBuilder: (context, item, isDisabled, isSelected) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -304,7 +298,8 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                           );
                         },
                         fit: FlexFit.loose,
-                        menuProps: MenuProps(
+                        autoCompleteProps: AutocompleteProps(
+                          groupId: UniqueKey(),
                           margin: EdgeInsets.only(top: 12),
                           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
                         ),
@@ -316,9 +311,9 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(labelText: 'Bottom Left Menu', border: OutlineInputBorder()),
                       ),
-                      popupProps: PopupProps.menu(
+                      popupProps: PopupProps.autocomplete(
                         constraints: BoxConstraints.tight(Size(250, 250)),
-                        menuProps: MenuProps(align: MenuAlign.bottomStart),
+                        autoCompleteProps: AutocompleteProps(align: MenuAlign.bottomStart, groupId: UniqueKey()),
                       ),
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -327,9 +322,9 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                         decoration: InputDecoration(labelText: 'Bottom Center Menu', border: OutlineInputBorder()),
                       ),
                       items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
-                      popupProps: PopupProps.menu(
+                      popupProps: PopupProps.autocomplete(
                         constraints: BoxConstraints.tight(Size(250, 250)),
-                        menuProps: MenuProps(align: MenuAlign.bottomCenter),
+                        autoCompleteProps: AutocompleteProps(align: MenuAlign.bottomCenter, groupId: UniqueKey()),
                       ),
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -338,9 +333,9 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                         decoration: InputDecoration(labelText: 'Top Right Menu', border: OutlineInputBorder()),
                       ),
                       items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
-                      popupProps: PopupProps.menu(
+                      popupProps: PopupProps.autocomplete(
                         constraints: BoxConstraints.tight(Size(250, 250)),
-                        menuProps: MenuProps(align: MenuAlign.topEnd),
+                        autoCompleteProps: AutocompleteProps(align: MenuAlign.topEnd, groupId: UniqueKey()),
                       ),
                     ),
                   ],
@@ -357,6 +352,9 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                     child: DropdownSearch<int>(
                       items: (f, cs) => [1, 2, 3, 4, 5, 6, 7],
                       autoValidateMode: AutovalidateMode.onUserInteraction,
+                      popupProps: PopupProps.autocomplete(
+                        autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                      ),
                       validator: (int? i) {
                         if (i == null) {
                           return 'required filed';
@@ -371,6 +369,9 @@ class _MenuExamplesPageState extends State<MenuExamplesPage> {
                   Padding(padding: EdgeInsets.all(4)),
                   Expanded(
                     child: DropdownSearch<int>.multiSelection(
+                      popupProps: MultiSelectionPopupProps.autocomplete(
+                        autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                      ),
                       items: (f, cs) => [1, 2, 3, 4, 5, 6, 7],
                       validator: (List<int>? items) {
                         if (items == null || items.isEmpty) {

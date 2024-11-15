@@ -1,9 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:example/autocomplete.dart';
+import 'package:example/bottom_sheets.dart';
+import 'package:example/dialogs.dart';
+import 'package:example/menus.dart';
+import 'package:example/modals.dart';
+import 'package:example/user_model.dart';
 import 'package:flutter/material.dart';
 
-import 'user_model.dart';
+void main() => runApp(MyApp());
 
 Future<List<UserModel>> getData(filter) async {
   var response = await Dio().get(
@@ -19,85 +24,92 @@ Future<List<UserModel>> getData(filter) async {
   return [];
 }
 
-void main() {
-  runApp(const MyApp());
-}
-
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
-      localizationsDelegates: [
-        DefaultCupertinoLocalizations.delegate,
-        DefaultMaterialLocalizations.delegate,
-      ],
-      title: 'Flutter Demo',
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return MaterialApp(
+      title: 'dropdownSearch Demo',
+      //enable this line if you want test Dark Mode
+      //theme: ThemeData.dark(),
+      home: MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MyHomePage extends StatelessWidget {
+  final dropDownKey = GlobalKey<DropdownSearchState>();
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(),
-      child: Material(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                CupertinoDropdownSearch<String>.multiSelection(
-                  items: (filter, loadProps) => ["1", "2", "3"],
-                  selectedItems: ["2", '3'],
-                  suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-                  popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
-                    //fit: FlexFit.loose,
-                    //constraints: BoxConstraints.loose(height: 400, width: 300),
-                    suggestionsProps: SuggestionsProps(showSuggestions: true, items: (items) => ["1", "2", "3", "4"]),
-                    showSearchBox: true,
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(top: 8)),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CupertinoDropdownSearch<String>.multiSelection(
-                        items: (filter, loadProps) => ["1", "2", "3", "4", "10", "200", "3000", "40000"],
-                        selectedItems: ["2"],
-                        suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-                        popupProps: CupertinoMultiSelectionPopupProps.autocomplete(
-                          //fit: FlexFit.loose,
-                          //constraints: BoxConstraints.loose(height: 400, width: 300),
-                          suggestionsProps: SuggestionsProps(
-                              showSuggestions: true,
-                              items: (items) => ["1", "2", "3", "4"],
-                              itemProps: SuggestedItemProps(chipProps: ChipProps())
-                          ),
-                          showSearchBox: true,
-                        ),
-                      ),
+    return Scaffold(
+      appBar: AppBar(title: Text('examples mode')),
+      body: ListView(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: DropdownSearch<PopupMode>(
+                  key: dropDownKey,
+                  selectedItem: PopupMode.menu,
+                  itemAsString: (item) => item.name,
+                  compareFn: (i1, i2) => i1==i2,
+                  items: (filter, infiniteScrollProps) => PopupMode.values,
+                  decoratorProps: DropDownDecoratorProps(
+                    decoration: InputDecoration(
+                      labelText: 'Examples for: ',
+                      border: OutlineInputBorder(),
                     ),
-                    Padding(padding: EdgeInsets.only(right: 8)),
-                    Expanded(child: TextField(decoration: InputDecoration(border: OutlineInputBorder()),)),
-                  ],
+                  ),
+                  popupProps: PopupProps.menu(fit: FlexFit.loose, constraints: BoxConstraints()),
                 ),
+              ),
+              Padding(padding: EdgeInsets.only(right: 16)),
+              FilledButton(
+                onPressed: () {
+                  switch (dropDownKey.currentState?.getSelectedItem) {
+                    case PopupMode.menu:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MenuExamplesPage()));
+                      break;
+                    case PopupMode.modalBottomSheet:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ModalsExamplesPage()));
+                      break;
+                    case PopupMode.bottomSheet:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BottomSheetExamplesPage()));
+                      break;
+                    case PopupMode.dialog:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DialogExamplesPage()));
+                      break;
+                    case PopupMode.autocomplete:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AutocompleteExamplesPage()));
+                      break;
+                  }
+                },
+                child: Text("Go"),
+              )
+            ],
+          ),
+          Padding(padding: EdgeInsets.all(8)),
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(fontSize: 14.0, color: Colors.black),
+              children: [
+                TextSpan(text: 'we used '),
+                TextSpan(text: 'fit: FlexFit.loose', style: TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(text: ' and '),
+                TextSpan(text: 'constraints: BoxConstraints() ', style: TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(text: 'to fit the height of menu automatically to the length of items'),
               ],
             ),
           ),
-        ),
+          Padding(padding: EdgeInsets.only(top: 20)),
+          Text(
+            'DropdownSearch Anatomy',
+            style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+            textAlign: TextAlign.center,
+          ),
+          Image.asset('assets/images/anatomy.png', alignment: Alignment.topCenter, height: 1024)
+        ],
       ),
     );
   }
