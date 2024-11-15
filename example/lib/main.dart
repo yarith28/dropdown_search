@@ -73,25 +73,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(padding: EdgeInsets.only(top: 8)),
                 Row(
                   children: [
-                    Expanded(child: TextField(decoration: InputDecoration(border: OutlineInputBorder()),)),
-                    Padding(padding: EdgeInsets.only(right: 8)),
                     Expanded(
-                      child: DropdownSearch<String>.multiSelection(
-                        items: (filter, loadProps) => ["1", "2", "3"],
-                        selectedItems: ["2", '3'],
+                      child: CupertinoDropdownSearch<String>.multiSelection(
+                        items: (filter, loadProps) => ["1", "2", "3", "4", "10", "200", "3000", "40000"],
+                        selectedItems: ["2"],
                         suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-                        popupProps: MultiSelectionPopupProps.modalBottomSheet(
+                        popupProps: CupertinoMultiSelectionPopupProps.autocomplete(
                           //fit: FlexFit.loose,
                           //constraints: BoxConstraints.loose(height: 400, width: 300),
                           suggestionsProps: SuggestionsProps(
-                            showSuggestions: true,
-                            items: (items) => ["1", "2", "3", "4"],
-                            itemProps: SuggestedItemProps(chipProps: ChipProps())
+                              showSuggestions: true,
+                              items: (items) => ["1", "2", "3", "4"],
+                              itemProps: SuggestedItemProps(chipProps: ChipProps())
                           ),
                           showSearchBox: true,
                         ),
                       ),
                     ),
+                    Padding(padding: EdgeInsets.only(right: 8)),
+                    Expanded(child: TextField(decoration: InputDecoration(border: OutlineInputBorder()),)),
                   ],
                 ),
               ],

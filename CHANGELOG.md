@@ -1,4 +1,4 @@
-## [7.0.0-pre] - 2024.09.21
+## [7.0.0-pre] - 2024.11.15
 * #### New Feature:
   * Add adaptive Ui feature: `Material`, `Cupertino` and `Adaptive`
   * add `transitionBuilder`, `transitionDuration`, `reverseTransitionDuration` to `menuProps`
@@ -49,10 +49,12 @@
   * `Chips` are fully customizable in multiSelection and suggestions
   * replace `padding` in `searchFieldProps` with `containerBuilder`
   * add `onDisplayed` callback to `popupProps`
+  * add possibility to reload item using `myGlobalKey.currentState?.reloadItems(String filter)` or `myGlobalKey.currentState?.loadMoreItems(String filter, int skip)`
 
 * #### Breaking changes
   * change `onChanged` to `onSelected`
   * `suggestedItemsProps` is placed inside `SuggestionsProps`
+  * `errorBuilder(ctx, searchText, error)` is replaced with `errorBuilder(ctx, searchText, error, loadProps)`
   * `Semantics` is removed from searchBox, to add it use `containerBuilder` like this you have full access to Semantic properties.
 
 ## [6.0.1] - 2024.09.21
