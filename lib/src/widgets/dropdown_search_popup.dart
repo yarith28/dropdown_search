@@ -120,9 +120,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
       scrollController.dispose();
     }
 
-    //dismiss either by selecting items OR clicking outside the popup
     widget.props.onDismissed?.call();
-    print('disposed');
 
     super.dispose();
   }
@@ -193,7 +191,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
                               behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
                               child: Material(
                                 type: MaterialType.transparency,
-                                //temp solution till fix this Flutter issue here https://github.com/flutter/flutter/issues/155198
+                                //todo temp solution till fix this Flutter issue here https://github.com/flutter/flutter/issues/155198
                                 child: ListView.builder(
                                   hitTestBehavior: widget.props.listViewProps.hitTestBehavior,
                                   controller: widget.props.listViewProps.controller ?? scrollController,
@@ -307,6 +305,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         context,
         searchBoxController.text,
         error,
+        widget.props.infiniteScrollProps?.loadProps.copy(skip: _cachedItems.length),
       );
     }
 
@@ -320,36 +319,35 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   Widget _loadingWidget() {
     return ValueListenableBuilder(
-        valueListenable: _loadingNotifier,
-        builder: (context, bool isLoading, wid) {
-          if (isLoading) {
-            if (widget.props.loadingBuilder != null) {
-              return widget.props.loadingBuilder!(
-                context,
-                searchBoxController.text,
-              );
-            }
-
-            return Container(
-              height: 70,
-              alignment: Alignment.center,
-              child: widget.uiMode == UiToApply.cupertino ? CupertinoActivityIndicator() : CircularProgressIndicator(),
+      valueListenable: _loadingNotifier,
+      builder: (context, bool isLoading, wid) {
+        if (isLoading) {
+          if (widget.props.loadingBuilder != null) {
+            return widget.props.loadingBuilder!(
+              context,
+              searchBoxController.text,
             );
           }
-          return const SizedBox.shrink();
-        });
+
+          return Container(
+            height: 70,
+            alignment: Alignment.center,
+            child: widget.uiMode == UiToApply.cupertino ? CupertinoActivityIndicator() : CircularProgressIndicator(),
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
   }
 
   List<T> _applyFilter(String filter) {
     return _cachedItems.where((i) {
       if (widget.filterFn != null) {
         return (widget.filterFn!(i, filter));
-      } else if (i.toString().toLowerCase().contains(filter.toLowerCase())) {
-        return true;
       } else if (widget.itemAsString != null) {
         return (widget.itemAsString!(i)).toLowerCase().contains(filter.toLowerCase());
       }
-      return false;
+      return i.toString().toLowerCase().contains(filter.toLowerCase());
     }).toList();
   }
 
@@ -358,7 +356,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     bool isFirstLoad = false,
   }) async {
     //if the filter is not handled by user, we load full list once
-    if (!widget.props.cacheItems) _cachedItems.clear();
+    if (!widget.props.cacheItems || isFirstLoad) _cachedItems.clear();
 
     //case filtering locally (no need to load new data)
     if (!isFirstLoad && !widget.props.disableFilter && widget.props.cacheItems && isInfiniteScrollEnded) {
@@ -579,6 +577,14 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   ///close popup
   void _closePopup() => widget.onClose?.call();
+
+  Future<void> loadMoreItems(String filter, int skip) {
+    return _manageLoadMoreItems(filter, skip: skip, showLoading: false);
+  }
+
+  Future<void> reloadItems(String filter) {
+    return _manageLoadItems(filter, isFirstLoad: true);
+  }
 
   void selectItems(List<T> itemsToSelect) {
     for (var i in itemsToSelect) {
