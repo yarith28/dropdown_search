@@ -309,7 +309,11 @@ class _AutocompleteExamplesPageState extends State<AutocompleteExamplesPage> {
                     DropdownSearch<String>(
                       items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
                       decoratorProps: DropDownDecoratorProps(
-                        decoration: InputDecoration(labelText: 'Bottom Left Menu', border: OutlineInputBorder()),
+                        decoration: InputDecoration(
+                          labelText: 'Bottom Left Menu',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.only(left: 12, right: 12),
+                        ),
                       ),
                       popupProps: PopupProps.autocomplete(
                         constraints: BoxConstraints.tight(Size(250, 250)),
@@ -319,7 +323,11 @@ class _AutocompleteExamplesPageState extends State<AutocompleteExamplesPage> {
                     Padding(padding: EdgeInsets.symmetric(vertical: 8)),
                     DropdownSearch<String>(
                       decoratorProps: DropDownDecoratorProps(
-                        decoration: InputDecoration(labelText: 'Bottom Center Menu', border: OutlineInputBorder()),
+                        decoration: InputDecoration(
+                          labelText: 'Bottom Center Menu',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.only(left: 12, right: 12),
+                        ),
                       ),
                       items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
                       popupProps: PopupProps.autocomplete(
@@ -330,7 +338,11 @@ class _AutocompleteExamplesPageState extends State<AutocompleteExamplesPage> {
                     Padding(padding: EdgeInsets.symmetric(vertical: 8)),
                     DropdownSearch<String>(
                       decoratorProps: DropDownDecoratorProps(
-                        decoration: InputDecoration(labelText: 'Top Right Menu', border: OutlineInputBorder()),
+                        decoration: InputDecoration(
+                          labelText: 'Top Right Menu',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.only(left: 12, right: 12),
+                        ),
                       ),
                       items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
                       popupProps: PopupProps.autocomplete(
