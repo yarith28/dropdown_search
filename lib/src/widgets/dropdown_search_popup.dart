@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_search/src/base_dropdown_search.dart';
 import 'package:dropdown_search/src/properties/base_popup_props.dart';
 import 'package:dropdown_search/src/properties/cupertino_text_field_props.dart';
@@ -156,84 +157,14 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
                         stream: _itemsStream.stream,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
+                            if (_cachedItems.isNotEmpty && !isInfiniteScrollEnded)
+                              return _listItemWidget(_cachedItems, snapshot.error);
                             return _errorWidget(snapshot.error);
-                          } else if (!snapshot.hasData) {
-                            return _loadingWidget();
-                          } else if (snapshot.data!.isEmpty) {
-                            return _noDataWidget();
+                          } else if (snapshot.hasData) {
+                            if (snapshot.data!.isEmpty) return _noDataWidget();
+                            return _listItemWidget(snapshot.data!);
                           }
-
-                          final itemCount = snapshot.data!.length;
-                          return RawScrollbar(
-                            controller: widget.props.listViewProps.controller ?? scrollController,
-                            thumbVisibility: widget.props.scrollbarProps.thumbVisibility,
-                            trackVisibility: widget.props.scrollbarProps.trackVisibility,
-                            thickness: widget.props.scrollbarProps.thickness,
-                            radius: widget.props.scrollbarProps.radius ??
-                                (widget.uiMode == UiToApply.cupertino ? Radius.circular(4) : null),
-                            notificationPredicate: widget.props.scrollbarProps.notificationPredicate,
-                            interactive: widget.props.scrollbarProps.interactive,
-                            scrollbarOrientation: widget.props.scrollbarProps.scrollbarOrientation,
-                            thumbColor: widget.props.scrollbarProps.thumbColor,
-                            fadeDuration: widget.props.scrollbarProps.fadeDuration,
-                            crossAxisMargin: widget.props.scrollbarProps.crossAxisMargin,
-                            mainAxisMargin: widget.props.scrollbarProps.mainAxisMargin,
-                            minOverscrollLength: widget.props.scrollbarProps.minOverscrollLength,
-                            minThumbLength: widget.props.scrollbarProps.minThumbLength,
-                            pressDuration: widget.props.scrollbarProps.pressDuration,
-                            shape: widget.props.scrollbarProps.shape,
-                            timeToFade: widget.props.scrollbarProps.timeToFade,
-                            trackBorderColor: widget.props.scrollbarProps.trackBorderColor,
-                            trackColor: widget.props.scrollbarProps.trackColor,
-                            trackRadius: widget.props.scrollbarProps.trackRadius,
-                            padding: widget.props.scrollbarProps.padding,
-                            child: ScrollConfiguration(
-                              behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                              child: Material(
-                                type: MaterialType.transparency,
-                                //todo temp solution till fix this Flutter issue here https://github.com/flutter/flutter/issues/155198
-                                child: ListView.builder(
-                                  hitTestBehavior: widget.props.listViewProps.hitTestBehavior,
-                                  controller: widget.props.listViewProps.controller ?? scrollController,
-                                  shrinkWrap: widget.props.listViewProps.shrinkWrap,
-                                  padding: widget.props.listViewProps.padding,
-                                  scrollDirection: widget.props.listViewProps.scrollDirection,
-                                  reverse: widget.props.listViewProps.reverse,
-                                  primary: widget.props.listViewProps.primary,
-                                  physics: widget.props.listViewProps.physics,
-                                  itemExtent: widget.props.listViewProps.itemExtent,
-                                  addAutomaticKeepAlives: widget.props.listViewProps.addAutomaticKeepAlives,
-                                  addRepaintBoundaries: widget.props.listViewProps.addRepaintBoundaries,
-                                  addSemanticIndexes: widget.props.listViewProps.addSemanticIndexes,
-                                  cacheExtent: widget.props.listViewProps.cacheExtent,
-                                  semanticChildCount: widget.props.listViewProps.semanticChildCount,
-                                  dragStartBehavior: widget.props.listViewProps.dragStartBehavior,
-                                  keyboardDismissBehavior: widget.props.listViewProps.keyboardDismissBehavior,
-                                  restorationId: widget.props.listViewProps.restorationId,
-                                  clipBehavior: widget.props.listViewProps.clipBehavior,
-                                  prototypeItem: widget.props.listViewProps.prototypeItem,
-                                  itemExtentBuilder: widget.props.listViewProps.itemExtentBuilder,
-                                  findChildIndexCallback: widget.props.listViewProps.findChildIndexCallback,
-                                  itemCount: itemCount + (isInfiniteScrollEnded ? 0 : 1),
-                                  itemBuilder: (context, index) {
-                                    if (index < itemCount) {
-                                      var item = snapshot.data![index];
-                                      return widget.isMultiSelectionMode
-                                          ? _itemWidgetMultiSelection(item)
-                                          : _itemWidgetSingleSelection(item);
-                                    }
-                                    //if infiniteScroll enabled && data received not less then take request
-                                    else if (!isInfiniteScrollEnded) {
-                                      _manageLoadMoreItems(searchBoxController.text, skip: itemCount, showLoading: false);
-                                      return _infiniteScrollLoadingMoreWidget(itemCount);
-                                    }
-
-                                    return SizedBox.shrink();
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
+                          return _loadingWidget();
                         },
                       ),
                       _loadingWidget()
@@ -244,6 +175,103 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
               ],
             );
           }),
+    );
+  }
+
+  Widget _listItemWidget(List<T> data, [dynamic pLoadingMoreError]) {
+    final itemCount = data.length;
+    return RawScrollbar(
+      controller: widget.props.listViewProps.controller ?? scrollController,
+      thumbVisibility: widget.props.scrollbarProps.thumbVisibility,
+      trackVisibility: widget.props.scrollbarProps.trackVisibility,
+      thickness: widget.props.scrollbarProps.thickness,
+      radius: widget.props.scrollbarProps.radius ?? (widget.uiMode == UiToApply.cupertino ? Radius.circular(4) : null),
+      notificationPredicate: widget.props.scrollbarProps.notificationPredicate,
+      interactive: widget.props.scrollbarProps.interactive,
+      scrollbarOrientation: widget.props.scrollbarProps.scrollbarOrientation,
+      thumbColor: widget.props.scrollbarProps.thumbColor,
+      fadeDuration: widget.props.scrollbarProps.fadeDuration,
+      crossAxisMargin: widget.props.scrollbarProps.crossAxisMargin,
+      mainAxisMargin: widget.props.scrollbarProps.mainAxisMargin,
+      minOverscrollLength: widget.props.scrollbarProps.minOverscrollLength,
+      minThumbLength: widget.props.scrollbarProps.minThumbLength,
+      pressDuration: widget.props.scrollbarProps.pressDuration,
+      shape: widget.props.scrollbarProps.shape,
+      timeToFade: widget.props.scrollbarProps.timeToFade,
+      trackBorderColor: widget.props.scrollbarProps.trackBorderColor,
+      trackColor: widget.props.scrollbarProps.trackColor,
+      trackRadius: widget.props.scrollbarProps.trackRadius,
+      padding: widget.props.scrollbarProps.padding,
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: Material(
+          type: MaterialType.transparency,
+          //todo temp solution till fix this Flutter issue here https://github.com/flutter/flutter/issues/155198
+          child: ListView.builder(
+            hitTestBehavior: widget.props.listViewProps.hitTestBehavior,
+            controller: widget.props.listViewProps.controller ?? scrollController,
+            shrinkWrap: widget.props.listViewProps.shrinkWrap,
+            padding: widget.props.listViewProps.padding,
+            scrollDirection: widget.props.listViewProps.scrollDirection,
+            reverse: widget.props.listViewProps.reverse,
+            primary: widget.props.listViewProps.primary,
+            physics: widget.props.listViewProps.physics,
+            itemExtent: widget.props.listViewProps.itemExtent,
+            addAutomaticKeepAlives: widget.props.listViewProps.addAutomaticKeepAlives,
+            addRepaintBoundaries: widget.props.listViewProps.addRepaintBoundaries,
+            addSemanticIndexes: widget.props.listViewProps.addSemanticIndexes,
+            cacheExtent: widget.props.listViewProps.cacheExtent,
+            semanticChildCount: widget.props.listViewProps.semanticChildCount,
+            dragStartBehavior: widget.props.listViewProps.dragStartBehavior,
+            keyboardDismissBehavior: widget.props.listViewProps.keyboardDismissBehavior,
+            restorationId: widget.props.listViewProps.restorationId,
+            clipBehavior: widget.props.listViewProps.clipBehavior,
+            prototypeItem: widget.props.listViewProps.prototypeItem,
+            itemExtentBuilder: widget.props.listViewProps.itemExtentBuilder,
+            findChildIndexCallback: widget.props.listViewProps.findChildIndexCallback,
+            itemCount: itemCount + (isInfiniteScrollEnded ? 0 : 1),
+            itemBuilder: (context, index) {
+              if (index < itemCount) {
+                var item = data[index];
+                return widget.isMultiSelectionMode ? _itemWidgetMultiSelection(item) : _itemWidgetSingleSelection(item);
+              }
+              if (pLoadingMoreError != null) {
+                return _loadMoreErrorWidget(pLoadingMoreError, itemCount);
+              } else if (!isInfiniteScrollEnded) {
+                _manageLoadMoreItems(searchBoxController.text, skip: itemCount, showLoading: false);
+                return _infiniteScrollLoadingMoreWidget(itemCount);
+              }
+
+              return SizedBox.shrink();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _loadMoreErrorWidget(dynamic error, int loadedItems) {
+    if (widget.props.infiniteScrollProps?.errorBuilder != null) {
+      return widget.props.infiniteScrollProps!.errorBuilder!(
+        context,
+        lastSearchText,
+        error,
+        widget.props.infiniteScrollProps!.loadProps.copy(skip: loadedItems),
+      );
+    }
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('An error occurred !'),
+          IconButton(
+            onPressed: () => loadMoreItems(searchBoxController.text, loadedItems),
+            icon: Icon(widget.uiMode == UiToApply.cupertino ? CupertinoIcons.refresh : Icons.refresh),
+          )
+        ],
+      ),
     );
   }
 
@@ -301,18 +329,21 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   Widget _errorWidget(dynamic error) {
     if (widget.props.errorBuilder != null) {
-      return widget.props.errorBuilder!(
-        context,
-        searchBoxController.text,
-        error,
-        widget.props.infiniteScrollProps?.loadProps.copy(skip: _cachedItems.length),
-      );
+      return widget.props.errorBuilder!(context, searchBoxController.text, error);
     }
 
     return Container(
       alignment: Alignment.center,
-      child: Text(
-        error?.toString() ?? 'Unknown Error',
+      padding: EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(error?.toString() ?? 'Unknown Error'),
+          IconButton(
+            onPressed: () => reloadItems(searchBoxController.text),
+            icon: Icon(widget.uiMode == UiToApply.cupertino ? CupertinoIcons.refresh : Icons.refresh),
+          )
+        ],
       ),
     );
   }
@@ -321,21 +352,21 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     return ValueListenableBuilder(
       valueListenable: _loadingNotifier,
       builder: (context, bool isLoading, wid) {
-        if (isLoading) {
-          if (widget.props.loadingBuilder != null) {
-            return widget.props.loadingBuilder!(
-              context,
-              searchBoxController.text,
-            );
-          }
+        if (!isLoading) return const SizedBox.shrink();
 
-          return Container(
-            height: 70,
-            alignment: Alignment.center,
-            child: widget.uiMode == UiToApply.cupertino ? CupertinoActivityIndicator() : CircularProgressIndicator(),
+        if (widget.props.loadingBuilder != null) {
+          return widget.props.loadingBuilder!(
+            context,
+            searchBoxController.text,
           );
         }
-        return const SizedBox.shrink();
+
+        return AbsorbPointer(
+          child: Container(
+            alignment: Alignment.center,
+            child: widget.uiMode == UiToApply.cupertino ? CupertinoActivityIndicator() : CircularProgressIndicator(),
+          ),
+        );
       },
     );
   }
@@ -579,7 +610,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
   void _closePopup() => widget.onClose?.call();
 
   Future<void> loadMoreItems(String filter, int skip) {
-    return _manageLoadMoreItems(filter, skip: skip, showLoading: false);
+    return _manageLoadMoreItems(filter, skip: skip, showLoading: true);
   }
 
   Future<void> reloadItems(String filter) {

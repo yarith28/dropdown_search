@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
@@ -335,7 +337,7 @@ class DropdownWithGlobalCheckBox extends StatefulWidget {
 class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox> {
   final _infiniteScrollDropDownKey = GlobalKey<DropdownSearchState<int>>();
   final ValueNotifier<bool?> longListCheckBoxValueNotifier = ValueNotifier(false);
-  final longList = List.generate(110, (i) => i + 1);
+  final longList = List.generate(500, (i) => i + 1);
 
   bool? _getCheckBoxState() {
     var selectedItem = _infiniteScrollDropDownKey.currentState?.popupGetSelectedItems ?? [];
@@ -344,11 +346,15 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
   }
 
   ///simulate an API call
-  Future<List<int>> _getData(String filter, LoadProps? loadProps) {
-    return Future.delayed(Duration(seconds: 1), () {
+  Future<List<int>> _getData(String filter, LoadProps loadProps) {
+    //simulate random error
+    final errorIndex = Random().nextInt(100);
+    if (errorIndex <= loadProps.skip) throw Exception('Sorry, An error occurred !');
+
+    return Future.delayed(Duration(seconds: 5), () {
       var list = filter.isEmpty ? longList : longList.where((l) => l.toString().contains(filter));
 
-      return list.skip(loadProps!.skip).take(loadProps.take).toList();
+      return list.skip(loadProps.skip).take(loadProps.take).toList();
     });
   }
 
@@ -356,7 +362,7 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
   Widget build(BuildContext context) {
     return DropdownSearch<int>.multiSelection(
       key: _infiniteScrollDropDownKey,
-      items: (f, ic) => _getData(f, ic),
+      items: (f, ic) => _getData(f, ic!),
       decoratorProps: DropDownDecoratorProps(
         decoration: InputDecoration(
           border: OutlineInputBorder(),
@@ -368,7 +374,24 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
         onItemAdded: (l, s) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),
         onItemRemoved: (l, s) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),
         onItemsLoaded: (value) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),
-        infiniteScrollProps: InfiniteScrollProps(loadProps: LoadProps(skip: 0, take: 10)),
+        infiniteScrollProps: InfiniteScrollProps(
+          loadProps: LoadProps(skip: 0, take: 10),
+          errorBuilder: (context, searchEntry, exception, loadProps) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('$exception'),
+                TextButton.icon(
+                  onPressed: () {
+                    _infiniteScrollDropDownKey.currentState?.getPopupState?.loadMoreItems(searchEntry, loadProps.skip);
+                  },
+                  icon: Icon(Icons.sync),
+                  label: Text('reload'),
+                )
+              ],
+            );
+          },
+        ),
         showSearchBox: true,
         containerBuilder: (ctx, popupWidget) {
           return Container(

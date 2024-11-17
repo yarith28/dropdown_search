@@ -49,6 +49,7 @@
   * `Chips` are fully customizable in multiSelection and suggestions
   * replace `padding` in `searchFieldProps` with `containerBuilder`
   * add `onDisplayed` callback to `popupProps`
+  * add `errorBuilder` for `InfiniteScrollProps`
   * add possibility to reload item using `myGlobalKey.currentState?.reloadItems(String filter)` or `myGlobalKey.currentState?.loadMoreItems(String filter, int skip)`
 
 * #### Breaking changes
