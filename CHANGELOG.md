@@ -1,6 +1,6 @@
-## [7.0.0-pre] - 2024.11.15
+## [7.0.0-pre] - 2024.12.07
 * #### New Feature:
-  * Add adaptive Ui feature: `Material`, `Cupertino` and `Adaptive`
+  * Add adaptive platform Ui feature: `Material`, `Cupertino` and `Adaptive`
   * add `transitionBuilder`, `transitionDuration`, `reverseTransitionDuration` to `menuProps`
 
     ```dart
@@ -55,7 +55,6 @@
 * #### Breaking changes
   * change `onChanged` to `onSelected`
   * `suggestedItemsProps` is placed inside `SuggestionsProps`
-  * `errorBuilder(ctx, searchText, error)` is replaced with `errorBuilder(ctx, searchText, error, loadProps)`
   * `Semantics` is removed from searchBox, to add it use `containerBuilder` like this you have full access to Semantic properties.
 
 ## [6.0.1] - 2024.09.21

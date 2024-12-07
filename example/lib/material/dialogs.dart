@@ -1,17 +1,16 @@
 import 'dart:math';
 
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:example/main.dart';
+import 'package:example/user_model.dart';
 import 'package:flutter/material.dart';
 
-import 'main.dart';
-import 'user_model.dart';
-
-class DialogExamplesPage extends StatefulWidget {
+class MaterialDialogExamplesPage extends StatefulWidget {
   @override
-  State<DialogExamplesPage> createState() => _DialogExamplesPageState();
+  State<MaterialDialogExamplesPage> createState() => _MaterialDialogExamplesPageState();
 }
 
-class _DialogExamplesPageState extends State<DialogExamplesPage> {
+class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage> {
   final _formKey = GlobalKey<FormState>();
   final _dropDownCustomBGKey = GlobalKey<DropdownSearchState<String>>();
   final _userEditTextController = TextEditingController(text: 'Mrs');

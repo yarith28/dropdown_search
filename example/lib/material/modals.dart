@@ -1,22 +1,19 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import '../main.dart';
+import '../user_model.dart';
 import 'dialogs.dart';
 
-import 'user_model.dart';
-
-class BottomSheetExamplesPage extends StatefulWidget {
+class MaterialModalsExamplesPage extends StatefulWidget {
   @override
-  State<BottomSheetExamplesPage> createState() =>
-      _BottomSheetExamplesPageState();
+  State<MaterialModalsExamplesPage> createState() => _MaterialModalsExamplesPageState();
 }
 
-class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
+class _MaterialModalsExamplesPageState extends State<MaterialModalsExamplesPage> {
   final _formKey = GlobalKey<FormState>();
   final _dropDownCustomBGKey = GlobalKey<DropdownSearchState<String>>();
   final _userEditTextController = TextEditingController(text: 'Mrs');
-  final _dropdownMultiLevelKey =
-      GlobalKey<DropdownSearchState<MultiLevelString>>();
+  final _dropdownMultiLevelKey = GlobalKey<DropdownSearchState<MultiLevelString>>();
   final List<MultiLevelString> myMultiLevelItems = [
     MultiLevelString(level1: "1"),
     MultiLevelString(level1: "2"),
@@ -37,7 +34,8 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("DropdownSearch BottomSheet Demo")),
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(title: Text("CupertinoDropdownSearch Modal BottomSheet Demo")),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: Form(
@@ -52,14 +50,12 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownSearch<int>(
+                    child: CupertinoDropdownSearch<int>(
                       items: (f, cs) => List.generate(30, (i) => i + 1),
                       decoratorProps: DropDownDecoratorProps(
-                        decoration: InputDecoration(
-                            labelText: "Dialog with title",
-                            hintText: "Select an Int"),
+                        decoration: InputDecoration(labelText: "Dialog with title", hintText: "Select an Int"),
                       ),
-                      popupProps: PopupProps.bottomSheet(
+                      popupProps: CupertinoPopupProps.modalBottomSheet(
                         title: Container(
                           decoration: BoxDecoration(
                             color: Colors.deepPurple,
@@ -68,27 +64,16 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                           padding: EdgeInsets.symmetric(vertical: 16),
                           child: Text(
                             'Numbers 1..30',
-                            style: TextStyle(
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white70),
+                            style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white70),
                           ),
                         ),
-                        bottomSheetProps: BottomSheetProps(
-                          clipBehavior: Clip.antiAlias,
-                          shape: OutlineInputBorder(
-                            borderSide: BorderSide(width: 0),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                topRight: Radius.circular(25)),
-                          ),
-                        ),
+                        modalBottomSheetProps: CupertinoModalBottomSheetProps(),
                       ),
                     ),
                   ),
                   Padding(padding: EdgeInsets.all(4)),
                   Expanded(
-                    child: DropdownSearch<int>(
+                    child: CupertinoDropdownSearch<int>(
                       items: (f, cs) => [1, 2, 3, 4, 5, 6, 7],
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
@@ -97,7 +82,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                           filled: true,
                         ),
                       ),
-                      popupProps: PopupProps.bottomSheet(
+                      popupProps: CupertinoPopupProps.modalBottomSheet(
                         disabledItemFn: (int i) => i <= 3,
                       ),
                     ),
@@ -112,19 +97,17 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownSearch<UserModel>(
+                    child: CupertinoDropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: PopupProps.bottomSheet(
+                      popupProps: CupertinoPopupProps.modalBottomSheet(
                         showSelectedItems: true,
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
                         suggestionsProps: SuggestionsProps(
                           showSuggestions: true,
                           items: (us) {
-                            return us
-                                .where((e) => e.name.contains("Mrs"))
-                                .toList();
+                            return us.where((e) => e.name.contains("Mrs")).toList();
                           },
                         ),
                       ),
@@ -132,20 +115,17 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                   ),
                   Padding(padding: EdgeInsets.all(4)),
                   Expanded(
-                    child: DropdownSearch<UserModel>.multiSelection(
+                    child: CupertinoDropdownSearch<UserModel>.multiSelection(
                       items: (filter, s) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: MultiSelectionPopupProps.bottomSheet(
+                      popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
                         suggestionsProps: SuggestionsProps(
                           showSuggestions: true,
                           items: (us) {
-                            return us
-                                .where((e) => e.name.contains("Mrs"))
-                                .toList();
+                            return us.where((e) => e.name.contains("Mrs")).toList();
                           },
-                          itemProps: SuggestedItemProps(),
                         ),
                       ),
                     ),
@@ -157,12 +137,11 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
               Padding(padding: EdgeInsets.all(16)),
               Text("[custom popup background examples]"),
               Divider(),
-              DropdownSearch<String>.multiSelection(
+              CupertinoDropdownSearch<String>.multiSelection(
                 key: _dropDownCustomBGKey,
                 items: (f, cs) => List.generate(30, (index) => "$index"),
-                popupProps: MultiSelectionPopupProps.bottomSheet(
-                  bottomSheetProps:
-                      BottomSheetProps(backgroundColor: Colors.grey.shade200),
+                popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
+                  modalBottomSheetProps: CupertinoModalBottomSheetProps(),
                   showSearchBox: true,
                   containerBuilder: (ctx, popupWidget) {
                     return Column(
@@ -176,8 +155,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                               child: FilledButton(
                                 onPressed: () {
                                   // How should I unselect all items in the list?
-                                  _dropDownCustomBGKey.currentState
-                                      ?.closeDropDownSearch();
+                                  _dropDownCustomBGKey.currentState?.closeDropDownSearch();
                                 },
                                 child: const Text('Cancel'),
                               ),
@@ -187,8 +165,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                               child: OutlinedButton(
                                 onPressed: () {
                                   // How should I select all items in the list?
-                                  _dropDownCustomBGKey.currentState
-                                      ?.popupSelectAllItems();
+                                  _dropDownCustomBGKey.currentState?.popupSelectAllItems();
                                 },
                                 child: const Text('All'),
                               ),
@@ -198,8 +175,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                               child: OutlinedButton(
                                 onPressed: () {
                                   // How should I unselect all items in the list?
-                                  _dropDownCustomBGKey.currentState
-                                      ?.popupDeselectAllItems();
+                                  _dropDownCustomBGKey.currentState?.popupDeselectAllItems();
                                 },
                                 child: const Text('None'),
                               ),
@@ -215,38 +191,33 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
 
               ///**********************************************[dropdownBuilder examples]********************************///
               Padding(padding: EdgeInsets.all(16)),
-              Text("[DropDownSearch builder examples]"),
+              Text("[CupertinoDropdownSearch builder examples]"),
               Divider(),
               Row(
                 children: [
                   Expanded(
-                    child: DropdownSearch<UserModel>.multiSelection(
+                    child: CupertinoDropdownSearch<UserModel>.multiSelection(
                       items: (filter, t) => getData(filter),
-                      suffixProps: DropdownSuffixProps(
-                          clearButtonProps: ClearButtonProps(isVisible: true)),
-                      popupProps: MultiSelectionPopupProps.bottomSheet(
+                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+                      popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
-                        searchFieldProps: TextFieldProps(
+                        searchFieldProps: CupertinoTextFieldProps(
                           controller: _userEditTextController,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.clear),
-                              onPressed: () => _userEditTextController.clear(),
-                            ),
+                          suffix: IconButton(
+                            icon: Icon(Icons.clear),
+                            onPressed: () => _userEditTextController.clear(),
                           ),
                         ),
                       ),
-                      compareFn: (item, selectedItem) =>
-                          item.id == selectedItem.id,
+                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'Users *',
                           filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                       dropdownBuilder: customDropDownExampleMultiSelection,
@@ -254,9 +225,9 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                   ),
                   Padding(padding: EdgeInsets.all(4)),
                   Expanded(
-                    child: DropdownSearch<UserModel>(
+                    child: CupertinoDropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
-                      popupProps: PopupProps.bottomSheet(
+                      popupProps: CupertinoPopupProps.modalBottomSheet(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
@@ -266,8 +237,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                         decoration: InputDecoration(
                           labelText: 'User *',
                           filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                     ),
@@ -279,11 +249,11 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
               Padding(padding: EdgeInsets.all(16)),
               Text("[multiLevel items example]"),
               Divider(),
-              DropdownSearch<MultiLevelString>(
+              CupertinoDropdownSearch<MultiLevelString>(
                 key: _dropdownMultiLevelKey,
                 items: (f, cs) => myMultiLevelItems,
                 compareFn: (i1, i2) => i1.level1 == i2.level1,
-                popupProps: PopupProps.bottomSheet(
+                popupProps: CupertinoPopupProps.modalBottomSheet(
                   showSelectedItems: true,
                   interceptCallBacks: true, //important line
                   itemBuilder: (ctx, item, isDisabled, isSelected) {
@@ -297,16 +267,14 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                                   icon: Icon(Icons.arrow_drop_down),
                                   onPressed: () {
                                     item.isExpanded = !item.isExpanded;
-                                    _dropdownMultiLevelKey.currentState
-                                        ?.updatePopupState();
+                                    _dropdownMultiLevelKey.currentState?.updatePopupState();
                                   },
                                 )
                               : IconButton(
                                   icon: Icon(Icons.arrow_right),
                                   onPressed: () {
                                     item.isExpanded = !item.isExpanded;
-                                    _dropdownMultiLevelKey.currentState
-                                        ?.updatePopupState();
+                                    _dropdownMultiLevelKey.currentState?.updatePopupState();
                                   },
                                 )),
                       subtitle: item.subLevel.isNotEmpty && item.isExpanded
@@ -316,15 +284,10 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                                 children: item.subLevel
                                     .map(
                                       (e) => ListTile(
-                                        selected: _dropdownMultiLevelKey
-                                                .currentState
-                                                ?.getSelectedItem
-                                                ?.level1 ==
-                                            e.level1,
+                                        selected: _dropdownMultiLevelKey.currentState?.getSelectedItem?.level1 == e.level1,
                                         title: Text(e.level1),
                                         onTap: () {
-                                          _dropdownMultiLevelKey.currentState
-                                              ?.popupValidate([e]);
+                                          _dropdownMultiLevelKey.currentState?.popupValidate([e]);
                                         },
                                       ),
                                     )
@@ -332,8 +295,7 @@ class _BottomSheetExamplesPageState extends State<BottomSheetExamplesPage> {
                               ),
                             )
                           : null,
-                      onTap: () => _dropdownMultiLevelKey.currentState
-                          ?.popupValidate([item]),
+                      onTap: () => _dropdownMultiLevelKey.currentState?.popupValidate([item]),
                     );
                   },
                 ),

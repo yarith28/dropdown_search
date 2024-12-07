@@ -1,15 +1,15 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
-import 'main.dart';
-import 'user_model.dart';
+import '../main.dart';
+import '../user_model.dart';
 
-class AutocompleteExamplesPage extends StatefulWidget {
+class MaterialAutocompleteExamplesPage extends StatefulWidget {
   @override
-  State<AutocompleteExamplesPage> createState() => _AutocompleteExamplesPageState();
+  State<MaterialAutocompleteExamplesPage> createState() => _MaterialAutocompleteExamplesPageState();
 }
 
-class _AutocompleteExamplesPageState extends State<AutocompleteExamplesPage> {
+class _MaterialAutocompleteExamplesPageState extends State<MaterialAutocompleteExamplesPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override

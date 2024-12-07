@@ -1,20 +1,22 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import '../main.dart';
+
+import '../user_model.dart';
 import 'dialogs.dart';
 
-import 'user_model.dart';
-
-class ModalsExamplesPage extends StatefulWidget {
+class MaterialBottomSheetExamplesPage extends StatefulWidget {
   @override
-  State<ModalsExamplesPage> createState() => _ModalsExamplesPageState();
+  State<MaterialBottomSheetExamplesPage> createState() =>
+      _MaterialBottomSheetExamplesPageState();
 }
 
-class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
+class _MaterialBottomSheetExamplesPageState extends State<MaterialBottomSheetExamplesPage> {
   final _formKey = GlobalKey<FormState>();
   final _dropDownCustomBGKey = GlobalKey<DropdownSearchState<String>>();
   final _userEditTextController = TextEditingController(text: 'Mrs');
-  final _dropdownMultiLevelKey = GlobalKey<DropdownSearchState<MultiLevelString>>();
+  final _dropdownMultiLevelKey =
+      GlobalKey<DropdownSearchState<MultiLevelString>>();
   final List<MultiLevelString> myMultiLevelItems = [
     MultiLevelString(level1: "1"),
     MultiLevelString(level1: "2"),
@@ -35,8 +37,7 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("DropdownSearch Modal BottomSheet Demo")),
+      appBar: AppBar(title: Text("DropdownSearch BottomSheet Demo")),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: Form(
@@ -54,9 +55,11 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                     child: DropdownSearch<int>(
                       items: (f, cs) => List.generate(30, (i) => i + 1),
                       decoratorProps: DropDownDecoratorProps(
-                        decoration: InputDecoration(labelText: "Dialog with title", hintText: "Select an Int"),
+                        decoration: InputDecoration(
+                            labelText: "Dialog with title",
+                            hintText: "Select an Int"),
                       ),
-                      popupProps: PopupProps.modalBottomSheet(
+                      popupProps: PopupProps.bottomSheet(
                         title: Container(
                           decoration: BoxDecoration(
                             color: Colors.deepPurple,
@@ -65,14 +68,19 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                           padding: EdgeInsets.symmetric(vertical: 16),
                           child: Text(
                             'Numbers 1..30',
-                            style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white70),
+                            style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white70),
                           ),
                         ),
-                        modalBottomSheetProps: ModalBottomSheetProps(
+                        bottomSheetProps: BottomSheetProps(
                           clipBehavior: Clip.antiAlias,
                           shape: OutlineInputBorder(
                             borderSide: BorderSide(width: 0),
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25)),
                           ),
                         ),
                       ),
@@ -89,7 +97,7 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                           filled: true,
                         ),
                       ),
-                      popupProps: PopupProps.modalBottomSheet(
+                      popupProps: PopupProps.bottomSheet(
                         disabledItemFn: (int i) => i <= 3,
                       ),
                     ),
@@ -107,14 +115,16 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                     child: DropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: PopupProps.modalBottomSheet(
+                      popupProps: PopupProps.bottomSheet(
                         showSelectedItems: true,
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
                         suggestionsProps: SuggestionsProps(
                           showSuggestions: true,
                           items: (us) {
-                            return us.where((e) => e.name.contains("Mrs")).toList();
+                            return us
+                                .where((e) => e.name.contains("Mrs"))
+                                .toList();
                           },
                         ),
                       ),
@@ -125,14 +135,17 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                     child: DropdownSearch<UserModel>.multiSelection(
                       items: (filter, s) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: MultiSelectionPopupProps.modalBottomSheet(
+                      popupProps: MultiSelectionPopupProps.bottomSheet(
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
                         suggestionsProps: SuggestionsProps(
                           showSuggestions: true,
                           items: (us) {
-                            return us.where((e) => e.name.contains("Mrs")).toList();
+                            return us
+                                .where((e) => e.name.contains("Mrs"))
+                                .toList();
                           },
+                          itemProps: SuggestedItemProps(),
                         ),
                       ),
                     ),
@@ -147,8 +160,9 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
               DropdownSearch<String>.multiSelection(
                 key: _dropDownCustomBGKey,
                 items: (f, cs) => List.generate(30, (index) => "$index"),
-                popupProps: MultiSelectionPopupProps.modalBottomSheet(
-                  modalBottomSheetProps: ModalBottomSheetProps(backgroundColor: Colors.grey.shade200),
+                popupProps: MultiSelectionPopupProps.bottomSheet(
+                  bottomSheetProps:
+                      BottomSheetProps(backgroundColor: Colors.grey.shade200),
                   showSearchBox: true,
                   containerBuilder: (ctx, popupWidget) {
                     return Column(
@@ -162,7 +176,8 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                               child: FilledButton(
                                 onPressed: () {
                                   // How should I unselect all items in the list?
-                                  _dropDownCustomBGKey.currentState?.closeDropDownSearch();
+                                  _dropDownCustomBGKey.currentState
+                                      ?.closeDropDownSearch();
                                 },
                                 child: const Text('Cancel'),
                               ),
@@ -172,7 +187,8 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                               child: OutlinedButton(
                                 onPressed: () {
                                   // How should I select all items in the list?
-                                  _dropDownCustomBGKey.currentState?.popupSelectAllItems();
+                                  _dropDownCustomBGKey.currentState
+                                      ?.popupSelectAllItems();
                                 },
                                 child: const Text('All'),
                               ),
@@ -182,7 +198,8 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                               child: OutlinedButton(
                                 onPressed: () {
                                   // How should I unselect all items in the list?
-                                  _dropDownCustomBGKey.currentState?.popupDeselectAllItems();
+                                  _dropDownCustomBGKey.currentState
+                                      ?.popupDeselectAllItems();
                                 },
                                 child: const Text('None'),
                               ),
@@ -205,8 +222,9 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                   Expanded(
                     child: DropdownSearch<UserModel>.multiSelection(
                       items: (filter, t) => getData(filter),
-                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-                      popupProps: MultiSelectionPopupProps.modalBottomSheet(
+                      suffixProps: DropdownSuffixProps(
+                          clearButtonProps: ClearButtonProps(isVisible: true)),
+                      popupProps: MultiSelectionPopupProps.bottomSheet(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
@@ -220,13 +238,15 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                           ),
                         ),
                       ),
-                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
+                      compareFn: (item, selectedItem) =>
+                          item.id == selectedItem.id,
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'Users *',
                           filled: true,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                       dropdownBuilder: customDropDownExampleMultiSelection,
@@ -236,7 +256,7 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                   Expanded(
                     child: DropdownSearch<UserModel>(
                       items: (filter, t) => getData(filter),
-                      popupProps: PopupProps.modalBottomSheet(
+                      popupProps: PopupProps.bottomSheet(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
@@ -246,7 +266,8 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                         decoration: InputDecoration(
                           labelText: 'User *',
                           filled: true,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                     ),
@@ -262,7 +283,7 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                 key: _dropdownMultiLevelKey,
                 items: (f, cs) => myMultiLevelItems,
                 compareFn: (i1, i2) => i1.level1 == i2.level1,
-                popupProps: PopupProps.modalBottomSheet(
+                popupProps: PopupProps.bottomSheet(
                   showSelectedItems: true,
                   interceptCallBacks: true, //important line
                   itemBuilder: (ctx, item, isDisabled, isSelected) {
@@ -276,14 +297,16 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                                   icon: Icon(Icons.arrow_drop_down),
                                   onPressed: () {
                                     item.isExpanded = !item.isExpanded;
-                                    _dropdownMultiLevelKey.currentState?.updatePopupState();
+                                    _dropdownMultiLevelKey.currentState
+                                        ?.updatePopupState();
                                   },
                                 )
                               : IconButton(
                                   icon: Icon(Icons.arrow_right),
                                   onPressed: () {
                                     item.isExpanded = !item.isExpanded;
-                                    _dropdownMultiLevelKey.currentState?.updatePopupState();
+                                    _dropdownMultiLevelKey.currentState
+                                        ?.updatePopupState();
                                   },
                                 )),
                       subtitle: item.subLevel.isNotEmpty && item.isExpanded
@@ -293,10 +316,15 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                                 children: item.subLevel
                                     .map(
                                       (e) => ListTile(
-                                        selected: _dropdownMultiLevelKey.currentState?.getSelectedItem?.level1 == e.level1,
+                                        selected: _dropdownMultiLevelKey
+                                                .currentState
+                                                ?.getSelectedItem
+                                                ?.level1 ==
+                                            e.level1,
                                         title: Text(e.level1),
                                         onTap: () {
-                                          _dropdownMultiLevelKey.currentState?.popupValidate([e]);
+                                          _dropdownMultiLevelKey.currentState
+                                              ?.popupValidate([e]);
                                         },
                                       ),
                                     )
@@ -304,7 +332,8 @@ class _ModalsExamplesPageState extends State<ModalsExamplesPage> {
                               ),
                             )
                           : null,
-                      onTap: () => _dropdownMultiLevelKey.currentState?.popupValidate([item]),
+                      onTap: () => _dropdownMultiLevelKey.currentState
+                          ?.popupValidate([item]),
                     );
                   },
                 ),

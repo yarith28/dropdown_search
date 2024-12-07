@@ -35,13 +35,10 @@
 * Sync and/or Async items (online, offline, DB, ...)
 * Searchable dropdown
 * Support multi level items
-* Four dropdown mode: Menu/ BottomSheet/ ModalBottomSheet / Dialog
+* Five dropdown modes: Menu / BottomSheet / ModalBottomSheet / Dialog / autocomplete
 * Single & multi selection
-* Adaptive UI : Material, Adaptive, Cupertino ```[coming soon]```
+* Adaptive platform UI : Material, Adaptive, Cupertino
 * Easy customizable UI - No Boilerplate
-* Handle Light and Dark theme
-* Easy implementation into statelessWidget
-
 
 <br>
 <table>
