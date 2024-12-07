@@ -12,7 +12,7 @@ abstract class CustomMenu<T> {
   Route<T> getRoute();
 
   static RelativeRect getMenuPosition(
-    BuildContext context,// /!\ should be dropdownSearch context !
+    BuildContext context, // /!\ should be dropdownSearch context !
     PositionCallback? positionCallBack,
     MenuAlign? align,
     BoxConstraints constraints,
@@ -122,18 +122,23 @@ class _MaterialPopupMenuRoute<T> extends PopupRoute<T> {
       child: child,
     );
 
-    final position = CustomMenu.getMenuPosition(
-      parentContext,
-      menuProps.positionCallback,
-      menuProps.align,
-      constraints,
-      menuProps.margin,
-    );
+    try {
+      final position = CustomMenu.getMenuPosition(
+        parentContext,
+        menuProps.positionCallback,
+        menuProps.align,
+        constraints,
+        menuProps.margin,
+      );
 
-    return CustomSingleChildLayout(
-      delegate: _PopupMenuRouteLayout(context, position),
-      child: InheritedTheme.capture(from: context, to: Navigator.of(context).context).wrap(menu),
-    );
+      return CustomSingleChildLayout(
+        delegate: _PopupMenuRouteLayout(context, position),
+        child: InheritedTheme.capture(from: context, to: Navigator.of(context).context).wrap(menu),
+      );
+    } catch (e) {
+      navigator?.removeRoute(this);
+      return SizedBox.shrink();
+    }
   }
 }
 
@@ -190,17 +195,22 @@ class _CupertinoPopupMenuRoute<T> extends PopupRoute<T> {
       child: child,
     );
 
-    final position = CustomMenu.getMenuPosition(
-      parentContext,
-      menuProps.positionCallback,
-      menuProps.align,
-      constraints,
-      menuProps.margin,
-    );
-    return CustomSingleChildLayout(
-      delegate: _PopupMenuRouteLayout(context, position),
-      child: InheritedTheme.capture(from: parentContext, to: Navigator.of(context).context).wrap(menu),
-    );
+    try {
+      final position = CustomMenu.getMenuPosition(
+        parentContext,
+        menuProps.positionCallback,
+        menuProps.align,
+        constraints,
+        menuProps.margin,
+      );
+      return CustomSingleChildLayout(
+        delegate: _PopupMenuRouteLayout(context, position),
+        child: InheritedTheme.capture(from: parentContext, to: Navigator.of(context).context).wrap(menu),
+      );
+    } catch (e) {
+      navigator?.removeRoute(this);
+      return SizedBox.shrink();
+    }
   }
 }
 

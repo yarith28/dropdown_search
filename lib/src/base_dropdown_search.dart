@@ -967,7 +967,7 @@ class DropdownSearchState<T> extends State<BaseDropdownSearch<T>> {
       _customOverlyEntry?.close();
       _customOverlyEntry = null;
     } else {
-      if (_popupStateKey.currentState != null) Navigator.of(context).pop();
+      if (_popupStateKey.currentState?.mounted == true && context.mounted) Navigator.of(context).pop();
     }
   }
 
