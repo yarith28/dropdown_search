@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:example/main.dart';
 import 'package:example/user_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CupertinoDialogExamplesPage extends StatefulWidget {
@@ -57,15 +58,12 @@ class _CupertinoDialogExamplesPageState extends State<CupertinoDialogExamplesPag
                       ),
                       popupProps: CupertinoPopupProps.dialog(
                         title: Container(
-                          decoration: BoxDecoration(color: Colors.deepPurple),
                           alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 16),
                           child: Text(
                             'Numbers 1..30',
-                            style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white70),
+                            style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        dialogProps: CupertinoDialogProps(),
                       ),
                     ),
                   ),
@@ -156,21 +154,11 @@ class _CupertinoDialogExamplesPageState extends State<CupertinoDialogExamplesPag
                           return Column(
                             children: [
                               Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: OutlinedButton(
-                                      onPressed: () {
-                                        // How should I unselect all items in the list?
-                                        _dropDownCustomBGKey.currentState?.closeDropDownSearch();
-                                      },
-                                      child: const Text('Cancel'),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(8),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: OutlinedButton(
                                       onPressed: () {
                                         // How should I select all items in the list?
@@ -180,7 +168,7 @@ class _CupertinoDialogExamplesPageState extends State<CupertinoDialogExamplesPag
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(8),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: OutlinedButton(
                                       onPressed: () {
                                         // How should I unselect all items in the list?
@@ -337,23 +325,22 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
   }
 
   ///simulate an API call
-  Future<List<int>> _getData(String filter, LoadProps loadProps) {
+  Future<List<int>> _getData(String filter, LoadProps loadProps) async {
+    await Future.delayed(Duration(seconds: 5));
     //simulate random error
     final errorIndex = Random().nextInt(100);
     if (errorIndex <= loadProps.skip) throw Exception('Sorry, An error occurred !');
 
-    return Future.delayed(Duration(seconds: 5), () {
-      var list = filter.isEmpty ? longList : longList.where((l) => l.toString().contains(filter));
+    var list = filter.isEmpty ? longList : longList.where((l) => l.toString().contains(filter));
 
-      return list.skip(loadProps.skip).take(loadProps.take).toList();
-    });
+    return list.skip(loadProps.skip).take(loadProps.take).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoDropdownSearch<int>.multiSelection(
       key: _infiniteScrollDropDownKey,
-      items: (f, ic) => _getData(f, ic!),
+      items: (filter, loadProps) => _getData(filter, loadProps!),
       decoratorProps: DropDownDecoratorProps(
         decoration: InputDecoration(
           border: OutlineInputBorder(),
@@ -387,12 +374,7 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
         containerBuilder: (ctx, popupWidget) {
           return Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(24)),
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Color(0xF44336), Colors.blue],
-              ),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -406,7 +388,7 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
                       ValueListenableBuilder(
                         valueListenable: longListCheckBoxValueNotifier,
                         builder: (context, value, child) {
-                          return Checkbox(
+                          return CupertinoCheckbox(
                             value: longListCheckBoxValueNotifier.value,
                             tristate: true,
                             onChanged: (bool? v) {
@@ -462,7 +444,6 @@ Widget customDropDownExampleMultiSelection(BuildContext context, List<UserModel>
 
 Widget userModelPopupItem(BuildContext context, UserModel item, bool isDisabled, bool isSelected) {
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 8),
     decoration: !isSelected
         ? null
         : BoxDecoration(
@@ -471,6 +452,7 @@ Widget userModelPopupItem(BuildContext context, UserModel item, bool isDisabled,
             color: Colors.white,
           ),
     child: ListTile(
+      contentPadding: EdgeInsets.zero,
       selected: isSelected,
       title: Text(item.name),
       subtitle: Text(item.createdAt.toString()),

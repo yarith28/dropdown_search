@@ -57,15 +57,17 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                       compareFn: (item1, item2) => item1.$1 == item2.$1,
                       itemAsString: (item) => item.$1,
                       popupProps: AdaptivePopupProps(
-                          cupertinoProps: CupertinoPopupProps.autocomplete(
-                        autoCompleteProps: CupertinoAutocompleteProps(align: MenuAlign.bottomCenter, groupId: UniqueKey()),
-                        constraints: BoxConstraints(minWidth: 128),
-                        fit: FlexFit.loose,
-                        itemBuilder: (context, item, isDisabled, isSelected) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(item.$1, style: TextStyle(color: item.$2, fontSize: 16)),
+                        cupertinoProps: CupertinoPopupProps.autocomplete(
+                          autoCompleteProps: CupertinoAutocompleteProps(align: MenuAlign.bottomCenter, groupId: UniqueKey()),
+                          constraints: BoxConstraints(minWidth: 128),
+                          fit: FlexFit.loose,
+                          itemBuilder: (context, item, isDisabled, isSelected) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(item.$1, style: TextStyle(color: item.$2, fontSize: 16)),
+                          ),
                         ),
-                      )),
+                        materialProps: PopupProps.dialog()
+                      ),
                       dropdownBuilder: (ctx, selectedItem) {
                         if (selectedItem == null) return SizedBox.shrink();
                         return Row(

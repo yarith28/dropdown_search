@@ -71,6 +71,35 @@ dropdown_search: <lastest version>
 import 'package:dropdown_search/dropdown_search.dart';
 ```
 
+## Adaptive Platform UI
+* To use Material ui (_**by default**_) use `DropdownSearch<T>(...)` or  `DropdownSearch<T>.multiSelection(...)`
+* for the cupertino mode use `CupertinoDropdownSearch<T>(...)` or  `CupertinoDropdownSearch<T>.multiSelection(...)`
+* To let the package pick the suitable platform UI based on the used platform, use `AdaptiveDropdownSearch<T>(...)` or  `AdaptiveDropdownSearch<T>.multiSelection(...)`
+
+
+* **_Bonus Tip_**: with adaptive platform ui you can use different PopupMode depending on platform type:
+```dart
+AdaptiveDropdownSearch<T>(
+    popupProps: AdaptivePopupProps(
+        cupertinoProps: CupertinoPopupProps.bottomSheet(),
+        materialProps: PopupProps.dialog()
+    ),
+)
+```
+
+## Infinite Scroll
+To enable infinite scroll all you have to do is to declare `infiniteScrollProps` and of course don't forget to pass loadProps to your API like this:
+```dart
+DropdownSearch<T>(
+    items: (filter, loadProps) => _getDataFromAPI(filter, loadProps!.skip, loadProps!.take),
+    popupProps: PopupProps.dialog(
+        infiniteScrollProps: InfiniteScrollProps(
+            loadProps: LoadProps(skip: 0, take: 10),
+        ),
+    ),
+)
+```
+
 
 ## Simple implementation
 <details><summary>See here</summary>

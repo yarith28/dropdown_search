@@ -80,12 +80,10 @@ class CupertinoDialogProps {
   final Offset? anchorPoint;
 
   final List<Widget>? actions;
-  final Widget? content;
   final ScrollController? scrollController;
   final ScrollController? actionScrollController;
   final Duration insetAnimationDuration;
   final Curve insetAnimationCurve;
-  final Widget? title;
 
   const CupertinoDialogProps({
     this.barrierDismissible = false,
@@ -93,9 +91,7 @@ class CupertinoDialogProps {
     this.barrierLabel,
     this.routeSettings,
     this.anchorPoint,
-    this.title,
     this.actions,
-    this.content,
     this.scrollController,
     this.actionScrollController,
     this.insetAnimationDuration = const Duration(milliseconds: 100),

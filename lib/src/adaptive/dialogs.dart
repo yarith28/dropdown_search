@@ -84,7 +84,6 @@ Future openCupertinoDialog(
         content: content,
         scrollController: props.scrollController,
         actionScrollController: props.actionScrollController,
-        title: props.title,
         insetAnimationCurve: props.insetAnimationCurve,
         insetAnimationDuration: props.insetAnimationDuration,
       );

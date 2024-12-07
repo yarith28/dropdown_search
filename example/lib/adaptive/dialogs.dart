@@ -365,16 +365,15 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
   }
 
   ///simulate an API call
-  Future<List<int>> _getData(String filter, LoadProps loadProps) {
+  Future<List<int>> _getData(String filter, LoadProps loadProps) async {
+    await Future.delayed(Duration(seconds: 5));
     //simulate random error
     final errorIndex = Random().nextInt(100);
     if (errorIndex <= loadProps.skip) throw Exception('Sorry, An error occurred !');
 
-    return Future.delayed(Duration(seconds: 5), () {
-      var list = filter.isEmpty ? longList : longList.where((l) => l.toString().contains(filter));
+    var list = filter.isEmpty ? longList : longList.where((l) => l.toString().contains(filter));
 
-      return list.skip(loadProps.skip).take(loadProps.take).toList();
-    });
+    return list.skip(loadProps.skip).take(loadProps.take).toList();
   }
 
   @override
