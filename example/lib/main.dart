@@ -101,43 +101,48 @@ class MyHomePage extends StatelessWidget {
                     case PopupMode.menu:
                       if (uiMode == UiMode.adaptive) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => AdaptiveMenuExamplesPage()));
-                      } else if (uiMode == UiMode.cupertino)
+                      } else if (uiMode == UiMode.cupertino) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CupertinoMenuExamplesPage()));
-                      else
+                      } else {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => MaterialMenuExamplesPage()));
+                      }
                       break;
                     case PopupMode.modalBottomSheet:
                       if (uiMode == UiMode.adaptive) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => AdaptiveModalsExamplesPage()));
-                      } else if (uiMode == UiMode.cupertino)
+                      } else if (uiMode == UiMode.cupertino) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CupertinoModalsExamplesPage()));
-                      else
+                      } else {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => MaterialModalsExamplesPage()));
+                      }
                       break;
                     case PopupMode.bottomSheet:
                       if (uiMode == UiMode.adaptive) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => AdaptiveBottomSheetExamplesPage()));
-                      } else if (uiMode == UiMode.cupertino)
+                      } else if (uiMode == UiMode.cupertino) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CupertinoBottomSheetExamplesPage()));
-                      else
+                      } else {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => MaterialBottomSheetExamplesPage()));
+                      }
                       break;
                     case PopupMode.dialog:
                       if (uiMode == UiMode.adaptive) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => AdaptiveDialogExamplesPage()));
-                      } else if (uiMode == UiMode.cupertino)
+                      } else if (uiMode == UiMode.cupertino) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CupertinoDialogExamplesPage()));
-                      else
+                      } else {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => MaterialDialogExamplesPage()));
+                      }
                       break;
                     case PopupMode.autocomplete:
                       if (uiMode == UiMode.adaptive) {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => AdaptiveAutocompleteExamplesPage()));
-                      } else if (uiMode == UiMode.cupertino)
+                      } else if (uiMode == UiMode.cupertino) {
                         Navigator.push(
                             context, MaterialPageRoute(builder: (context) => CupertinoAutocompleteExamplesPage()));
-                      else
+                      } else {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => MaterialAutocompleteExamplesPage()));
+                      }
                       break;
                     case null:
                       throw UnimplementedError();

@@ -1,5 +1,4 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:dropdown_search/src/properties/suggestions_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
 import 'package:dropdown_search/src/widgets/custom_wrap.dart';

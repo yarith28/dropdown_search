@@ -1,6 +1,4 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:dropdown_search/src/properties/autocomplete_props.dart';
-import 'package:dropdown_search/src/properties/cupertino_text_field_props.dart';
 import 'package:flutter/material.dart';
 
 class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {

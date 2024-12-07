@@ -1,5 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:dropdown_search/src/widgets/CustomSafeArea.dart';
+import 'package:dropdown_search/src/widgets/custom_safe_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

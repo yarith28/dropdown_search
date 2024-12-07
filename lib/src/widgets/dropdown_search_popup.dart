@@ -1,10 +1,6 @@
 import 'dart:async';
 
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:dropdown_search/src/base_dropdown_search.dart';
-import 'package:dropdown_search/src/properties/base_popup_props.dart';
-import 'package:dropdown_search/src/properties/cupertino_text_field_props.dart';
-import 'package:dropdown_search/src/properties/text_field_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
 import 'package:dropdown_search/src/widgets/custom_text_field.dart';
@@ -157,8 +153,9 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
                         stream: _itemsStream.stream,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            if (_cachedItems.isNotEmpty && !isInfiniteScrollEnded)
+                            if (_cachedItems.isNotEmpty && !isInfiniteScrollEnded) {
                               return _listItemWidget(_cachedItems, snapshot.error);
+                            }
                             return _errorWidget(snapshot.error);
                           } else if (snapshot.hasData) {
                             if (snapshot.data!.isEmpty) return _noDataWidget();
