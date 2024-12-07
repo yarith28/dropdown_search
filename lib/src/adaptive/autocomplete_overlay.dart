@@ -26,7 +26,8 @@ abstract class CustomOverlayEntry {
     Overlay.of(context).insert(overlayEntry!);
 
     //add screen size change listener
-    WidgetsBinding.instance.addObserver(CustomWidgetsBindingObserver(overlayEntry!));
+    WidgetsBinding.instance
+        .addObserver(CustomWidgetsBindingObserver(overlayEntry!));
 
     await completer?.future;
   }
@@ -34,14 +35,18 @@ abstract class CustomOverlayEntry {
   bool isOpen() => completer?.isCompleted == false;
 
   ///return overlay position based on different params such, constrains, alignment and screen size
-  RelativeRect getOverlayPosition(BuildContext pContext, MenuAlign? pAlign, BoxConstraints pConstraints) {
+  RelativeRect getOverlayPosition(
+      BuildContext pContext, MenuAlign? pAlign, BoxConstraints pConstraints) {
     final dropdownBox = pContext.findRenderObject() as RenderBox;
-    final overlayBox = Overlay.of(pContext).context.findRenderObject() as RenderBox;
+    final overlayBox =
+        Overlay.of(pContext).context.findRenderObject() as RenderBox;
     var popupSize = computePopupSize(dropdownBox, overlayBox, pConstraints);
     var lAlign = pAlign ?? MenuAlign.bottomCenter;
 
-    final dropDownY = dropdownBox.localToGlobal(Offset.zero, ancestor: overlayBox).dy;
-    final bottomHeight = overlayBox.size.height - dropDownY - dropdownBox.size.height;
+    final dropDownY =
+        dropdownBox.localToGlobal(Offset.zero, ancestor: overlayBox).dy;
+    final bottomHeight =
+        overlayBox.size.height - dropDownY - dropdownBox.size.height;
     final topHeight = dropDownY;
 
     //get best orientation
@@ -93,12 +98,17 @@ class MaterialCustomOverlyEntry extends CustomOverlayEntry {
   final TapRegionCallback? onTapOutside;
   final Widget? child;
 
-  MaterialCustomOverlyEntry({required this.props, required this.constraints, this.child, this.onTapOutside});
+  MaterialCustomOverlyEntry(
+      {required this.props,
+      required this.constraints,
+      this.child,
+      this.onTapOutside});
 
   @override
   getOverlayEntry(BuildContext context) {
     return OverlayEntry(builder: (ctx) {
-      final pos = getOverlayPosition(context, props.align, constraints).addMargin(props.margin);
+      final pos = getOverlayPosition(context, props.align, constraints)
+          .addMargin(props.margin);
       return Positioned(
         top: pos.top,
         left: pos.left,
@@ -112,10 +122,13 @@ class MaterialCustomOverlyEntry extends CustomOverlayEntry {
             child: Material(
               type: MaterialType.card,
               shape: props.shape ?? PopupMenuTheme.of(context).shape,
-              color:  props.color ?? PopupMenuTheme.of(context).surfaceTintColor,
-              elevation: props.elevation ?? PopupMenuTheme.of(context).elevation ?? 4,
-              shadowColor: props.shadowColor ?? PopupMenuTheme.of(context).shadowColor,
-              surfaceTintColor: props.surfaceTintColor ?? PopupMenuTheme.of(context).surfaceTintColor,
+              color: props.color ?? PopupMenuTheme.of(context).surfaceTintColor,
+              elevation:
+                  props.elevation ?? PopupMenuTheme.of(context).elevation ?? 4,
+              shadowColor:
+                  props.shadowColor ?? PopupMenuTheme.of(context).shadowColor,
+              surfaceTintColor: props.surfaceTintColor ??
+                  PopupMenuTheme.of(context).surfaceTintColor,
               clipBehavior: props.clipBehavior,
               borderRadius: props.borderRadius,
               borderOnForeground: props.borderOnForeground,
@@ -134,12 +147,17 @@ class CupertinoCustomOverlyEntry extends CustomOverlayEntry {
   final BoxConstraints constraints;
   final Widget? child;
 
-  CupertinoCustomOverlyEntry({required this.props, required this.constraints, this.child, this.onTapOutside});
+  CupertinoCustomOverlyEntry(
+      {required this.props,
+      required this.constraints,
+      this.child,
+      this.onTapOutside});
 
   @override
   OverlayEntry getOverlayEntry(BuildContext context) {
     return OverlayEntry(builder: (ctx) {
-      final pos = getOverlayPosition(context, props.align, constraints).addMargin(props.margin);
+      final pos = getOverlayPosition(context, props.align, constraints)
+          .addMargin(props.margin);
       return Positioned(
         top: pos.top,
         left: pos.left,
@@ -153,7 +171,8 @@ class CupertinoCustomOverlyEntry extends CustomOverlayEntry {
             child: Material(
               type: MaterialType.card,
               shape: props.shape ?? PopupMenuTheme.of(context).shape,
-              elevation: props.elevation ?? PopupMenuTheme.of(context).elevation ?? 8,
+              elevation:
+                  props.elevation ?? PopupMenuTheme.of(context).elevation ?? 8,
               color: props.color ?? PopupMenuTheme.of(context).color,
               clipBehavior: props.clipBehavior,
               borderRadius: props.borderRadius,

@@ -11,7 +11,8 @@ class CupertinoBottomSheetExamplesPage extends StatefulWidget {
       _CupertinoBottomSheetExamplesPageState();
 }
 
-class _CupertinoBottomSheetExamplesPageState extends State<CupertinoBottomSheetExamplesPage> {
+class _CupertinoBottomSheetExamplesPageState
+    extends State<CupertinoBottomSheetExamplesPage> {
   final _formKey = GlobalKey<FormState>();
   final _dropDownCustomBGKey = GlobalKey<DropdownSearchState<String>>();
   final _userEditTextController = TextEditingController(text: 'Mrs');
@@ -221,7 +222,7 @@ class _CupertinoBottomSheetExamplesPageState extends State<CupertinoBottomSheetE
                         showSearchBox: true,
                         searchFieldProps: CupertinoTextFieldProps(
                           controller: _userEditTextController,
-                          suffix:IconButton(
+                          suffix: IconButton(
                             icon: Icon(Icons.clear),
                             onPressed: () => _userEditTextController.clear(),
                           ),

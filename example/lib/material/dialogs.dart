@@ -7,14 +7,17 @@ import 'package:flutter/material.dart';
 
 class MaterialDialogExamplesPage extends StatefulWidget {
   @override
-  State<MaterialDialogExamplesPage> createState() => _MaterialDialogExamplesPageState();
+  State<MaterialDialogExamplesPage> createState() =>
+      _MaterialDialogExamplesPageState();
 }
 
-class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage> {
+class _MaterialDialogExamplesPageState
+    extends State<MaterialDialogExamplesPage> {
   final _formKey = GlobalKey<FormState>();
   final _dropDownCustomBGKey = GlobalKey<DropdownSearchState<String>>();
   final _userEditTextController = TextEditingController(text: 'Mrs');
-  final _dropdownMultiLevelKey = GlobalKey<DropdownSearchState<MultiLevelString>>();
+  final _dropdownMultiLevelKey =
+      GlobalKey<DropdownSearchState<MultiLevelString>>();
   final List<MultiLevelString> myMultiLevelItems = [
     MultiLevelString(level1: "1"),
     MultiLevelString(level1: "2"),
@@ -53,7 +56,9 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                     child: DropdownSearch<int>(
                       items: (f, cs) => List.generate(30, (i) => i + 1),
                       decoratorProps: DropDownDecoratorProps(
-                        decoration: InputDecoration(labelText: "Dialog with title", hintText: "Select an Int"),
+                        decoration: InputDecoration(
+                            labelText: "Dialog with title",
+                            hintText: "Select an Int"),
                       ),
                       popupProps: PopupProps.dialog(
                         title: Container(
@@ -62,7 +67,10 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                           padding: EdgeInsets.symmetric(vertical: 16),
                           child: Text(
                             'Numbers 1..30',
-                            style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white70),
+                            style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white70),
                           ),
                         ),
                         dialogProps: DialogProps(
@@ -112,7 +120,9 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                         suggestionsProps: SuggestionsProps(
                           showSuggestions: true,
                           items: (us) {
-                            return us.where((e) => e.name.contains("e")).toList();
+                            return us
+                                .where((e) => e.name.contains("e"))
+                                .toList();
                           },
                         ),
                       ),
@@ -131,7 +141,9 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                           suggestionsProps: SuggestionsProps(
                             showSuggestions: true,
                             items: (us) {
-                              return us.where((e) => e.name.contains("Mrs")).toList();
+                              return us
+                                  .where((e) => e.name.contains("Mrs"))
+                                  .toList();
                             },
                           ),
                         ),
@@ -170,7 +182,8 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                                     child: OutlinedButton(
                                       onPressed: () {
                                         // How should I unselect all items in the list?
-                                        _dropDownCustomBGKey.currentState?.closeDropDownSearch();
+                                        _dropDownCustomBGKey.currentState
+                                            ?.closeDropDownSearch();
                                       },
                                       child: const Text('Cancel'),
                                     ),
@@ -180,7 +193,8 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                                     child: OutlinedButton(
                                       onPressed: () {
                                         // How should I select all items in the list?
-                                        _dropDownCustomBGKey.currentState?.popupSelectAllItems();
+                                        _dropDownCustomBGKey.currentState
+                                            ?.popupSelectAllItems();
                                       },
                                       child: const Text('All'),
                                     ),
@@ -190,7 +204,8 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                                     child: OutlinedButton(
                                       onPressed: () {
                                         // How should I unselect all items in the list?
-                                        _dropDownCustomBGKey.currentState?.popupDeselectAllItems();
+                                        _dropDownCustomBGKey.currentState
+                                            ?.popupDeselectAllItems();
                                       },
                                       child: const Text('None'),
                                     ),
@@ -216,7 +231,8 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                   Expanded(
                     child: DropdownSearch<UserModel>.multiSelection(
                       items: (filter, t) => getData(filter),
-                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+                      suffixProps: DropdownSuffixProps(
+                          clearButtonProps: ClearButtonProps(isVisible: true)),
                       popupProps: MultiSelectionPopupProps.dialog(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
@@ -231,13 +247,15 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                           ),
                         ),
                       ),
-                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
+                      compareFn: (item, selectedItem) =>
+                          item.id == selectedItem.id,
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'Users *',
                           filled: true,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                       dropdownBuilder: customDropDownExampleMultiSelection,
@@ -257,7 +275,8 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                         decoration: InputDecoration(
                           labelText: 'User *',
                           filled: true,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                     ),
@@ -287,14 +306,16 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                                   icon: Icon(Icons.arrow_drop_down),
                                   onPressed: () {
                                     item.isExpanded = !item.isExpanded;
-                                    _dropdownMultiLevelKey.currentState?.updatePopupState();
+                                    _dropdownMultiLevelKey.currentState
+                                        ?.updatePopupState();
                                   },
                                 )
                               : IconButton(
                                   icon: Icon(Icons.arrow_right),
                                   onPressed: () {
                                     item.isExpanded = !item.isExpanded;
-                                    _dropdownMultiLevelKey.currentState?.updatePopupState();
+                                    _dropdownMultiLevelKey.currentState
+                                        ?.updatePopupState();
                                   },
                                 )),
                       subtitle: item.subLevel.isNotEmpty && item.isExpanded
@@ -304,10 +325,15 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                                 children: item.subLevel
                                     .map(
                                       (e) => ListTile(
-                                        selected: _dropdownMultiLevelKey.currentState?.getSelectedItem?.level1 == e.level1,
+                                        selected: _dropdownMultiLevelKey
+                                                .currentState
+                                                ?.getSelectedItem
+                                                ?.level1 ==
+                                            e.level1,
                                         title: Text(e.level1),
                                         onTap: () {
-                                          _dropdownMultiLevelKey.currentState?.popupValidate([e]);
+                                          _dropdownMultiLevelKey.currentState
+                                              ?.popupValidate([e]);
                                         },
                                       ),
                                     )
@@ -315,7 +341,8 @@ class _MaterialDialogExamplesPageState extends State<MaterialDialogExamplesPage>
                               ),
                             )
                           : null,
-                      onTap: () => _dropdownMultiLevelKey.currentState?.popupValidate([item]),
+                      onTap: () => _dropdownMultiLevelKey.currentState
+                          ?.popupValidate([item]),
                     );
                   },
                 ),
@@ -333,14 +360,19 @@ class DropdownWithGlobalCheckBox extends StatefulWidget {
   State<StatefulWidget> createState() => _DropdownWithGlobalCheckBoxState();
 }
 
-class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox> {
+class _DropdownWithGlobalCheckBoxState
+    extends State<DropdownWithGlobalCheckBox> {
   final _infiniteScrollDropDownKey = GlobalKey<DropdownSearchState<int>>();
-  final ValueNotifier<bool?> longListCheckBoxValueNotifier = ValueNotifier(false);
+  final ValueNotifier<bool?> longListCheckBoxValueNotifier =
+      ValueNotifier(false);
   final longList = List.generate(500, (i) => i + 1);
 
   bool? _getCheckBoxState() {
-    var selectedItem = _infiniteScrollDropDownKey.currentState?.popupGetSelectedItems ?? [];
-    var isAllSelected = _infiniteScrollDropDownKey.currentState?.popupIsAllItemSelected ?? false;
+    var selectedItem =
+        _infiniteScrollDropDownKey.currentState?.popupGetSelectedItems ?? [];
+    var isAllSelected =
+        _infiniteScrollDropDownKey.currentState?.popupIsAllItemSelected ??
+            false;
     return selectedItem.isEmpty ? false : (isAllSelected ? true : null);
   }
 
@@ -349,9 +381,13 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
     await Future.delayed(Duration(seconds: 5));
     //simulate random error
     final errorIndex = Random().nextInt(100);
-    if (errorIndex <= loadProps.skip) throw Exception('Sorry, An error occurred !');
+    if (errorIndex <= loadProps.skip) {
+      throw Exception('Sorry, An error occurred !');
+    }
 
-    var list = filter.isEmpty ? longList : longList.where((l) => l.toString().contains(filter));
+    var list = filter.isEmpty
+        ? longList
+        : longList.where((l) => l.toString().contains(filter));
 
     return list.skip(loadProps.skip).take(loadProps.take).toList();
   }
@@ -369,9 +405,12 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
         ),
       ),
       popupProps: MultiSelectionPopupProps.dialog(
-        onItemAdded: (l, s) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),
-        onItemRemoved: (l, s) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),
-        onItemsLoaded: (value) => longListCheckBoxValueNotifier.value = _getCheckBoxState(),
+        onItemAdded: (l, s) =>
+            longListCheckBoxValueNotifier.value = _getCheckBoxState(),
+        onItemRemoved: (l, s) =>
+            longListCheckBoxValueNotifier.value = _getCheckBoxState(),
+        onItemsLoaded: (value) =>
+            longListCheckBoxValueNotifier.value = _getCheckBoxState(),
         infiniteScrollProps: InfiniteScrollProps(
           loadProps: LoadProps(skip: 0, take: 10),
           errorBuilder: (context, searchEntry, exception, loadProps) {
@@ -381,7 +420,8 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
                 Text('$exception'),
                 TextButton.icon(
                   onPressed: () {
-                    _infiniteScrollDropDownKey.currentState?.getPopupState?.loadMoreItems(searchEntry, loadProps.skip);
+                    _infiniteScrollDropDownKey.currentState?.getPopupState
+                        ?.loadMoreItems(searchEntry, loadProps.skip);
                   },
                   icon: Icon(Icons.sync),
                   label: Text('reload'),
@@ -419,9 +459,11 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
                             onChanged: (bool? v) {
                               v ??= false;
                               if (v == true) {
-                                _infiniteScrollDropDownKey.currentState?.popupSelectAllItems();
+                                _infiniteScrollDropDownKey.currentState
+                                    ?.popupSelectAllItems();
                               } else if (v == false) {
-                                _infiniteScrollDropDownKey.currentState?.popupDeselectAllItems();
+                                _infiniteScrollDropDownKey.currentState
+                                    ?.popupDeselectAllItems();
                               }
                               longListCheckBoxValueNotifier.value = v;
                             },
@@ -441,7 +483,8 @@ class _DropdownWithGlobalCheckBoxState extends State<DropdownWithGlobalCheckBox>
   }
 }
 
-Widget customDropDownExampleMultiSelection(BuildContext context, List<UserModel> selectedItems) {
+Widget customDropDownExampleMultiSelection(
+    BuildContext context, List<UserModel> selectedItems) {
   if (selectedItems.isEmpty) {
     return ListTile(
       contentPadding: EdgeInsets.all(0),
@@ -467,7 +510,8 @@ Widget customDropDownExampleMultiSelection(BuildContext context, List<UserModel>
   );
 }
 
-Widget userModelPopupItem(BuildContext context, UserModel item, bool isDisabled, bool isSelected) {
+Widget userModelPopupItem(
+    BuildContext context, UserModel item, bool isDisabled, bool isSelected) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 8),
     decoration: !isSelected

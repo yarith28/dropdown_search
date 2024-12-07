@@ -22,13 +22,15 @@ abstract class CustomMenu<T> {
     // Here we get the render object of our physical button, later to get its size & position
     final dropdownBox = context.findRenderObject() as RenderBox;
     // Get the render object of the overlay used in `Navigator` / `MaterialApp`, i.e. screen size reference
-    var overlayBox = Overlay.of(context).context.findRenderObject() as RenderBox;
+    var overlayBox =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
 
     if (positionCallBack != null) {
       return positionCallBack(dropdownBox, overlayBox).addMargin(margin);
     } else {
       var popupSize = computePopupSize(dropdownBox, overlayBox, constraints);
-      return getPosition(dropdownBox, overlayBox, popupSize, align).addMargin(margin);
+      return getPosition(dropdownBox, overlayBox, popupSize, align)
+          .addMargin(margin);
     }
   }
 }
@@ -38,7 +40,11 @@ class MaterialCustomMenu<T> extends CustomMenu<T> {
   final Widget child;
   final BoxConstraints constraints;
 
-  MaterialCustomMenu({required super.context, required this.props, required this.constraints, required this.child});
+  MaterialCustomMenu(
+      {required super.context,
+      required this.props,
+      required this.constraints,
+      required this.child});
 
   @override
   Route<T> getRoute() {
@@ -56,7 +62,11 @@ class CupertinoCustomMenu<T> extends CustomMenu<T> {
   final Widget child;
   final BoxConstraints constraints;
 
-  CupertinoCustomMenu({required super.context, required this.constraints, required this.props, required this.child});
+  CupertinoCustomMenu(
+      {required super.context,
+      required this.constraints,
+      required this.props,
+      required this.child});
 
   @override
   Route<T> getRoute() {
@@ -83,10 +93,12 @@ class _MaterialPopupMenuRoute<T> extends PopupRoute<T> {
   });
 
   @override
-  Duration get transitionDuration => menuProps.transitionDuration ?? Duration.zero;
+  Duration get transitionDuration =>
+      menuProps.transitionDuration ?? Duration.zero;
 
   @override
-  Duration get reverseTransitionDuration => menuProps.reverseTransitionDuration ?? Duration.zero;
+  Duration get reverseTransitionDuration =>
+      menuProps.reverseTransitionDuration ?? Duration.zero;
 
   @override
   bool get barrierDismissible => menuProps.barrierDismissible;
@@ -98,16 +110,19 @@ class _MaterialPopupMenuRoute<T> extends PopupRoute<T> {
   String? get barrierLabel => menuProps.barrierLabel;
 
   @override
-  Widget buildTransitions(
-      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     if (menuProps.transitionBuilder != null) {
-      return menuProps.transitionBuilder!(context, animation, secondaryAnimation, child);
+      return menuProps.transitionBuilder!(
+          context, animation, secondaryAnimation, child);
     }
-    return super.buildTransitions(context, animation, secondaryAnimation, child);
+    return super
+        .buildTransitions(context, animation, secondaryAnimation, child);
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
     final menu = Material(
       surfaceTintColor: menuProps.surfaceTintColor,
@@ -133,7 +148,9 @@ class _MaterialPopupMenuRoute<T> extends PopupRoute<T> {
 
       return CustomSingleChildLayout(
         delegate: _PopupMenuRouteLayout(context, position),
-        child: InheritedTheme.capture(from: context, to: Navigator.of(context).context).wrap(menu),
+        child: InheritedTheme.capture(
+                from: context, to: Navigator.of(context).context)
+            .wrap(menu),
       );
     } catch (e) {
       navigator?.removeRoute(this);
@@ -156,10 +173,12 @@ class _CupertinoPopupMenuRoute<T> extends PopupRoute<T> {
   });
 
   @override
-  Duration get transitionDuration => menuProps.transitionDuration ?? Duration.zero;
+  Duration get transitionDuration =>
+      menuProps.transitionDuration ?? Duration.zero;
 
   @override
-  Duration get reverseTransitionDuration => menuProps.reverseTransitionDuration ?? Duration.zero;
+  Duration get reverseTransitionDuration =>
+      menuProps.reverseTransitionDuration ?? Duration.zero;
 
   @override
   bool get barrierDismissible => menuProps.barrierDismissible;
@@ -171,16 +190,19 @@ class _CupertinoPopupMenuRoute<T> extends PopupRoute<T> {
   String? get barrierLabel => menuProps.barrierLabel;
 
   @override
-  Widget buildTransitions(
-      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     if (menuProps.transitionBuilder != null) {
-      return menuProps.transitionBuilder!(context, animation, secondaryAnimation, child);
+      return menuProps.transitionBuilder!(
+          context, animation, secondaryAnimation, child);
     }
-    return super.buildTransitions(context, animation, secondaryAnimation, child);
+    return super
+        .buildTransitions(context, animation, secondaryAnimation, child);
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
     final menu = Material(
       surfaceTintColor: menuProps.surfaceTintColor,
@@ -205,7 +227,9 @@ class _CupertinoPopupMenuRoute<T> extends PopupRoute<T> {
       );
       return CustomSingleChildLayout(
         delegate: _PopupMenuRouteLayout(context, position),
-        child: InheritedTheme.capture(from: parentContext, to: Navigator.of(context).context).wrap(menu),
+        child: InheritedTheme.capture(
+                from: parentContext, to: Navigator.of(context).context)
+            .wrap(menu),
       );
     } catch (e) {
       navigator?.removeRoute(this);

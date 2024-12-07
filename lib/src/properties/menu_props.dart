@@ -11,18 +11,27 @@ enum MenuAlign {
 }
 
 extension MenuAlignDirection on MenuAlign {
-  bool get isDown => this == MenuAlign.bottomStart || this == MenuAlign.bottomCenter || this == MenuAlign.bottomEnd;
+  bool get isDown =>
+      this == MenuAlign.bottomStart ||
+      this == MenuAlign.bottomCenter ||
+      this == MenuAlign.bottomEnd;
 
   bool get isUp => !isDown;
 
   MenuAlign get reverse {
-    switch(this){
-      case MenuAlign.topStart: return MenuAlign.bottomStart;
-      case MenuAlign.topCenter: return MenuAlign.bottomCenter;
-      case MenuAlign.topEnd: return MenuAlign.bottomEnd;
-      case MenuAlign.bottomStart: return MenuAlign.topStart;
-      case MenuAlign.bottomCenter: return MenuAlign.topCenter;
-      case MenuAlign.bottomEnd: return MenuAlign.topEnd;
+    switch (this) {
+      case MenuAlign.topStart:
+        return MenuAlign.bottomStart;
+      case MenuAlign.topCenter:
+        return MenuAlign.bottomCenter;
+      case MenuAlign.topEnd:
+        return MenuAlign.bottomEnd;
+      case MenuAlign.bottomStart:
+        return MenuAlign.topStart;
+      case MenuAlign.bottomCenter:
+        return MenuAlign.topCenter;
+      case MenuAlign.bottomEnd:
+        return MenuAlign.topEnd;
     }
   }
 }
@@ -52,7 +61,8 @@ class MenuProps {
     this.align,
     this.barrierLabel,
     this.elevation,
-    this.shape = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
+    this.shape = const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0))),
     this.positionCallback,
     this.barrierColor,
     this.backgroundColor,
@@ -96,7 +106,8 @@ class CupertinoMenuProps {
     this.align,
     this.barrierLabel,
     this.elevation,
-    this.shape = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+    this.shape = const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12))),
     this.positionCallback,
     this.barrierColor,
     this.backgroundColor,

@@ -6,14 +6,17 @@ import 'dialogs.dart';
 
 class AdaptiveModalsExamplesPage extends StatefulWidget {
   @override
-  State<AdaptiveModalsExamplesPage> createState() => _AdaptiveModalsExamplesPageState();
+  State<AdaptiveModalsExamplesPage> createState() =>
+      _AdaptiveModalsExamplesPageState();
 }
 
-class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage> {
+class _AdaptiveModalsExamplesPageState
+    extends State<AdaptiveModalsExamplesPage> {
   final _formKey = GlobalKey<FormState>();
   final _dropDownCustomBGKey = GlobalKey<DropdownSearchState<String>>();
   final _userEditTextController = TextEditingController(text: 'Mrs');
-  final _dropdownMultiLevelKey = GlobalKey<DropdownSearchState<MultiLevelString>>();
+  final _dropdownMultiLevelKey =
+      GlobalKey<DropdownSearchState<MultiLevelString>>();
   final List<MultiLevelString> myMultiLevelItems = [
     MultiLevelString(level1: "1"),
     MultiLevelString(level1: "2"),
@@ -35,7 +38,8 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("AdaptiveDropdownSearch Modal BottomSheet Demo")),
+      appBar:
+          AppBar(title: Text("AdaptiveDropdownSearch Modal BottomSheet Demo")),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: Form(
@@ -54,7 +58,9 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                       context: context,
                       items: (f, cs) => List.generate(30, (i) => i + 1),
                       decoratorProps: DropDownDecoratorProps(
-                        decoration: InputDecoration(labelText: "Dialog with title", hintText: "Select an Int"),
+                        decoration: InputDecoration(
+                            labelText: "Dialog with title",
+                            hintText: "Select an Int"),
                       ),
                       popupProps: AdaptivePopupProps(
                         cupertinoProps: CupertinoPopupProps.modalBottomSheet(
@@ -66,10 +72,14 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                             padding: EdgeInsets.symmetric(vertical: 16),
                             child: Text(
                               'Numbers 1..30',
-                              style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white70),
+                              style: TextStyle(
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white70),
                             ),
                           ),
-                          modalBottomSheetProps: CupertinoModalBottomSheetProps(),
+                          modalBottomSheetProps:
+                              CupertinoModalBottomSheetProps(),
                         ),
                       ),
                     ),
@@ -115,7 +125,9 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                           suggestionsProps: SuggestionsProps(
                             showSuggestions: true,
                             items: (us) {
-                              return us.where((e) => e.name.contains("Mrs")).toList();
+                              return us
+                                  .where((e) => e.name.contains("Mrs"))
+                                  .toList();
                             },
                           ),
                         ),
@@ -129,13 +141,16 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                       items: (filter, s) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
                       popupProps: AdaptiveMultiSelectionPopupProps(
-                        cupertinoProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
+                        cupertinoProps:
+                            CupertinoMultiSelectionPopupProps.modalBottomSheet(
                           showSearchBox: true,
                           itemBuilder: userModelPopupItem,
                           suggestionsProps: SuggestionsProps(
                             showSuggestions: true,
                             items: (us) {
-                              return us.where((e) => e.name.contains("Mrs")).toList();
+                              return us
+                                  .where((e) => e.name.contains("Mrs"))
+                                  .toList();
                             },
                           ),
                         ),
@@ -154,7 +169,8 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                 key: _dropDownCustomBGKey,
                 items: (f, cs) => List.generate(30, (index) => "$index"),
                 popupProps: AdaptiveMultiSelectionPopupProps(
-                  cupertinoProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
+                  cupertinoProps:
+                      CupertinoMultiSelectionPopupProps.modalBottomSheet(
                     modalBottomSheetProps: CupertinoModalBottomSheetProps(),
                     showSearchBox: true,
                     containerBuilder: (ctx, popupWidget) {
@@ -169,7 +185,8 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                                 child: FilledButton(
                                   onPressed: () {
                                     // How should I unselect all items in the list?
-                                    _dropDownCustomBGKey.currentState?.closeDropDownSearch();
+                                    _dropDownCustomBGKey.currentState
+                                        ?.closeDropDownSearch();
                                   },
                                   child: const Text('Cancel'),
                                 ),
@@ -179,7 +196,8 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                                 child: OutlinedButton(
                                   onPressed: () {
                                     // How should I select all items in the list?
-                                    _dropDownCustomBGKey.currentState?.popupSelectAllItems();
+                                    _dropDownCustomBGKey.currentState
+                                        ?.popupSelectAllItems();
                                   },
                                   child: const Text('All'),
                                 ),
@@ -189,7 +207,8 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                                 child: OutlinedButton(
                                   onPressed: () {
                                     // How should I unselect all items in the list?
-                                    _dropDownCustomBGKey.currentState?.popupDeselectAllItems();
+                                    _dropDownCustomBGKey.currentState
+                                        ?.popupDeselectAllItems();
                                   },
                                   child: const Text('None'),
                                 ),
@@ -214,9 +233,11 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                     child: AdaptiveDropdownSearch<UserModel>.multiSelection(
                       context: context,
                       items: (filter, t) => getData(filter),
-                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+                      suffixProps: DropdownSuffixProps(
+                          clearButtonProps: ClearButtonProps(isVisible: true)),
                       popupProps: AdaptiveMultiSelectionPopupProps(
-                        cupertinoProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
+                        cupertinoProps:
+                            CupertinoMultiSelectionPopupProps.modalBottomSheet(
                           showSelectedItems: true,
                           itemBuilder: userModelPopupItem,
                           showSearchBox: true,
@@ -229,13 +250,15 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                           ),
                         ),
                       ),
-                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
+                      compareFn: (item, selectedItem) =>
+                          item.id == selectedItem.id,
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'Users *',
                           filled: true,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                       dropdownBuilder: customDropDownExampleMultiSelection,
@@ -258,7 +281,8 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                         decoration: InputDecoration(
                           labelText: 'User *',
                           filled: true,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                     ),
@@ -290,14 +314,16 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                                     icon: Icon(Icons.arrow_drop_down),
                                     onPressed: () {
                                       item.isExpanded = !item.isExpanded;
-                                      _dropdownMultiLevelKey.currentState?.updatePopupState();
+                                      _dropdownMultiLevelKey.currentState
+                                          ?.updatePopupState();
                                     },
                                   )
                                 : IconButton(
                                     icon: Icon(Icons.arrow_right),
                                     onPressed: () {
                                       item.isExpanded = !item.isExpanded;
-                                      _dropdownMultiLevelKey.currentState?.updatePopupState();
+                                      _dropdownMultiLevelKey.currentState
+                                          ?.updatePopupState();
                                     },
                                   )),
                         subtitle: item.subLevel.isNotEmpty && item.isExpanded
@@ -307,10 +333,15 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                                   children: item.subLevel
                                       .map(
                                         (e) => ListTile(
-                                          selected: _dropdownMultiLevelKey.currentState?.getSelectedItem?.level1 == e.level1,
+                                          selected: _dropdownMultiLevelKey
+                                                  .currentState
+                                                  ?.getSelectedItem
+                                                  ?.level1 ==
+                                              e.level1,
                                           title: Text(e.level1),
                                           onTap: () {
-                                            _dropdownMultiLevelKey.currentState?.popupValidate([e]);
+                                            _dropdownMultiLevelKey.currentState
+                                                ?.popupValidate([e]);
                                           },
                                         ),
                                       )
@@ -318,7 +349,8 @@ class _AdaptiveModalsExamplesPageState extends State<AdaptiveModalsExamplesPage>
                                 ),
                               )
                             : null,
-                        onTap: () => _dropdownMultiLevelKey.currentState?.popupValidate([item]),
+                        onTap: () => _dropdownMultiLevelKey.currentState
+                            ?.popupValidate([item]),
                       );
                     },
                   ),

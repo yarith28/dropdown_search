@@ -30,7 +30,8 @@ class CupertinoDropdownSearch<T> extends BaseDropdownSearch<T> {
         );
 
   CupertinoDropdownSearch.multiSelection({
-    CupertinoMultiSelectionPopupProps<T> popupProps = const CupertinoMultiSelectionPopupProps.menu(),
+    CupertinoMultiSelectionPopupProps<T> popupProps =
+        const CupertinoMultiSelectionPopupProps.menu(),
     super.key,
     super.mode = Mode.form,
     super.autoValidateMode,

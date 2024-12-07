@@ -77,7 +77,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 * To let the package pick the suitable platform UI based on the used platform, use `AdaptiveDropdownSearch<T>(...)` or  `AdaptiveDropdownSearch<T>.multiSelection(...)`
 
 
-* **_Bonus Tip_**: with adaptive platform ui you can use different PopupMode depending on platform type:
+* **_Bonus Tip_**: with adaptive platform ui you can use different `PopupMode` depending on platform type:
 ```dart
 AdaptiveDropdownSearch<T>(
     popupProps: AdaptivePopupProps(
@@ -88,7 +88,7 @@ AdaptiveDropdownSearch<T>(
 ```
 
 ## Infinite Scroll
-To enable infinite scroll all you have to do is to declare `infiniteScrollProps` and of course don't forget to pass loadProps to your API like this:
+To enable infinite scroll all you have to do is to declare `infiniteScrollProps` and of course don't forget to pass `loadProps` to your API like this:
 ```dart
 DropdownSearch<T>(
     items: (filter, loadProps) => _getDataFromAPI(filter, loadProps!.skip, loadProps!.take),

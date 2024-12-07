@@ -211,7 +211,9 @@ class MultiSelectionPopupProps<T> extends BasePopupProps<T> {
         bottomSheetProps = const BottomSheetProps(),
         dialogProps = const DialogProps(),
         autoCompleteProps = const AutocompleteProps(),
-        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
+        super(
+            mode: PopupMode.modalBottomSheet,
+            searchFieldProps: searchFieldProps);
 }
 
 class PopupProps<T> extends BasePopupProps<T> {
@@ -387,5 +389,7 @@ class PopupProps<T> extends BasePopupProps<T> {
         autoCompleteProps = const AutocompleteProps(),
         modalBottomSheetProps = const ModalBottomSheetProps(),
         dialogProps = const DialogProps(),
-        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
+        super(
+            mode: PopupMode.modalBottomSheet,
+            searchFieldProps: searchFieldProps);
 }

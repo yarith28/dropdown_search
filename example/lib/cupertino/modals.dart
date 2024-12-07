@@ -6,14 +6,17 @@ import 'dialogs.dart';
 
 class CupertinoModalsExamplesPage extends StatefulWidget {
   @override
-  State<CupertinoModalsExamplesPage> createState() => _CupertinoModalsExamplesPageState();
+  State<CupertinoModalsExamplesPage> createState() =>
+      _CupertinoModalsExamplesPageState();
 }
 
-class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPage> {
+class _CupertinoModalsExamplesPageState
+    extends State<CupertinoModalsExamplesPage> {
   final _formKey = GlobalKey<FormState>();
   final _dropDownCustomBGKey = GlobalKey<DropdownSearchState<String>>();
   final _userEditTextController = TextEditingController(text: 'Mrs');
-  final _dropdownMultiLevelKey = GlobalKey<DropdownSearchState<MultiLevelString>>();
+  final _dropdownMultiLevelKey =
+      GlobalKey<DropdownSearchState<MultiLevelString>>();
   final List<MultiLevelString> myMultiLevelItems = [
     MultiLevelString(level1: "1"),
     MultiLevelString(level1: "2"),
@@ -35,7 +38,8 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("CupertinoDropdownSearch Modal BottomSheet Demo")),
+      appBar:
+          AppBar(title: Text("CupertinoDropdownSearch Modal BottomSheet Demo")),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: Form(
@@ -53,7 +57,9 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                     child: CupertinoDropdownSearch<int>(
                       items: (f, cs) => List.generate(30, (i) => i + 1),
                       decoratorProps: DropDownDecoratorProps(
-                        decoration: InputDecoration(labelText: "Dialog with title", hintText: "Select an Int"),
+                        decoration: InputDecoration(
+                            labelText: "Dialog with title",
+                            hintText: "Select an Int"),
                       ),
                       popupProps: CupertinoPopupProps.modalBottomSheet(
                         title: Container(
@@ -64,7 +70,10 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                           padding: EdgeInsets.symmetric(vertical: 16),
                           child: Text(
                             'Numbers 1..30',
-                            style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white70),
+                            style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white70),
                           ),
                         ),
                         modalBottomSheetProps: CupertinoModalBottomSheetProps(),
@@ -107,7 +116,9 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                         suggestionsProps: SuggestionsProps(
                           showSuggestions: true,
                           items: (us) {
-                            return us.where((e) => e.name.contains("Mrs")).toList();
+                            return us
+                                .where((e) => e.name.contains("Mrs"))
+                                .toList();
                           },
                         ),
                       ),
@@ -118,13 +129,16 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                     child: CupertinoDropdownSearch<UserModel>.multiSelection(
                       items: (filter, s) => getData(filter),
                       compareFn: (i, s) => i.isEqual(s),
-                      popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
+                      popupProps:
+                          CupertinoMultiSelectionPopupProps.modalBottomSheet(
                         showSearchBox: true,
                         itemBuilder: userModelPopupItem,
                         suggestionsProps: SuggestionsProps(
                           showSuggestions: true,
                           items: (us) {
-                            return us.where((e) => e.name.contains("Mrs")).toList();
+                            return us
+                                .where((e) => e.name.contains("Mrs"))
+                                .toList();
                           },
                         ),
                       ),
@@ -155,7 +169,8 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                               child: FilledButton(
                                 onPressed: () {
                                   // How should I unselect all items in the list?
-                                  _dropDownCustomBGKey.currentState?.closeDropDownSearch();
+                                  _dropDownCustomBGKey.currentState
+                                      ?.closeDropDownSearch();
                                 },
                                 child: const Text('Cancel'),
                               ),
@@ -165,7 +180,8 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                               child: OutlinedButton(
                                 onPressed: () {
                                   // How should I select all items in the list?
-                                  _dropDownCustomBGKey.currentState?.popupSelectAllItems();
+                                  _dropDownCustomBGKey.currentState
+                                      ?.popupSelectAllItems();
                                 },
                                 child: const Text('All'),
                               ),
@@ -175,7 +191,8 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                               child: OutlinedButton(
                                 onPressed: () {
                                   // How should I unselect all items in the list?
-                                  _dropDownCustomBGKey.currentState?.popupDeselectAllItems();
+                                  _dropDownCustomBGKey.currentState
+                                      ?.popupDeselectAllItems();
                                 },
                                 child: const Text('None'),
                               ),
@@ -198,8 +215,10 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                   Expanded(
                     child: CupertinoDropdownSearch<UserModel>.multiSelection(
                       items: (filter, t) => getData(filter),
-                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-                      popupProps: CupertinoMultiSelectionPopupProps.modalBottomSheet(
+                      suffixProps: DropdownSuffixProps(
+                          clearButtonProps: ClearButtonProps(isVisible: true)),
+                      popupProps:
+                          CupertinoMultiSelectionPopupProps.modalBottomSheet(
                         showSelectedItems: true,
                         itemBuilder: userModelPopupItem,
                         showSearchBox: true,
@@ -211,13 +230,15 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                           ),
                         ),
                       ),
-                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
+                      compareFn: (item, selectedItem) =>
+                          item.id == selectedItem.id,
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'Users *',
                           filled: true,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                       dropdownBuilder: customDropDownExampleMultiSelection,
@@ -237,7 +258,8 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                         decoration: InputDecoration(
                           labelText: 'User *',
                           filled: true,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                         ),
                       ),
                     ),
@@ -267,14 +289,16 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                                   icon: Icon(Icons.arrow_drop_down),
                                   onPressed: () {
                                     item.isExpanded = !item.isExpanded;
-                                    _dropdownMultiLevelKey.currentState?.updatePopupState();
+                                    _dropdownMultiLevelKey.currentState
+                                        ?.updatePopupState();
                                   },
                                 )
                               : IconButton(
                                   icon: Icon(Icons.arrow_right),
                                   onPressed: () {
                                     item.isExpanded = !item.isExpanded;
-                                    _dropdownMultiLevelKey.currentState?.updatePopupState();
+                                    _dropdownMultiLevelKey.currentState
+                                        ?.updatePopupState();
                                   },
                                 )),
                       subtitle: item.subLevel.isNotEmpty && item.isExpanded
@@ -284,10 +308,15 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                                 children: item.subLevel
                                     .map(
                                       (e) => ListTile(
-                                        selected: _dropdownMultiLevelKey.currentState?.getSelectedItem?.level1 == e.level1,
+                                        selected: _dropdownMultiLevelKey
+                                                .currentState
+                                                ?.getSelectedItem
+                                                ?.level1 ==
+                                            e.level1,
                                         title: Text(e.level1),
                                         onTap: () {
-                                          _dropdownMultiLevelKey.currentState?.popupValidate([e]);
+                                          _dropdownMultiLevelKey.currentState
+                                              ?.popupValidate([e]);
                                         },
                                       ),
                                     )
@@ -295,7 +324,8 @@ class _CupertinoModalsExamplesPageState extends State<CupertinoModalsExamplesPag
                               ),
                             )
                           : null,
-                      onTap: () => _dropdownMultiLevelKey.currentState?.popupValidate([item]),
+                      onTap: () => _dropdownMultiLevelKey.currentState
+                          ?.popupValidate([item]),
                     );
                   },
                 ),

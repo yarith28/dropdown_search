@@ -11,7 +11,8 @@ class MaterialBottomSheetExamplesPage extends StatefulWidget {
       _MaterialBottomSheetExamplesPageState();
 }
 
-class _MaterialBottomSheetExamplesPageState extends State<MaterialBottomSheetExamplesPage> {
+class _MaterialBottomSheetExamplesPageState
+    extends State<MaterialBottomSheetExamplesPage> {
   final _formKey = GlobalKey<FormState>();
   final _dropDownCustomBGKey = GlobalKey<DropdownSearchState<String>>();
   final _userEditTextController = TextEditingController(text: 'Mrs');

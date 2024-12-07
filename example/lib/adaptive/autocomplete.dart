@@ -6,10 +6,12 @@ import '../user_model.dart';
 
 class AdaptiveAutocompleteExamplesPage extends StatefulWidget {
   @override
-  State<AdaptiveAutocompleteExamplesPage> createState() => _AdaptiveAutocompleteExamplesPageState();
+  State<AdaptiveAutocompleteExamplesPage> createState() =>
+      _AdaptiveAutocompleteExamplesPageState();
 }
 
-class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteExamplesPage> {
+class _AdaptiveAutocompleteExamplesPageState
+    extends State<AdaptiveAutocompleteExamplesPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -33,15 +35,26 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                   Expanded(
                     child: AdaptiveDropdownSearch<String>.multiSelection(
                       context: context,
-                      items: (f, cs) => ["Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                      items: (f, cs) => [
+                        "Monday",
+                        'Tuesday',
+                        'Wednesday',
+                        'Thursday',
+                        'Friday',
+                        'Saturday',
+                        'Sunday'
+                      ],
                       popupProps: AdaptiveMultiSelectionPopupProps(
                         materialProps: MultiSelectionPopupProps.autocomplete(
-                          autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                          autoCompleteProps:
+                              AutocompleteProps(groupId: UniqueKey()),
                           disabledItemFn: (item) => item == 'Tuesday',
                         ),
                       ),
                       dropdownBuilder: (ctx, selectedItems) =>
-                          selectedItems.isEmpty ? SizedBox.shrink() : Text('$selectedItems'),
+                          selectedItems.isEmpty
+                              ? SizedBox.shrink()
+                              : Text('$selectedItems'),
                     ),
                   ),
                   Padding(padding: EdgeInsets.only(right: 16)),
@@ -57,17 +70,22 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                       compareFn: (item1, item2) => item1.$1 == item2.$1,
                       itemAsString: (item) => item.$1,
                       popupProps: AdaptivePopupProps(
-                        cupertinoProps: CupertinoPopupProps.autocomplete(
-                          autoCompleteProps: CupertinoAutocompleteProps(align: MenuAlign.bottomCenter, groupId: UniqueKey()),
-                          constraints: BoxConstraints(minWidth: 128),
-                          fit: FlexFit.loose,
-                          itemBuilder: (context, item, isDisabled, isSelected) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(item.$1, style: TextStyle(color: item.$2, fontSize: 16)),
+                          cupertinoProps: CupertinoPopupProps.autocomplete(
+                            autoCompleteProps: CupertinoAutocompleteProps(
+                                align: MenuAlign.bottomCenter,
+                                groupId: UniqueKey()),
+                            constraints: BoxConstraints(minWidth: 128),
+                            fit: FlexFit.loose,
+                            itemBuilder:
+                                (context, item, isDisabled, isSelected) =>
+                                    Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(item.$1,
+                                  style:
+                                      TextStyle(color: item.$2, fontSize: 16)),
+                            ),
                           ),
-                        ),
-                        materialProps: PopupProps.dialog()
-                      ),
+                          materialProps: PopupProps.dialog()),
                       dropdownBuilder: (ctx, selectedItem) {
                         if (selectedItem == null) return SizedBox.shrink();
                         return Row(
@@ -93,10 +111,12 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                       context: context,
                       popupProps: AdaptivePopupProps(
                         materialProps: PopupProps.autocomplete(
-                          autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                          autoCompleteProps:
+                              AutocompleteProps(groupId: UniqueKey()),
                         ),
                       ),
-                      items: (f, cs) => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                      items: (f, cs) =>
+                          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                     ),
                   ),
                   Padding(padding: EdgeInsets.all(4)),
@@ -107,11 +127,13 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                         context: context,
                         popupProps: AdaptiveMultiSelectionPopupProps(
                           materialProps: MultiSelectionPopupProps.autocomplete(
-                            autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                            autoCompleteProps:
+                                AutocompleteProps(groupId: UniqueKey()),
                           ),
                         ),
                         items: (f, cs) => List.generate(50, (i) => i),
-                        selectedItemsScrollProps: ScrollProps(scrollDirection: Axis.horizontal),
+                        selectedItemsScrollProps:
+                            ScrollProps(scrollDirection: Axis.horizontal),
                       ),
                     ),
                   ),
@@ -126,8 +148,10 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                     child: AdaptiveDropdownSearch<UserModel>(
                       context: context,
                       items: (f, cs) => getData(f),
-                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
+                      suffixProps: DropdownSuffixProps(
+                          clearButtonProps: ClearButtonProps(isVisible: true)),
+                      compareFn: (item, selectedItem) =>
+                          item.id == selectedItem.id,
                       dropdownBuilder: (context, selectedItem) {
                         if (selectedItem == null) {
                           return SizedBox.shrink();
@@ -135,7 +159,9 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
 
                         return ListTile(
                           contentPadding: EdgeInsets.only(left: 0),
-                          leading: CircleAvatar(backgroundColor: Colors.blue, child: Text(selectedItem.name[0])),
+                          leading: CircleAvatar(
+                              backgroundColor: Colors.blue,
+                              child: Text(selectedItem.name[0])),
                           title: Text(selectedItem.name),
                         );
                       },
@@ -149,7 +175,9 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                           showSelectedItems: true,
                           itemBuilder: (ctx, item, isDisabled, isSelected) {
                             return ListTile(
-                              leading: CircleAvatar(backgroundColor: Colors.blue, child: Text(item.name[0])),
+                              leading: CircleAvatar(
+                                  backgroundColor: Colors.blue,
+                                  child: Text(item.name[0])),
                               selected: isSelected,
                               title: Text(item.name),
                             );
@@ -215,7 +243,10 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                           ),
                           Text(
                             selectedItem.$2,
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
                           ),
                         ]);
                       },
@@ -223,11 +254,15 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                           materialProps: PopupProps.autocomplete(
                         itemBuilder: (context, item, isDisabled, isSelected) {
                           return ListTile(
-                            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
                             leading: Icon(item.$1, color: Colors.white),
                             title: Text(
                               item.$2,
-                              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
                             ),
                           );
                         },
@@ -270,7 +305,8 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                     Padding(padding: EdgeInsets.only(top: 32)),
                     AdaptiveDropdownSearch<String>(
                       context: context,
-                      items: (filter, infiniteScrollProps) => ['Item 1', 'Item 2', 'Item 3'],
+                      items: (filter, infiniteScrollProps) =>
+                          ['Item 1', 'Item 2', 'Item 3'],
                       suffixProps: DropdownSuffixProps(
                         dropdownButtonProps: DropdownButtonProps(
                           iconClosed: Icon(Icons.keyboard_arrow_down),
@@ -280,7 +316,8 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                       decoratorProps: DropDownDecoratorProps(
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -296,7 +333,10 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                             borderRadius: BorderRadius.circular(12),
                           ),
                           hintText: 'Please select...',
-                          hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey),
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.grey),
                         ),
                       ),
                       dropdownBuilder: (context, selectedItem) {
@@ -312,7 +352,8 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                             padding: const EdgeInsets.symmetric(vertical: 12.0),
                             child: Text(
                               item,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
                               textAlign: TextAlign.center,
                             ),
                           );
@@ -321,26 +362,31 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                         autoCompleteProps: CupertinoAutocompleteProps(
                           groupId: UniqueKey(),
                           margin: EdgeInsets.only(top: 12),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
                         ),
                       )),
                     ),
                     Padding(padding: EdgeInsets.only(top: 32)),
                     AdaptiveDropdownSearch<String>(
                         context: context,
-                        items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
+                        items: (filter, loadProps) =>
+                            ["Item 1", "Item 2", "Item 3", "Item 4"],
                         decoratorProps: DropDownDecoratorProps(
                           decoration: InputDecoration(
                             labelText: 'Bottom Left Menu',
                             border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.only(left: 12, right: 12),
+                            contentPadding:
+                                EdgeInsets.only(left: 12, right: 12),
                           ),
                         ),
                         popupProps: AdaptivePopupProps(
                           cupertinoProps: CupertinoPopupProps.autocomplete(
                             constraints: BoxConstraints.tight(Size(250, 250)),
-                            autoCompleteProps:
-                                CupertinoAutocompleteProps(align: MenuAlign.bottomStart, groupId: UniqueKey()),
+                            autoCompleteProps: CupertinoAutocompleteProps(
+                                align: MenuAlign.bottomStart,
+                                groupId: UniqueKey()),
                           ),
                         )),
                     Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -353,11 +399,14 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                           contentPadding: EdgeInsets.only(left: 12, right: 12),
                         ),
                       ),
-                      items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
+                      items: (filter, loadProps) =>
+                          ["Item 1", "Item 2", "Item 3", "Item 4"],
                       popupProps: AdaptivePopupProps(
                         materialProps: PopupProps.autocomplete(
                           constraints: BoxConstraints.tight(Size(250, 250)),
-                          autoCompleteProps: AutocompleteProps(align: MenuAlign.bottomCenter, groupId: UniqueKey()),
+                          autoCompleteProps: AutocompleteProps(
+                              align: MenuAlign.bottomCenter,
+                              groupId: UniqueKey()),
                         ),
                       ),
                     ),
@@ -371,11 +420,13 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                           contentPadding: EdgeInsets.only(left: 12, right: 12),
                         ),
                       ),
-                      items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
+                      items: (filter, loadProps) =>
+                          ["Item 1", "Item 2", "Item 3", "Item 4"],
                       popupProps: AdaptivePopupProps(
                         materialProps: PopupProps.autocomplete(
                           constraints: BoxConstraints.tight(Size(250, 250)),
-                          autoCompleteProps: AutocompleteProps(align: MenuAlign.topEnd, groupId: UniqueKey()),
+                          autoCompleteProps: AutocompleteProps(
+                              align: MenuAlign.topEnd, groupId: UniqueKey()),
                         ),
                       ),
                     ),
@@ -396,7 +447,8 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                       autoValidateMode: AutovalidateMode.onUserInteraction,
                       popupProps: AdaptivePopupProps(
                         cupertinoProps: CupertinoPopupProps.autocomplete(
-                          autoCompleteProps: CupertinoAutocompleteProps(groupId: UniqueKey()),
+                          autoCompleteProps:
+                              CupertinoAutocompleteProps(groupId: UniqueKey()),
                         ),
                       ),
                       validator: (int? i) {
@@ -407,7 +459,8 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                         }
                         return null;
                       },
-                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+                      suffixProps: DropdownSuffixProps(
+                          clearButtonProps: ClearButtonProps(isVisible: true)),
                     ),
                   ),
                   Padding(padding: EdgeInsets.all(4)),
@@ -416,7 +469,8 @@ class _AdaptiveAutocompleteExamplesPageState extends State<AdaptiveAutocompleteE
                       context: context,
                       popupProps: AdaptiveMultiSelectionPopupProps(
                         materialProps: MultiSelectionPopupProps.autocomplete(
-                          autoCompleteProps: AutocompleteProps(groupId: UniqueKey()),
+                          autoCompleteProps:
+                              AutocompleteProps(groupId: UniqueKey()),
                         ),
                       ),
                       items: (f, cs) => [1, 2, 3, 4, 5, 6, 7],

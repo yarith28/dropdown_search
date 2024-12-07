@@ -5,7 +5,8 @@ class CustomCupertinoTextFields extends StatelessWidget {
   final CupertinoTextFieldProps props;
   final TextEditingController? controller;
 
-  const CustomCupertinoTextFields({super.key, required this.props, this.controller});
+  const CustomCupertinoTextFields(
+      {super.key, required this.props, this.controller});
 
   @override
   Widget build(BuildContext context) {

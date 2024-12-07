@@ -75,7 +75,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     super.initState();
     _selectedItemsNotifier.value = widget.defaultSelectedItems;
 
-    searchBoxController = widget.props.searchFieldProps.controller ?? TextEditingController();
+    searchBoxController =
+        widget.props.searchFieldProps.controller ?? TextEditingController();
     searchBoxController.addListener(_searchBoxControllerListener);
 
     lastSearchText = searchBoxController.text;
@@ -96,7 +97,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   @override
   void didUpdateWidget(covariant DropdownSearchPopup<T> oldWidget) {
-    if (!listEquals(oldWidget.defaultSelectedItems, widget.defaultSelectedItems)) {
+    if (!listEquals(
+        oldWidget.defaultSelectedItems, widget.defaultSelectedItems)) {
       _selectedItemsNotifier.value = widget.defaultSelectedItems;
     }
     super.didUpdateWidget(oldWidget);
@@ -143,7 +145,9 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 if (widget.props.title != null) widget.props.title!,
-                if (widget.props.showSearchBox && widget.dropdownMode != PopupMode.autocomplete) _searchField(),
+                if (widget.props.showSearchBox &&
+                    widget.dropdownMode != PopupMode.autocomplete)
+                  _searchField(),
                 _suggestedItemsWidget(),
                 Flexible(
                   fit: widget.props.fit,
@@ -153,8 +157,10 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
                         stream: _itemsStream.stream,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            if (_cachedItems.isNotEmpty && !isInfiniteScrollEnded) {
-                              return _listItemWidget(_cachedItems, snapshot.error);
+                            if (_cachedItems.isNotEmpty &&
+                                !isInfiniteScrollEnded) {
+                              return _listItemWidget(
+                                  _cachedItems, snapshot.error);
                             }
                             return _errorWidget(snapshot.error);
                           } else if (snapshot.hasData) {
@@ -182,7 +188,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
       thumbVisibility: widget.props.scrollbarProps.thumbVisibility,
       trackVisibility: widget.props.scrollbarProps.trackVisibility,
       thickness: widget.props.scrollbarProps.thickness,
-      radius: widget.props.scrollbarProps.radius ?? (widget.uiMode == UiToApply.cupertino ? Radius.circular(4) : null),
+      radius: widget.props.scrollbarProps.radius ??
+          (widget.uiMode == UiToApply.cupertino ? Radius.circular(4) : null),
       notificationPredicate: widget.props.scrollbarProps.notificationPredicate,
       interactive: widget.props.scrollbarProps.interactive,
       scrollbarOrientation: widget.props.scrollbarProps.scrollbarOrientation,
@@ -206,7 +213,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
           //todo temp solution till fix this Flutter issue here https://github.com/flutter/flutter/issues/155198
           child: ListView.builder(
             hitTestBehavior: widget.props.listViewProps.hitTestBehavior,
-            controller: widget.props.listViewProps.controller ?? scrollController,
+            controller:
+                widget.props.listViewProps.controller ?? scrollController,
             shrinkWrap: widget.props.listViewProps.shrinkWrap,
             padding: widget.props.listViewProps.padding,
             scrollDirection: widget.props.listViewProps.scrollDirection,
@@ -214,28 +222,35 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
             primary: widget.props.listViewProps.primary,
             physics: widget.props.listViewProps.physics,
             itemExtent: widget.props.listViewProps.itemExtent,
-            addAutomaticKeepAlives: widget.props.listViewProps.addAutomaticKeepAlives,
-            addRepaintBoundaries: widget.props.listViewProps.addRepaintBoundaries,
+            addAutomaticKeepAlives:
+                widget.props.listViewProps.addAutomaticKeepAlives,
+            addRepaintBoundaries:
+                widget.props.listViewProps.addRepaintBoundaries,
             addSemanticIndexes: widget.props.listViewProps.addSemanticIndexes,
             cacheExtent: widget.props.listViewProps.cacheExtent,
             semanticChildCount: widget.props.listViewProps.semanticChildCount,
             dragStartBehavior: widget.props.listViewProps.dragStartBehavior,
-            keyboardDismissBehavior: widget.props.listViewProps.keyboardDismissBehavior,
+            keyboardDismissBehavior:
+                widget.props.listViewProps.keyboardDismissBehavior,
             restorationId: widget.props.listViewProps.restorationId,
             clipBehavior: widget.props.listViewProps.clipBehavior,
             prototypeItem: widget.props.listViewProps.prototypeItem,
             itemExtentBuilder: widget.props.listViewProps.itemExtentBuilder,
-            findChildIndexCallback: widget.props.listViewProps.findChildIndexCallback,
+            findChildIndexCallback:
+                widget.props.listViewProps.findChildIndexCallback,
             itemCount: itemCount + (isInfiniteScrollEnded ? 0 : 1),
             itemBuilder: (context, index) {
               if (index < itemCount) {
                 var item = data[index];
-                return widget.isMultiSelectionMode ? _itemWidgetMultiSelection(item) : _itemWidgetSingleSelection(item);
+                return widget.isMultiSelectionMode
+                    ? _itemWidgetMultiSelection(item)
+                    : _itemWidgetSingleSelection(item);
               }
               if (pLoadingMoreError != null) {
                 return _loadMoreErrorWidget(pLoadingMoreError, itemCount);
               } else if (!isInfiniteScrollEnded) {
-                _manageLoadMoreItems(searchBoxController.text, skip: itemCount, showLoading: false);
+                _manageLoadMoreItems(searchBoxController.text,
+                    skip: itemCount, showLoading: false);
                 return _infiniteScrollLoadingMoreWidget(itemCount);
               }
 
@@ -264,8 +279,11 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         children: [
           Text('An error occurred !'),
           IconButton(
-            onPressed: () => loadMoreItems(searchBoxController.text, loadedItems),
-            icon: Icon(widget.uiMode == UiToApply.cupertino ? CupertinoIcons.refresh : Icons.refresh),
+            onPressed: () =>
+                loadMoreItems(searchBoxController.text, loadedItems),
+            icon: Icon(widget.uiMode == UiToApply.cupertino
+                ? CupertinoIcons.refresh
+                : Icons.refresh),
           )
         ],
       ),
@@ -274,11 +292,14 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   Widget _infiniteScrollLoadingMoreWidget(int loadedItems) {
     if (widget.props.infiniteScrollProps?.loadingMoreBuilder != null) {
-      return widget.props.infiniteScrollProps!.loadingMoreBuilder!(context, loadedItems);
+      return widget.props.infiniteScrollProps!.loadingMoreBuilder!(
+          context, loadedItems);
     }
 
     return Center(
-      child: widget.uiMode == UiToApply.cupertino ? CupertinoActivityIndicator() : CircularProgressIndicator(),
+      child: widget.uiMode == UiToApply.cupertino
+          ? CupertinoActivityIndicator()
+          : CircularProgressIndicator(),
     );
   }
 
@@ -291,18 +312,23 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
   Widget _multiSelectionValidation() {
     if (!widget.isMultiSelectionMode) return SizedBox.shrink();
 
-    if (widget.props.validationBuilder != null) return widget.props.validationBuilder!(context, _selectedItems);
+    if (widget.props.validationBuilder != null) {
+      return widget.props.validationBuilder!(context, _selectedItems);
+    }
 
     //for cupertino modal and dialog we used already "actions" as Validation method
     if (widget.uiMode == UiToApply.cupertino &&
-        (widget.props.mode == PopupMode.modalBottomSheet || widget.props.mode == PopupMode.dialog)) {
+        (widget.props.mode == PopupMode.modalBottomSheet ||
+            widget.props.mode == PopupMode.dialog)) {
       return SizedBox.shrink();
     }
 
     Widget defaultMaterialValidation = Container(
       alignment: Alignment.centerRight,
       padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(border: Border(top: BorderSide(width: 1, color: Colors.grey.shade300))),
+      decoration: BoxDecoration(
+          border:
+              Border(top: BorderSide(width: 1, color: Colors.grey.shade300))),
       child: TextButton(
         onPressed: onValidate,
         child: Text("DONE"),
@@ -326,7 +352,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   Widget _errorWidget(dynamic error) {
     if (widget.props.errorBuilder != null) {
-      return widget.props.errorBuilder!(context, searchBoxController.text, error);
+      return widget.props.errorBuilder!(
+          context, searchBoxController.text, error);
     }
 
     return Container(
@@ -338,7 +365,9 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
           Text(error?.toString() ?? 'Unknown Error'),
           IconButton(
             onPressed: () => reloadItems(searchBoxController.text),
-            icon: Icon(widget.uiMode == UiToApply.cupertino ? CupertinoIcons.refresh : Icons.refresh),
+            icon: Icon(widget.uiMode == UiToApply.cupertino
+                ? CupertinoIcons.refresh
+                : Icons.refresh),
           )
         ],
       ),
@@ -361,7 +390,9 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         return AbsorbPointer(
           child: Container(
             alignment: Alignment.center,
-            child: widget.uiMode == UiToApply.cupertino ? CupertinoActivityIndicator() : CircularProgressIndicator(),
+            child: widget.uiMode == UiToApply.cupertino
+                ? CupertinoActivityIndicator()
+                : CircularProgressIndicator(),
           ),
         );
       },
@@ -373,7 +404,9 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
       if (widget.filterFn != null) {
         return (widget.filterFn!(i, filter));
       } else if (widget.itemAsString != null) {
-        return (widget.itemAsString!(i)).toLowerCase().contains(filter.toLowerCase());
+        return (widget.itemAsString!(i))
+            .toLowerCase()
+            .contains(filter.toLowerCase());
       }
       return i.toString().toLowerCase().contains(filter.toLowerCase());
     }).toList();
@@ -387,7 +420,10 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     if (!widget.props.cacheItems || isFirstLoad) _cachedItems.clear();
 
     //case filtering locally (no need to load new data)
-    if (!isFirstLoad && !widget.props.disableFilter && widget.props.cacheItems && isInfiniteScrollEnded) {
+    if (!isFirstLoad &&
+        !widget.props.disableFilter &&
+        widget.props.cacheItems &&
+        isInfiniteScrollEnded) {
       _addDataToStream(_applyFilter(filter));
       return;
     }
@@ -409,7 +445,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     }
 
     try {
-      final List<T> myItems = await widget.items!(filter, loadProps?.copy(skip: skip));
+      final List<T> myItems =
+          await widget.items!(filter, loadProps?.copy(skip: skip));
 
       if (loadProps != null) {
         isInfiniteScrollEnded = myItems.length < loadProps.take;
@@ -473,7 +510,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
       return ListTile(
         enabled: !isDisabled,
         title: Text(_itemAsString(item)),
-        selected: !widget.props.showSelectedItems ? false : _isSelectedItem(item),
+        selected:
+            !widget.props.showSelectedItems ? false : _isSelectedItem(item),
         onTap: isDisabled ? null : () => _handleSelectedItem(item),
       );
     }
@@ -518,7 +556,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   ///test if list has an item T
   ///if contains return index of item in the list, -1 otherwise
-  int _itemIndexInList(List<T> list, T item) => list.indexWhere((i) => _isEqual(i, item));
+  int _itemIndexInList(List<T> list, T item) =>
+      list.indexWhere((i) => _isEqual(i, item));
 
   ///compared two items base on user params
   bool _isEqual(T i1, T i2) {
@@ -541,7 +580,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
           );
 
     if (widget.props.searchFieldProps.containerBuilder != null) {
-      return widget.props.searchFieldProps.containerBuilder!(context, textField);
+      return widget.props.searchFieldProps.containerBuilder!(
+          context, textField);
     }
 
     return Padding(
@@ -578,12 +618,14 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
   void _handleSelectedItem(T newSelectedItem) {
     if (widget.isMultiSelectionMode) {
       if (_isSelectedItem(newSelectedItem)) {
-        _selectedItemsNotifier.value = List.from(_selectedItems)..removeWhere((i) => _isEqual(newSelectedItem, i));
+        _selectedItemsNotifier.value = List.from(_selectedItems)
+          ..removeWhere((i) => _isEqual(newSelectedItem, i));
         if (widget.props.onItemRemoved != null) {
           widget.props.onItemRemoved!(_selectedItems, newSelectedItem);
         }
       } else {
-        _selectedItemsNotifier.value = List.from(_selectedItems)..add(newSelectedItem);
+        _selectedItemsNotifier.value = List.from(_selectedItems)
+          ..add(newSelectedItem);
         if (widget.props.onItemAdded != null) {
           widget.props.onItemAdded!(_selectedItems, newSelectedItem);
         }
@@ -620,7 +662,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   void selectItems(List<T> itemsToSelect) {
     for (var i in itemsToSelect) {
-      if (!_isSelectedItem(i) /*check if the item is already selected*/ && !_isDisabled(i) /*escape disabled items*/) {
+      if (!_isSelectedItem(i) /*check if the item is already selected*/ &&
+          !_isDisabled(i) /*escape disabled items*/) {
         _selectedItems.add(i);
         if (widget.props.onItemAdded != null) {
           widget.props.onItemAdded!(_selectedItems, i);
@@ -648,7 +691,8 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
 
   void deselectAllItems() => deselectItems(_selectedItems);
 
-  bool get isAllItemSelected => _listEquals(_selectedItems, _currentShowedItems);
+  bool get isAllItemSelected =>
+      _listEquals(_selectedItems, _currentShowedItems);
 
   List<T> get getSelectedItem => List.from(_selectedItems);
 

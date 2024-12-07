@@ -6,10 +6,12 @@ import '../user_model.dart';
 
 class CupertinoAutocompleteExamplesPage extends StatefulWidget {
   @override
-  State<CupertinoAutocompleteExamplesPage> createState() => _CupertinoAutocompleteExamplesPageState();
+  State<CupertinoAutocompleteExamplesPage> createState() =>
+      _CupertinoAutocompleteExamplesPageState();
 }
 
-class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocompleteExamplesPage> {
+class _CupertinoAutocompleteExamplesPageState
+    extends State<CupertinoAutocompleteExamplesPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -32,13 +34,25 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                 children: [
                   Expanded(
                     child: CupertinoDropdownSearch<String>.multiSelection(
-                      items: (f, cs) => ["Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                      popupProps: CupertinoMultiSelectionPopupProps.autocomplete(
-                        autoCompleteProps: CupertinoAutocompleteProps(groupId: UniqueKey()),
+                      items: (f, cs) => [
+                        "Monday",
+                        'Tuesday',
+                        'Wednesday',
+                        'Thursday',
+                        'Friday',
+                        'Saturday',
+                        'Sunday'
+                      ],
+                      popupProps:
+                          CupertinoMultiSelectionPopupProps.autocomplete(
+                        autoCompleteProps:
+                            CupertinoAutocompleteProps(groupId: UniqueKey()),
                         disabledItemFn: (item) => item == 'Tuesday',
                       ),
                       dropdownBuilder: (ctx, selectedItems) =>
-                          selectedItems.isEmpty ? SizedBox.shrink() : Text('$selectedItems'),
+                          selectedItems.isEmpty
+                              ? SizedBox.shrink()
+                              : Text('$selectedItems'),
                     ),
                   ),
                   Padding(padding: EdgeInsets.only(right: 16)),
@@ -53,12 +67,16 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                       compareFn: (item1, item2) => item1.$1 == item2.$1,
                       itemAsString: (item) => item.$1,
                       popupProps: CupertinoPopupProps.autocomplete(
-                        autoCompleteProps: CupertinoAutocompleteProps(align: MenuAlign.bottomCenter, groupId: UniqueKey()),
+                        autoCompleteProps: CupertinoAutocompleteProps(
+                            align: MenuAlign.bottomCenter,
+                            groupId: UniqueKey()),
                         constraints: BoxConstraints(minWidth: 128),
                         fit: FlexFit.loose,
-                        itemBuilder: (context, item, isDisabled, isSelected) => Padding(
+                        itemBuilder: (context, item, isDisabled, isSelected) =>
+                            Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(item.$1, style: TextStyle(color: item.$2, fontSize: 16)),
+                          child: Text(item.$1,
+                              style: TextStyle(color: item.$2, fontSize: 16)),
                         ),
                       ),
                       dropdownBuilder: (ctx, selectedItem) {
@@ -84,9 +102,11 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                   Expanded(
                     child: CupertinoDropdownSearch<int>(
                       popupProps: CupertinoPopupProps.autocomplete(
-                        autoCompleteProps: CupertinoAutocompleteProps(groupId: UniqueKey()),
+                        autoCompleteProps:
+                            CupertinoAutocompleteProps(groupId: UniqueKey()),
                       ),
-                      items: (f, cs) => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                      items: (f, cs) =>
+                          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                     ),
                   ),
                   Padding(padding: EdgeInsets.all(4)),
@@ -94,11 +114,14 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                     child: SizedBox(
                       height: 50,
                       child: CupertinoDropdownSearch<int>.multiSelection(
-                        popupProps: CupertinoMultiSelectionPopupProps.autocomplete(
-                          autoCompleteProps: CupertinoAutocompleteProps(groupId: UniqueKey()),
+                        popupProps:
+                            CupertinoMultiSelectionPopupProps.autocomplete(
+                          autoCompleteProps:
+                              CupertinoAutocompleteProps(groupId: UniqueKey()),
                         ),
                         items: (f, cs) => List.generate(50, (i) => i),
-                        selectedItemsScrollProps: ScrollProps(scrollDirection: Axis.horizontal),
+                        selectedItemsScrollProps:
+                            ScrollProps(scrollDirection: Axis.horizontal),
                       ),
                     ),
                   ),
@@ -112,8 +135,10 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                   Expanded(
                     child: CupertinoDropdownSearch<UserModel>(
                       items: (f, cs) => getData(f),
-                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
-                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
+                      suffixProps: DropdownSuffixProps(
+                          clearButtonProps: ClearButtonProps(isVisible: true)),
+                      compareFn: (item, selectedItem) =>
+                          item.id == selectedItem.id,
                       dropdownBuilder: (context, selectedItem) {
                         if (selectedItem == null) {
                           return SizedBox.shrink();
@@ -121,7 +146,9 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
 
                         return ListTile(
                           contentPadding: EdgeInsets.only(left: 0),
-                          leading: CircleAvatar(backgroundColor: Colors.blue, child: Text(selectedItem.name[0])),
+                          leading: CircleAvatar(
+                              backgroundColor: Colors.blue,
+                              child: Text(selectedItem.name[0])),
                           title: Text(selectedItem.name),
                         );
                       },
@@ -134,7 +161,9 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                         showSelectedItems: true,
                         itemBuilder: (ctx, item, isDisabled, isSelected) {
                           return ListTile(
-                            leading: CircleAvatar(backgroundColor: Colors.blue, child: Text(item.name[0])),
+                            leading: CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                child: Text(item.name[0])),
                             selected: isSelected,
                             title: Text(item.name),
                           );
@@ -198,18 +227,25 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                           ),
                           Text(
                             selectedItem.$2,
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
                           ),
                         ]);
                       },
                       popupProps: CupertinoPopupProps.autocomplete(
                         itemBuilder: (context, item, isDisabled, isSelected) {
                           return ListTile(
-                            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
                             leading: Icon(item.$1, color: Colors.white),
                             title: Text(
                               item.$2,
-                              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
                             ),
                           );
                         },
@@ -251,7 +287,8 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                     ),
                     Padding(padding: EdgeInsets.only(top: 32)),
                     CupertinoDropdownSearch<String>(
-                      items: (filter, infiniteScrollProps) => ['Item 1', 'Item 2', 'Item 3'],
+                      items: (filter, infiniteScrollProps) =>
+                          ['Item 1', 'Item 2', 'Item 3'],
                       suffixProps: DropdownSuffixProps(
                         dropdownButtonProps: DropdownButtonProps(
                           iconClosed: Icon(Icons.keyboard_arrow_down),
@@ -261,7 +298,8 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                       decoratorProps: DropDownDecoratorProps(
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -277,7 +315,10 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                             borderRadius: BorderRadius.circular(12),
                           ),
                           hintText: 'Please select...',
-                          hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey),
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.grey),
                         ),
                       ),
                       dropdownBuilder: (context, selectedItem) {
@@ -292,7 +333,8 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                             padding: const EdgeInsets.symmetric(vertical: 12.0),
                             child: Text(
                               item,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
                               textAlign: TextAlign.center,
                             ),
                           );
@@ -301,13 +343,16 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                         autoCompleteProps: CupertinoAutocompleteProps(
                           groupId: UniqueKey(),
                           margin: EdgeInsets.only(top: 12),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
                         ),
                       ),
                     ),
                     Padding(padding: EdgeInsets.only(top: 32)),
                     CupertinoDropdownSearch<String>(
-                      items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
+                      items: (filter, loadProps) =>
+                          ["Item 1", "Item 2", "Item 3", "Item 4"],
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
                           labelText: 'Bottom Left Menu',
@@ -317,7 +362,8 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                       ),
                       popupProps: CupertinoPopupProps.autocomplete(
                         constraints: BoxConstraints.tight(Size(250, 250)),
-                        autoCompleteProps: CupertinoAutocompleteProps(align: MenuAlign.bottomStart, groupId: UniqueKey()),
+                        autoCompleteProps: CupertinoAutocompleteProps(
+                            align: MenuAlign.bottomStart, groupId: UniqueKey()),
                       ),
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -329,10 +375,13 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                           contentPadding: EdgeInsets.only(left: 12, right: 12),
                         ),
                       ),
-                      items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
+                      items: (filter, loadProps) =>
+                          ["Item 1", "Item 2", "Item 3", "Item 4"],
                       popupProps: CupertinoPopupProps.autocomplete(
                         constraints: BoxConstraints.tight(Size(250, 250)),
-                        autoCompleteProps: CupertinoAutocompleteProps(align: MenuAlign.bottomCenter, groupId: UniqueKey()),
+                        autoCompleteProps: CupertinoAutocompleteProps(
+                            align: MenuAlign.bottomCenter,
+                            groupId: UniqueKey()),
                       ),
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -344,10 +393,12 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                           contentPadding: EdgeInsets.only(left: 12, right: 12),
                         ),
                       ),
-                      items: (filter, loadProps) => ["Item 1", "Item 2", "Item 3", "Item 4"],
+                      items: (filter, loadProps) =>
+                          ["Item 1", "Item 2", "Item 3", "Item 4"],
                       popupProps: CupertinoPopupProps.autocomplete(
                         constraints: BoxConstraints.tight(Size(250, 250)),
-                        autoCompleteProps: CupertinoAutocompleteProps(align: MenuAlign.topEnd, groupId: UniqueKey()),
+                        autoCompleteProps: CupertinoAutocompleteProps(
+                            align: MenuAlign.topEnd, groupId: UniqueKey()),
                       ),
                     ),
                   ],
@@ -365,7 +416,8 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                       items: (f, cs) => [1, 2, 3, 4, 5, 6, 7],
                       autoValidateMode: AutovalidateMode.onUserInteraction,
                       popupProps: CupertinoPopupProps.autocomplete(
-                        autoCompleteProps: CupertinoAutocompleteProps(groupId: UniqueKey()),
+                        autoCompleteProps:
+                            CupertinoAutocompleteProps(groupId: UniqueKey()),
                       ),
                       validator: (int? i) {
                         if (i == null) {
@@ -375,14 +427,17 @@ class _CupertinoAutocompleteExamplesPageState extends State<CupertinoAutocomplet
                         }
                         return null;
                       },
-                      suffixProps: DropdownSuffixProps(clearButtonProps: ClearButtonProps(isVisible: true)),
+                      suffixProps: DropdownSuffixProps(
+                          clearButtonProps: ClearButtonProps(isVisible: true)),
                     ),
                   ),
                   Padding(padding: EdgeInsets.all(4)),
                   Expanded(
                     child: CupertinoDropdownSearch<int>.multiSelection(
-                      popupProps: CupertinoMultiSelectionPopupProps.autocomplete(
-                        autoCompleteProps: CupertinoAutocompleteProps(groupId: UniqueKey()),
+                      popupProps:
+                          CupertinoMultiSelectionPopupProps.autocomplete(
+                        autoCompleteProps:
+                            CupertinoAutocompleteProps(groupId: UniqueKey()),
                       ),
                       items: (f, cs) => [1, 2, 3, 4, 5, 6, 7],
                       validator: (List<int>? items) {
