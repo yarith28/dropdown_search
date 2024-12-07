@@ -452,43 +452,47 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
   }
 
   Widget _itemWidgetSingleSelection(T item) {
+    final isDisabled = _isDisabled(item);
+
     if (widget.props.itemBuilder != null) {
       var w = widget.props.itemBuilder!(
         context,
         item,
-        _isDisabled(item),
+        isDisabled,
         !widget.props.showSelectedItems ? false : _isSelectedItem(item),
       );
 
       if (widget.props.interceptCallBacks) return w;
 
       return CustomInkWell(
-        clickProps: widget.props.itemClickProps,
-        onTap: _isDisabled(item) ? null : () => _handleSelectedItem(item),
+        clickProps: widget.popupProps.itemClickProps,
+        onTap: isDisabled ? null : () => _handleSelectedItem(item),
         child: IgnorePointer(child: w),
       );
     } else {
       return ListTile(
-        enabled: !_isDisabled(item),
+        enabled: !isDisabled,
         title: Text(_itemAsString(item)),
         selected: !widget.props.showSelectedItems ? false : _isSelectedItem(item),
-        onTap: _isDisabled(item) ? null : () => _handleSelectedItem(item),
+        onTap: isDisabled ? null : () => _handleSelectedItem(item),
       );
     }
   }
 
   Widget _itemWidgetMultiSelection(T item) {
+    final isDisabled = _isDisabled(item);
+
     if (widget.props.checkBoxBuilder != null) {
       return CheckBoxWidget(
         clickProps: widget.props.itemClickProps,
         checkBox: (cxt, checked) {
-          return widget.props.checkBoxBuilder!(cxt, item, _isDisabled(item), checked);
+          return widget.props.checkBoxBuilder!(cxt, item, isDisabled, checked);
         },
         interceptCallBacks: widget.props.interceptCallBacks,
         textDirection: widget.props.textDirection,
         layout: (context, isChecked) => _itemWidgetSingleSelection(item),
         isChecked: _isSelectedItem(item),
-        isDisabled: _isDisabled(item),
+        isDisabled: isDisabled,
         onSelected: (c) => _handleSelectedItem(item),
         uiToApply: widget.uiMode,
       );
@@ -499,14 +503,14 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
         interceptCallBacks: widget.props.interceptCallBacks,
         layout: (context, isChecked) => _itemWidgetSingleSelection(item),
         isChecked: _isSelectedItem(item),
-        isDisabled: _isDisabled(item),
+        isDisabled: isDisabled,
         onSelected: (c) => _handleSelectedItem(item),
         uiToApply: widget.uiMode,
       );
     }
   }
 
-  bool _isDisabled(T item) => widget.props.disabledItemFn != null && (widget.props.disabledItemFn!(item)) == true;
+  bool _isDisabled(T item) => widget.popupProps.disabledItemFn?.call(item) == true;
 
   /// selected item will be highlighted only when [widget.showSelectedItems] is true,
   /// if our object is String [widget.compareFn] is not required , other wises it's required
