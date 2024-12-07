@@ -465,7 +465,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
       if (widget.props.interceptCallBacks) return w;
 
       return CustomInkWell(
-        clickProps: widget.popupProps.itemClickProps,
+        clickProps: widget.props.itemClickProps,
         onTap: isDisabled ? null : () => _handleSelectedItem(item),
         child: IgnorePointer(child: w),
       );
@@ -510,7 +510,7 @@ class DropdownSearchPopupState<T> extends State<DropdownSearchPopup<T>> {
     }
   }
 
-  bool _isDisabled(T item) => widget.popupProps.disabledItemFn?.call(item) == true;
+  bool _isDisabled(T item) => widget.props.disabledItemFn?.call(item) == true;
 
   /// selected item will be highlighted only when [widget.showSelectedItems] is true,
   /// if our object is String [widget.compareFn] is not required , other wises it's required
