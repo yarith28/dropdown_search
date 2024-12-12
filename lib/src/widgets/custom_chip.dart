@@ -1,4 +1,4 @@
-import 'package:dropdown_search/src/properties/chip_props.dart';
+import 'package:dropdown_search/src/widgets/props/chip_props.dart';
 import 'package:flutter/material.dart';
 
 class CustomChip extends StatelessWidget {

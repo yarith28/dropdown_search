@@ -1,4 +1,11 @@
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/base_dropdown_search.dart';
+import 'package:dropdown_search/src/popups/props/autocomplete_props.dart';
+import 'package:dropdown_search/src/popups/props/bottom_sheet_props.dart';
+import 'package:dropdown_search/src/popups/props/dialog_props.dart';
+import 'package:dropdown_search/src/popups/props/menu_props.dart';
+import 'package:dropdown_search/src/popups/props/modal_bottom_sheet_props.dart';
+import 'package:dropdown_search/src/widgets/props/base_popup_props.dart';
+import 'package:dropdown_search/src/widgets/props/cupertino_text_field_props.dart';
 import 'package:flutter/material.dart';
 
 class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
@@ -200,9 +207,7 @@ class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
         bottomSheetProps = const CupertinoBottomSheetProps(),
         autoCompleteProps = const CupertinoAutocompleteProps(),
         dialogProps = const CupertinoDialogProps(),
-        super(
-            mode: PopupMode.modalBottomSheet,
-            searchFieldProps: searchFieldProps);
+        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
 }
 
 class CupertinoPopupProps<T> extends BasePopupProps<T> {
@@ -343,9 +348,7 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
         dialogProps = const CupertinoDialogProps(),
         autoCompleteProps = const CupertinoAutocompleteProps(),
         bottomSheetProps = const CupertinoBottomSheetProps(),
-        super(
-            mode: PopupMode.modalBottomSheet,
-            searchFieldProps: searchFieldProps);
+        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
 
   const CupertinoPopupProps.bottomSheet({
     this.bottomSheetProps = const CupertinoBottomSheetProps(),

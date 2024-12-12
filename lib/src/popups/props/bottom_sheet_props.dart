@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:dropdown_search/src/properties/safe_area_props.dart';
+import 'package:dropdown_search/src/widgets/props/safe_area_props.dart';
 import 'package:flutter/cupertino.dart';
 
 class BottomSheetProps {

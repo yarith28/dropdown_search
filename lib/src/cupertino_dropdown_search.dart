@@ -1,5 +1,6 @@
 import 'package:dropdown_search/src/base_dropdown_search.dart';
-import 'package:dropdown_search/src/properties/cupertino_popup_props.dart';
+
+import 'widgets/props/cupertino_popup_props.dart';
 
 class CupertinoDropdownSearch<T> extends BaseDropdownSearch<T> {
   CupertinoDropdownSearch({

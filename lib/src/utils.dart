@@ -2,6 +2,8 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'base_dropdown_search.dart';
+
 // Value inspected from Xcode 11 & iOS 13.0 Simulator.
 const kCupertinoBorderSide = BorderSide(
   color: CupertinoDynamicColor.withBrightness(

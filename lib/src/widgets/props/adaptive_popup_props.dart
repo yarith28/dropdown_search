@@ -1,4 +1,6 @@
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/src/popups/props/material_popup_props.dart';
+
+import 'cupertino_popup_props.dart';
 
 class AdaptiveMultiSelectionPopupProps<T> {
   ///Cupertino popup props

@@ -1,4 +1,4 @@
-import 'package:dropdown_search/src/properties/click_props.dart';
+import 'package:dropdown_search/src/widgets/props/inkwell_props.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_inkwell.dart';
 import 'package:flutter/cupertino.dart';

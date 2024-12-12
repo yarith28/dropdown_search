@@ -1,4 +1,4 @@
-import 'package:dropdown_search/src/properties/click_props.dart';
+import 'package:dropdown_search/src/widgets/props/inkwell_props.dart';
 import 'package:flutter/material.dart';
 
 class CustomInkWell extends StatelessWidget {

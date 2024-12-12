@@ -3,11 +3,11 @@ import 'package:dropdown_search/src/properties/base_text_field_props.dart';
 import 'package:dropdown_search/src/properties/infinite_scroll_props.dart';
 import 'package:dropdown_search/src/properties/list_view_props.dart';
 import 'package:dropdown_search/src/properties/scrollbar_props.dart';
-import 'package:dropdown_search/src/properties/suggestions_props.dart';
-import 'package:dropdown_search/src/properties/text_field_props.dart';
+import 'package:dropdown_search/src/widgets/props/suggestions_props.dart';
+import 'package:dropdown_search/src/widgets/props/text_field_props.dart';
 import 'package:flutter/material.dart';
 
-import 'click_props.dart';
+import 'inkwell_props.dart';
 
 abstract class BasePopupProps<T> {
   /// popup title

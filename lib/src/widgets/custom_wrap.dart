@@ -1,4 +1,4 @@
-import 'package:dropdown_search/src/properties/wrap_props.dart';
+import 'package:dropdown_search/src/widgets/props/wrap_props.dart';
 import 'package:flutter/material.dart';
 
 class CustomWrap extends StatelessWidget {
