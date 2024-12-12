@@ -2,7 +2,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_search/src/utils.dart';
 import 'package:dropdown_search/src/widgets/custom_chip.dart';
 import 'package:dropdown_search/src/widgets/custom_wrap.dart';
-import 'package:dropdown_search/src/widgets/props/chip_props.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_scroll_view.dart';

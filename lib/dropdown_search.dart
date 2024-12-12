@@ -22,7 +22,6 @@ export 'src/popups/props/dialog_props.dart';
 export 'src/popups/props/material_popup_props.dart';
 export 'src/popups/props/autocomplete_props.dart';
 
-
 //widget props
 export 'src/widgets/props/inkwell_props.dart';
 export 'src/widgets/props/cupertino_text_field_props.dart';
@@ -39,4 +38,3 @@ export 'src/widgets/props/safe_area_props.dart';
 
 //custom widgets
 export 'src/widgets/dropdown_search_popup.dart';
-

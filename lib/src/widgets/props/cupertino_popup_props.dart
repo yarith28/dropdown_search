@@ -207,7 +207,9 @@ class CupertinoMultiSelectionPopupProps<T> extends BasePopupProps<T> {
         bottomSheetProps = const CupertinoBottomSheetProps(),
         autoCompleteProps = const CupertinoAutocompleteProps(),
         dialogProps = const CupertinoDialogProps(),
-        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
+        super(
+            mode: PopupMode.modalBottomSheet,
+            searchFieldProps: searchFieldProps);
 }
 
 class CupertinoPopupProps<T> extends BasePopupProps<T> {
@@ -348,7 +350,9 @@ class CupertinoPopupProps<T> extends BasePopupProps<T> {
         dialogProps = const CupertinoDialogProps(),
         autoCompleteProps = const CupertinoAutocompleteProps(),
         bottomSheetProps = const CupertinoBottomSheetProps(),
-        super(mode: PopupMode.modalBottomSheet, searchFieldProps: searchFieldProps);
+        super(
+            mode: PopupMode.modalBottomSheet,
+            searchFieldProps: searchFieldProps);
 
   const CupertinoPopupProps.bottomSheet({
     this.bottomSheetProps = const CupertinoBottomSheetProps(),

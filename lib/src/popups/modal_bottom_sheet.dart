@@ -2,17 +2,21 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Future openMaterialModalBottomSheet(BuildContext context, Widget content, ModalBottomSheetProps props) {
+Future openMaterialModalBottomSheet(
+    BuildContext context, Widget content, ModalBottomSheetProps props) {
   final sheetTheme = Theme.of(context).bottomSheetTheme;
   return showModalBottomSheet(
     context: context,
     barrierLabel: props.barrierLabel,
-    scrollControlDisabledMaxHeightRatio: props.scrollControlDisabledMaxHeightRatio,
+    scrollControlDisabledMaxHeightRatio:
+        props.scrollControlDisabledMaxHeightRatio,
     showDragHandle: props.showDragHandle,
     sheetAnimationStyle: props.sheetAnimationStyle,
     useSafeArea: props.useSafeArea,
     barrierColor: props.barrierColor,
-    backgroundColor: props.backgroundColor ?? sheetTheme.modalBackgroundColor ?? sheetTheme.backgroundColor,
+    backgroundColor: props.backgroundColor ??
+        sheetTheme.modalBackgroundColor ??
+        sheetTheme.backgroundColor,
     isDismissible: props.barrierDismissible,
     isScrollControlled: props.isScrollControlled,
     enableDrag: props.enableDrag,
@@ -43,13 +47,15 @@ Future openAdaptiveModalBottomSheet(
   switch (theme.platform) {
     case TargetPlatform.iOS:
     case TargetPlatform.macOS:
-      return openCupertinoModalBottomSheet(context, content, props.cupertinoProps, defaultCupertinoActions);
+      return openCupertinoModalBottomSheet(
+          context, content, props.cupertinoProps, defaultCupertinoActions);
     case TargetPlatform.android:
     case TargetPlatform.fuchsia:
     case TargetPlatform.linux:
     case TargetPlatform.windows:
     default:
-      return openMaterialModalBottomSheet(context, content, props.materialProps);
+      return openMaterialModalBottomSheet(
+          context, content, props.materialProps);
   }
 }
 
