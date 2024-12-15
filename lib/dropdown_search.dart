@@ -162,6 +162,9 @@ class DropdownSearch<T> extends StatefulWidget {
   ///if the callBack return FALSE, the opening of the popup will be cancelled
   final BeforePopupOpeningMultiSelection<T>? onBeforePopupOpeningMultiSelection;
 
+  ///customize action button for multi selection mode
+  final Widget? multiSelCustomActionButton;
+
   DropdownSearch({
     Key? key,
     this.onSaved,
@@ -194,6 +197,7 @@ class DropdownSearch<T> extends StatefulWidget {
         this.onSavedMultiSelection = null,
         this.onChangedMultiSelection = null,
         this.onBeforePopupOpeningMultiSelection = null,
+        this.multiSelCustomActionButton = null,
         super(key: key);
 
   DropdownSearch.multiSelection({
@@ -210,6 +214,7 @@ class DropdownSearch<T> extends StatefulWidget {
     this.compareFn,
     this.selectedItems = const [],
     this.popupProps = const PopupPropsMultiSelection.menu(),
+    this.multiSelCustomActionButton,
     FormFieldSetter<List<T>>? onSaved,
     ValueChanged<List<T>>? onChanged,
     BeforeChangeMultiSelection<T>? onBeforeChange,
@@ -671,6 +676,7 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
       compareFn: widget.compareFn,
       isMultiSelectionMode: isMultiSelectionMode,
       defaultSelectedItems: List.from(getSelectedItems),
+      customActionButton: widget.multiSelCustomActionButton,
     );
   }
 
