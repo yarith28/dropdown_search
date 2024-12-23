@@ -321,7 +321,7 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
             Flexible(
               child: Text(
                 _selectedItemAsString(item),
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context).textTheme.titleSmall,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
